@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tingfm/pages/player/player.dart';
 
 class MiniPlayer extends StatefulWidget {
   const MiniPlayer({super.key});
@@ -21,7 +22,14 @@ class _MiniPlayerState extends State<MiniPlayer> {
         height: 76.0,
         child: ListTile(
           dense: false,
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                opaque: false,
+                pageBuilder: (_, __, ___) => const PlayerPage(),
+              ),
+            );
+          },
           title: const Text(
             "隋唐演义",
             maxLines: 1,

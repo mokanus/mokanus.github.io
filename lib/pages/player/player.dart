@@ -2,6 +2,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tingfm/global/global.dart';
@@ -17,36 +18,14 @@ class PlayerPage extends StatefulWidget {
 class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   final _playlist = ConcatenatingAudioSource(children: [
     AudioSource.uri(
-      Uri.parse(
-          "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3"),
+      Uri.parse("https://www.chiyustudio.com:81/隋唐演义001集.aac"),
       tag: AudioMetadata(
-        album: "Science Friday",
-        title: "A Salute To Head-Scratching Science",
-        artwork:
-            "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
-      ),
-    ),
-    AudioSource.uri(
-      Uri.parse("https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3"),
-      tag: AudioMetadata(
-        album: "Science Friday",
-        title: "From Cat Rheology To Operatic Incompetence",
-        artwork:
-            "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
-      ),
-    ),
-    AudioSource.uri(
-      Uri.parse("asset:///audio/nature.mp3"),
-      tag: AudioMetadata(
-        album: "Public Domain",
-        title: "Nature Sounds",
-        artwork:
-            "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
+        album: "隋唐演义",
+        title: "隋唐演义001集",
+        artwork: "https://www.chiyustudio.com:81/隋唐演义·田连元.png",
       ),
     ),
   ]);
-  int _addedCount = 0;
-  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   @override
   void initState() {
@@ -71,26 +50,14 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
     // Show a snackbar whenever reaching the end of an item in the playlist.
     Global.player.positionDiscontinuityStream.listen((discontinuity) {
       if (discontinuity.reason == PositionDiscontinuityReason.autoAdvance) {
-        _showItemFinished(discontinuity.previousEvent.currentIndex);
+        //_showItemFinished(discontinuity.previousEvent.currentIndex);
       }
     });
     Global.player.processingStateStream.listen((state) {
       if (state == ProcessingState.completed) {
-        _showItemFinished(Global.player.currentIndex);
+        // _showItemFinished(Global.player.currentIndex);
       }
     });
-  }
-
-  void _showItemFinished(int? index) {
-    if (index == null) return;
-    final sequence = Global.player.sequence;
-    if (sequence == null) return;
-    final source = sequence[index];
-    final metadata = source.tag as AudioMetadata;
-    _scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
-      content: Text('Finished playing ${metadata.title}'),
-      duration: const Duration(seconds: 1),
-    ));
   }
 
   @override
@@ -119,10 +86,27 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      scaffoldMessengerKey: _scaffoldMessengerKey,
-      home: Scaffold(
+    return Dismissible(
+      direction: DismissDirection.down,
+      background: const ColoredBox(color: Colors.transparent),
+      key: const Key('playScreen'),
+      onDismissed: (direction) {
+        Navigator.pop(context);
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.expand_more_rounded),
+            tooltip: "返回",
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -140,12 +124,14 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child:
-                                Center(child: Image.network(metadata.artwork)),
-                          ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                              child: Image.network(
+                            metadata.artwork,
+                            height: ScreenUtil().setHeight(680),
+                            width: ScreenUtil().setWidth(680),
+                          )),
                         ),
                         Text(metadata.album,
                             style: Theme.of(context).textTheme.headline6),
@@ -227,7 +213,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                 ],
               ),
               SizedBox(
-                height: 240.0,
+                height: 100.0,
                 child: StreamBuilder<SequenceState?>(
                   stream: Global.player.sequenceStateStream,
                   builder: (context, snapshot) {
@@ -272,20 +258,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
               ),
             ],
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            _playlist.add(AudioSource.uri(
-              Uri.parse("asset:///audio/nature.mp3"),
-              tag: AudioMetadata(
-                album: "Public Domain",
-                title: "Nature Sounds ${++_addedCount}",
-                artwork:
-                    "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
-              ),
-            ));
-          },
         ),
       ),
     );
