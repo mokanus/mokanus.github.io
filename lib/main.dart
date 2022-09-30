@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tingfm/pages/home/home.dart';
 import 'package:tingfm/pages/my/my.dart';
+import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/widgets/custom_physics.dart';
 import 'package:tingfm/widgets/mini_player.dart';
 
@@ -61,7 +62,7 @@ class _MyAppState extends State<MyApp> {
                                   controller: _pageController,
                                   children: const [
                                     HomePage(),
-                                    HomePage(),
+                                    PlayerPage(),
                                     MyPage()
                                   ]),
                             ),
