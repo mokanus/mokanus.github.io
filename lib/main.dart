@@ -5,6 +5,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tingfm/pages/home/home.dart';
 import 'package:tingfm/pages/my/my.dart';
 import 'package:tingfm/widgets/custom_physics.dart';
+import 'package:tingfm/widgets/mini_player.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,11 +51,24 @@ class _MyAppState extends State<MyApp> {
               home: DefaultTabController(
                   length: 2,
                   child: Scaffold(
-                      body: PageView(
-                          physics: const CustomPhysics(),
-                          onPageChanged: onPageChanged,
-                          controller: _pageController,
-                          children: const [HomePage(), HomePage(), MyPage()]),
+                      body: SafeArea(
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: PageView(
+                                  physics: const CustomPhysics(),
+                                  onPageChanged: onPageChanged,
+                                  controller: _pageController,
+                                  children: const [
+                                    HomePage(),
+                                    HomePage(),
+                                    MyPage()
+                                  ]),
+                            ),
+                            const MiniPlayer(),
+                          ],
+                        ),
+                      ),
                       bottomNavigationBar: SafeArea(
                         child: ValueListenableBuilder(
                             valueListenable: _selectedIndex,
