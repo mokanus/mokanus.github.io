@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tingfm/global/global.dart';
 import 'package:tingfm/pages/player/common.dart';
 
 class PlayerPage extends StatefulWidget {
@@ -14,24 +15,7 @@ class PlayerPage extends StatefulWidget {
 }
 
 class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
-  late AudioPlayer _player;
   final _playlist = ConcatenatingAudioSource(children: [
-    // Remove this audio source from the Windows and Linux version because it's not supported yet
-    if (kIsWeb ||
-        ![TargetPlatform.windows, TargetPlatform.linux]
-            .contains(defaultTargetPlatform))
-      ClippingAudioSource(
-        start: const Duration(seconds: 60),
-        end: const Duration(seconds: 90),
-        child: AudioSource.uri(Uri.parse(
-            "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3")),
-        tag: AudioMetadata(
-          album: "Science Friday",
-          title: "A Salute To Head-Scratching Science (30 seconds)",
-          artwork:
-              "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
-        ),
-      ),
     AudioSource.uri(
       Uri.parse(
           "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3"),
@@ -68,7 +52,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     ambiguate(WidgetsBinding.instance)!.addObserver(this);
-    _player = AudioPlayer();
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.black,
     ));
@@ -76,37 +59,31 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   }
 
   Future<void> _init() async {
-    final session = await AudioSession.instance;
-    await session.configure(const AudioSessionConfiguration.speech());
-    // Listen to errors during playback.
-    _player.playbackEventStream.listen((event) {},
-        onError: (Object e, StackTrace stackTrace) {
-      print('A stream error occurred: $e');
-    });
+    Global.player.playbackEventStream
+        .listen((event) {}, onError: (Object e, StackTrace stackTrace) {});
     try {
       // Preloading audio is not currently supported on Linux.
-      await _player.setAudioSource(_playlist,
+      await Global.player.setAudioSource(_playlist,
           preload: kIsWeb || defaultTargetPlatform != TargetPlatform.linux);
     } catch (e) {
       // Catch load errors: 404, invalid url...
-      print("Error loading audio source: $e");
     }
     // Show a snackbar whenever reaching the end of an item in the playlist.
-    _player.positionDiscontinuityStream.listen((discontinuity) {
+    Global.player.positionDiscontinuityStream.listen((discontinuity) {
       if (discontinuity.reason == PositionDiscontinuityReason.autoAdvance) {
         _showItemFinished(discontinuity.previousEvent.currentIndex);
       }
     });
-    _player.processingStateStream.listen((state) {
+    Global.player.processingStateStream.listen((state) {
       if (state == ProcessingState.completed) {
-        _showItemFinished(_player.currentIndex);
+        _showItemFinished(Global.player.currentIndex);
       }
     });
   }
 
   void _showItemFinished(int? index) {
     if (index == null) return;
-    final sequence = _player.sequence;
+    final sequence = Global.player.sequence;
     if (sequence == null) return;
     final source = sequence[index];
     final metadata = source.tag as AudioMetadata;
@@ -119,25 +96,24 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   @override
   void dispose() {
     ambiguate(WidgetsBinding.instance)!.removeObserver(this);
-    _player.dispose();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      // Release the player's resources when not in use. We use "stop" so that
-      // if the app resumes later, it will still remember what position to
-      // resume from.
-      _player.stop();
-    }
+    // if (state == AppLifecycleState.paused) {
+    //   // Release the player's resources when not in use. We use "stop" so that
+    //   // if the app resumes later, it will still remember what position to
+    //   // resume from.
+    //   Global.player.stop();
+    // }
   }
 
   Stream<PositionData> get _positionDataStream =>
       Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-          _player.positionStream,
-          _player.bufferedPositionStream,
-          _player.durationStream,
+          Global.player.positionStream,
+          Global.player.bufferedPositionStream,
+          Global.player.durationStream,
           (position, bufferedPosition, duration) => PositionData(
               position, bufferedPosition, duration ?? Duration.zero));
 
@@ -154,7 +130,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
             children: [
               Expanded(
                 child: StreamBuilder<SequenceState?>(
-                  stream: _player.sequenceStateStream,
+                  stream: Global.player.sequenceStateStream,
                   builder: (context, snapshot) {
                     final state = snapshot.data;
                     if (state?.sequence.isEmpty ?? true) {
@@ -179,7 +155,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                   },
                 ),
               ),
-              ControlButtons(_player),
+              ControlButtons(Global.player),
               StreamBuilder<PositionData>(
                 stream: _positionDataStream,
                 builder: (context, snapshot) {
@@ -190,7 +166,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                     bufferedPosition:
                         positionData?.bufferedPosition ?? Duration.zero,
                     onChangeEnd: (newPosition) {
-                      _player.seek(newPosition);
+                      Global.player.seek(newPosition);
                     },
                   );
                 },
@@ -199,7 +175,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
               Row(
                 children: [
                   StreamBuilder<LoopMode>(
-                    stream: _player.loopModeStream,
+                    stream: Global.player.loopModeStream,
                     builder: (context, snapshot) {
                       final loopMode = snapshot.data ?? LoopMode.off;
                       const icons = [
@@ -216,7 +192,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                       return IconButton(
                         icon: icons[index],
                         onPressed: () {
-                          _player.setLoopMode(cycleModes[
+                          Global.player.setLoopMode(cycleModes[
                               (cycleModes.indexOf(loopMode) + 1) %
                                   cycleModes.length]);
                         },
@@ -231,7 +207,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                     ),
                   ),
                   StreamBuilder<bool>(
-                    stream: _player.shuffleModeEnabledStream,
+                    stream: Global.player.shuffleModeEnabledStream,
                     builder: (context, snapshot) {
                       final shuffleModeEnabled = snapshot.data ?? false;
                       return IconButton(
@@ -241,9 +217,9 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                         onPressed: () async {
                           final enable = !shuffleModeEnabled;
                           if (enable) {
-                            await _player.shuffle();
+                            await Global.player.shuffle();
                           }
-                          await _player.setShuffleModeEnabled(enable);
+                          await Global.player.setShuffleModeEnabled(enable);
                         },
                       );
                     },
@@ -253,7 +229,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
               SizedBox(
                 height: 240.0,
                 child: StreamBuilder<SequenceState?>(
-                  stream: _player.sequenceStateStream,
+                  stream: Global.player.sequenceStateStream,
                   builder: (context, snapshot) {
                     final state = snapshot.data;
                     final sequence = state?.sequence ?? [];
@@ -284,7 +260,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                               child: ListTile(
                                 title: Text(sequence[i].tag.title as String),
                                 onTap: () {
-                                  _player.seek(Duration.zero, index: i);
+                                  Global.player.seek(Duration.zero, index: i);
                                 },
                               ),
                             ),

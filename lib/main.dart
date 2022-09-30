@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:tingfm/global/global.dart';
 import 'package:tingfm/pages/home/home.dart';
 import 'package:tingfm/pages/my/my.dart';
 import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/widgets/custom_physics.dart';
 import 'package:tingfm/widgets/mini_player.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+Future<void> main() => Global.init().then((e) => runApp(const MyApp()));
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
