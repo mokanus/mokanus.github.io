@@ -45,7 +45,6 @@ class _MyAppState extends State<MyApp> {
                   backgroundColor: Color.fromARGB(255, 245, 245, 245),
                   systemOverlayStyle: SystemUiOverlayStyle.dark,
                   foregroundColor: Colors.black,
-                  shape: StadiumBorder(),
                 ),
               ),
               home: DefaultTabController(
@@ -88,7 +87,7 @@ class _MyAppState extends State<MyApp> {
                                         SalomonBottomBarItem(
                                             icon: const Icon(
                                                 Icons.panorama_fisheye_rounded),
-                                            title: const Text("我的"),
+                                            title: const Text("听书铺子"),
                                             selectedColor: const Color.fromARGB(
                                                 255, 234, 78, 94)),
                                       ]),
