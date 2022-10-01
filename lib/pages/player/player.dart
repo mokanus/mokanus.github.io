@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +10,12 @@ import 'package:rxdart/rxdart.dart';
 import 'package:tingfm/pages/player/common.dart';
 
 class PlayerPage extends StatefulWidget {
-  const PlayerPage({Key? key}) : super(key: key);
+  final bool fromMiniplayer;
+
+  const PlayerPage({
+    super.key,
+    required this.fromMiniplayer,
+  });
 
   @override
   PlayerPageState createState() => PlayerPageState();
@@ -25,7 +32,13 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
       statusBarColor: Colors.black,
     ));
 
-    updateNplay();
+    if (!widget.fromMiniplayer) {
+      if (!Platform.isAndroid) {
+        // Don't know why but it fixes the playback issue with iOS Side
+        audioHandler.stop();
+      }
+      updateNplay();
+    }
   }
 
   Future<void> updateNplay() async {
@@ -35,9 +48,36 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
         title: "隋唐演义001集",
         album: "隋唐演义",
         artist: "田连元",
-        artUri: Uri.parse("https://www.chiyustudio.com:81/隋唐演义·田连元.png"),
+        duration: const Duration(minutes: 15, seconds: 13),
+        artUri: Uri.parse(
+            "https://www.chiyustudio.com:81/tingfm/隋唐演义·田连元|田连元/隋唐演义·田连元.png"),
         extras: {
-          'url': 'https://www.chiyustudio.com:81/隋唐演义001集.aac',
+          'url':
+              'https://www.chiyustudio.com:81/tingfm/隋唐演义·田连元|田连元/隋唐演义001集.aac',
+        }));
+    globalQueue.add(MediaItem(
+        id: "asss",
+        title: "隋唐演义002集",
+        album: "隋唐演义",
+        artist: "田连元",
+        duration: const Duration(minutes: 15, seconds: 13),
+        artUri: Uri.parse(
+            "https://www.chiyustudio.com:81/tingfm/隋唐演义·田连元|田连元/隋唐演义·田连元.png"),
+        extras: {
+          'url':
+              'https://www.chiyustudio.com:81/tingfm/隋唐演义·田连元|田连元/隋唐演义002集.aac',
+        }));
+    globalQueue.add(MediaItem(
+        id: "asss",
+        title: "隋唐演义003集",
+        album: "隋唐演义",
+        artist: "田连元",
+        duration: const Duration(minutes: 15, seconds: 13),
+        artUri: Uri.parse(
+            "https://www.chiyustudio.com:81/tingfm/隋唐演义·田连元|田连元/隋唐演义·田连元.png"),
+        extras: {
+          'url':
+              'https://www.chiyustudio.com:81/tingfm/隋唐演义·田连元|田连元/隋唐演义003集.aac',
         }));
     await audioHandler.setShuffleMode(AudioServiceShuffleMode.none);
     await audioHandler.updateQueue(globalQueue);
@@ -59,9 +99,24 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
     // }
   }
 
+  Stream<PositionData> get _positionDataStream =>
+      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+        AudioService.position,
+        _bufferedPositionStream,
+        _durationStream,
+        (position, bufferedPosition, duration) =>
+            PositionData(position, bufferedPosition, duration ?? Duration.zero),
+      );
+
+  Stream<Duration> get _bufferedPositionStream => audioHandler.playbackState
+      .map((state) => state.bufferedPosition)
+      .distinct();
+
+  Stream<Duration?> get _durationStream =>
+      audioHandler.mediaItem.map((item) => item?.duration).distinct();
+
   @override
   Widget build(BuildContext context) {
-    updateNplay();
     return Dismissible(
       direction: DismissDirection.down,
       background: const ColoredBox(color: Colors.transparent),
@@ -88,11 +143,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
               builder: (context, snapshot) {
                 final MediaItem? metadata = snapshot.data;
                 if (metadata == null) {
-                  return Container(
-                    color: Colors.amberAccent,
-                    height: 400,
-                    width: 400,
-                  );
+                  return const SizedBox();
                 }
                 return SafeArea(
                   child: Column(
@@ -130,22 +181,27 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                           ],
                         ),
                       ),
-                      ControlButtons(audioHandler),
                       StreamBuilder<PositionData>(
                         stream: _positionDataStream,
                         builder: (context, snapshot) {
-                          final positionData = snapshot.data;
+                          final positionData = snapshot.data ??
+                              PositionData(
+                                Duration.zero,
+                                Duration.zero,
+                                metadata.duration ?? Duration.zero,
+                              );
                           return SeekBar(
-                            duration: positionData?.duration ?? Duration.zero,
-                            position: positionData?.position ?? Duration.zero,
-                            bufferedPosition:
-                                positionData?.bufferedPosition ?? Duration.zero,
+                            duration: positionData.bufferedPosition,
+                            position: positionData.position,
+                            bufferedPosition: positionData.bufferedPosition,
                             onChangeEnd: (newPosition) {
                               audioHandler.seek(newPosition);
                             },
                           );
                         },
                       ),
+                      ControlButtons(audioHandler),
+
                       const SizedBox(height: 8.0),
                       Row(
                         children: [
@@ -268,20 +324,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
               })),
     );
   }
-
-  Stream<PositionData> get _positionDataStream =>
-      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-        AudioService.position,
-        _bufferedPositionStream,
-        _durationStream,
-        (position, bufferedPosition, duration) =>
-            PositionData(position, bufferedPosition, duration ?? Duration.zero),
-      );
-  Stream<Duration> get _bufferedPositionStream => audioHandler.playbackState
-      .map((state) => state.bufferedPosition)
-      .distinct();
-  Stream<Duration?> get _durationStream =>
-      audioHandler.mediaItem.map((item) => item?.duration).distinct();
 }
 
 class ControlButtons extends StatelessWidget {
@@ -295,11 +337,11 @@ class ControlButtons extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          icon: const Icon(Icons.volume_up),
+          icon: const Icon(Icons.volume_up_rounded),
           onPressed: () {
             showSliderDialog(
               context: context,
-              title: "Adjust volume",
+              title: "调整音量",
               divisions: 10,
               min: 0.0,
               max: 1.0,
@@ -314,7 +356,7 @@ class ControlButtons extends StatelessWidget {
             builder: (context, snapshot) {
               final queueState = snapshot.data;
               return IconButton(
-                icon: const Icon(Icons.skip_previous),
+                icon: const Icon(Icons.skip_previous_rounded),
                 onPressed: queueState?.hasPrevious ?? true
                     ? audioHandler.skipToPrevious
                     : null,
@@ -336,13 +378,13 @@ class ControlButtons extends StatelessWidget {
               );
             } else if (playing != true) {
               return IconButton(
-                icon: const Icon(Icons.play_arrow),
+                icon: const Icon(Icons.play_arrow_rounded),
                 iconSize: 64.0,
                 onPressed: audioHandler.play,
               );
             } else if (processingState != ProcessingState.completed) {
               return IconButton(
-                icon: const Icon(Icons.pause),
+                icon: const Icon(Icons.pause_rounded),
                 iconSize: 64.0,
                 onPressed: audioHandler.pause,
               );
@@ -360,7 +402,7 @@ class ControlButtons extends StatelessWidget {
             builder: (context, snapshot) {
               final queueState = snapshot.data;
               return IconButton(
-                icon: const Icon(Icons.skip_next),
+                icon: const Icon(Icons.skip_next_rounded),
                 onPressed: queueState?.hasNext ?? true
                     ? audioHandler.skipToNext
                     : null,
@@ -388,18 +430,6 @@ class ControlButtons extends StatelessWidget {
       ],
     );
   }
-}
-
-class AudioMetadata {
-  final String album;
-  final String title;
-  final String artwork;
-
-  AudioMetadata({
-    required this.album,
-    required this.title,
-    required this.artwork,
-  });
 }
 
 abstract class AudioPlayerHandler implements AudioHandler {
@@ -435,3 +465,47 @@ class QueueState {
   List<int> get indices =>
       shuffleIndices ?? List.generate(queue.length, (i) => i);
 }
+
+void showSliderDialog({
+  required BuildContext context,
+  required String title,
+  required int divisions,
+  required double min,
+  required double max,
+  String valueSuffix = '',
+  // TODO: Replace these two by ValueStream.
+  required double value,
+  required Stream<double> stream,
+  required ValueChanged<double> onChanged,
+}) {
+  showDialog<void>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(title, textAlign: TextAlign.center),
+      content: StreamBuilder<double>(
+        stream: stream,
+        builder: (context, snapshot) => SizedBox(
+          height: 100.0,
+          child: Column(
+            children: [
+              Text('${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
+                  style: const TextStyle(
+                      fontFamily: 'Fixed',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0)),
+              Slider(
+                divisions: divisions,
+                min: min,
+                max: max,
+                value: snapshot.data ?? value,
+                onChanged: onChanged,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+T? ambiguate<T>(T? value) => value;

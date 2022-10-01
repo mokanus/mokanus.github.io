@@ -277,17 +277,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   @override
   Future<void> skipToPrevious() async {
-    resetOnSkip =
-        Hive.box('settings').get('resetOnSkip', defaultValue: false) as bool;
-    if (resetOnSkip) {
-      if ((_player?.position.inSeconds ?? 5) <= 5) {
-        _player!.seekToPrevious();
-      } else {
-        _player!.seek(Duration.zero);
-      }
-    } else {
-      _player!.seekToPrevious();
-    }
+    _player!.seekToPrevious();
   }
 
   @override

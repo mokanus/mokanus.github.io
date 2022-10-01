@@ -1,9 +1,6 @@
 import 'dart:async';
 
-import 'package:tingfm/entities/played_saved_entity.dart';
 import 'package:tingfm/global/global.dart';
-import 'package:tingfm/pages/player/player.dart';
-import 'package:tingfm/utils/storage.dart';
 
 ///本类是自定义的定时器工具类
 ///
@@ -16,18 +13,18 @@ class Timers {
 
   ///保存当前的播放进度
   static void storagePlayedData() async {
-    var audio =
-        Global.player.sequenceState!.currentSource?.tag as AudioMetadata;
+    // var audio =
+    //     Global.player.sequenceState!.currentSource?.tag as AudioMetadata;
 
-    await StorageUtil().setJSON(
-        'STORAGE_ALBUMN_PLAYED_${audio.album}',
-        AudioPlayedSavedMeta(
-                playedDurationHour: Global.player.position.inHours,
-                playedDurationMinu: Global.player.position.inMinutes,
-                playedDurationSecond: Global.player.position.inSeconds,
-                playedIndex: Global.player.currentIndex as int,
-                playedItemName: audio.title)
-            .toJson());
+    // await StorageUtil().setJSON(
+    //     'STORAGE_ALBUMN_PLAYED_${audio.album}',
+    //     AudioPlayedSavedMeta(
+    //             playedDurationHour: Global.player.position.inHours,
+    //             playedDurationMinu: Global.player.position.inMinutes,
+    //             playedDurationSecond: Global.player.position.inSeconds,
+    //             playedIndex: Global.player.currentIndex as int,
+    //             playedItemName: audio.title)
+    //         .toJson());
   }
 
   ///开启自动存储的Timer

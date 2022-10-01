@@ -87,7 +87,9 @@ class _ClassifyPageState extends State<ClassifyPage> {
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         opaque: false,
-                        pageBuilder: (_, __, ___) => const PlayerPage(),
+                        pageBuilder: (_, __, ___) => const PlayerPage(
+                          fromMiniplayer: false,
+                        ),
                       ),
                     )
                   },

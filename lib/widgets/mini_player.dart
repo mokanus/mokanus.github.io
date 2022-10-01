@@ -45,7 +45,9 @@ class _MiniPlayerState extends State<MiniPlayer> {
                         Navigator.of(context).push(
                           PageRouteBuilder(
                             opaque: false,
-                            pageBuilder: (_, __, ___) => const PlayerPage(),
+                            pageBuilder: (_, __, ___) => const PlayerPage(
+                              fromMiniplayer: true,
+                            ),
                           ),
                         );
                       },
