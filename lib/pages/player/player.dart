@@ -130,6 +130,8 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                 Navigator.pop(context);
               },
             ),
+            title:
+                Text(audioHandler.mediaItem.value?.album.toString() as String),
           ),
           body: StreamBuilder<MediaItem?>(
               stream: audioHandler.mediaItem,

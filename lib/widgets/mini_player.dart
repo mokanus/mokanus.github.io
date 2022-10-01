@@ -78,17 +78,59 @@ class _MiniPlayerState extends State<MiniPlayer> {
                           ),
                         ),
                       ),
-                      // trailing: ControlButtons(
-                      //   audioHandler,
-                      //   miniplayer: true,
-                      //   buttons: mediaItem.artUri.toString().startsWith('file:')
-                      //       ? ['Like', 'Play/Pause', 'Next']
-                      //       : preferredMiniButtons,
-                      // ),
+                      trailing: _buildMiniPlay(),
                     ),
                   ),
                 );
               });
         });
+  }
+
+  Widget _buildMiniPlay() {
+    return SizedBox(
+      height: ScreenUtil().setHeight(200.0),
+      width: ScreenUtil().setWidth(200.0),
+      child: StreamBuilder<PlaybackState>(
+        stream: audioHandler.playbackState,
+        builder: (context, snapshot) {
+          final playbackState = snapshot.data;
+          final processingState = playbackState?.processingState;
+          final playing = playbackState?.playing ?? true;
+          return Center(
+              child: (processingState == AudioProcessingState.loading ||
+                      processingState == AudioProcessingState.buffering)
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).iconTheme.color!,
+                        ),
+                      ),
+                    )
+                  : Center(
+                      child: playing
+                          ? IconButton(
+                              tooltip: "暂停",
+                              onPressed: audioHandler.pause,
+                              icon: const Icon(
+                                Icons.pause_circle,
+                              ),
+                              color: Theme.of(context).iconTheme.color,
+                              splashRadius: 1,
+                              iconSize: 40,
+                            )
+                          : IconButton(
+                              tooltip: "播放",
+                              onPressed: audioHandler.play,
+                              icon: const Icon(
+                                Icons.play_circle_fill,
+                              ),
+                              color: Theme.of(context).iconTheme.color,
+                              splashRadius: 1,
+                              iconSize: 40,
+                            ),
+                    ));
+        },
+      ),
+    );
   }
 }
