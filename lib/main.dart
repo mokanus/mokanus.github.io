@@ -73,6 +73,11 @@ class _MyAppState extends State<MyApp> {
                   systemOverlayStyle: SystemUiOverlayStyle.dark,
                   foregroundColor: Colors.black,
                 ),
+                sliderTheme: const SliderThemeData(
+                  thumbColor: Color.fromARGB(255, 234, 78, 94),
+                  activeTrackColor: Color.fromARGB(120, 234, 78, 94),
+                  overlayColor: Color.fromARGB(120, 234, 78, 94),
+                ),
               ),
               home: DefaultTabController(
                   length: 2,

@@ -92,13 +92,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // if (state == AppLifecycleState.paused) {
-    //   Global.player.stop();
-    // }
-  }
-
   Stream<PositionData> get _positionDataStream =>
       Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
         AudioService.position,
@@ -182,24 +175,23 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                         ),
                       ),
                       StreamBuilder<PositionData>(
-                        stream: _positionDataStream,
-                        builder: (context, snapshot) {
-                          final positionData = snapshot.data ??
-                              PositionData(
-                                Duration.zero,
-                                Duration.zero,
-                                metadata.duration ?? Duration.zero,
-                              );
-                          return SeekBar(
-                            duration: positionData.bufferedPosition,
-                            position: positionData.position,
-                            bufferedPosition: positionData.bufferedPosition,
-                            onChangeEnd: (newPosition) {
-                              audioHandler.seek(newPosition);
-                            },
-                          );
-                        },
-                      ),
+                          stream: _positionDataStream,
+                          builder: (context, snapshot) {
+                            final positionData = snapshot.data ??
+                                PositionData(
+                                  Duration.zero,
+                                  Duration.zero,
+                                  metadata.duration ?? Duration.zero,
+                                );
+                            return SeekBar(
+                              duration: positionData.bufferedPosition,
+                              position: positionData.position,
+                              bufferedPosition: positionData.bufferedPosition,
+                              onChangeEnd: (newPosition) {
+                                audioHandler.seek(newPosition);
+                              },
+                            );
+                          }),
                       ControlButtons(audioHandler),
 
                       const SizedBox(height: 8.0),
@@ -368,13 +360,17 @@ class ControlButtons extends StatelessWidget {
             final playbackState = snapshot.data;
             final processingState = playbackState?.processingState;
             final playing = playbackState?.playing ?? true;
-            if (processingState == ProcessingState.loading ||
-                processingState == ProcessingState.buffering) {
+
+            if (processingState == AudioProcessingState.loading ||
+                processingState == AudioProcessingState.buffering) {
               return Container(
                 margin: const EdgeInsets.all(8.0),
                 width: 64.0,
                 height: 64.0,
-                child: const CircularProgressIndicator(),
+                child: const CircularProgressIndicator(
+                  color: Color.fromARGB(255, 234, 78, 94),
+                  strokeWidth: 4.0,
+                ),
               );
             } else if (playing != true) {
               return IconButton(
