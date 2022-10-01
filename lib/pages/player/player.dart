@@ -44,7 +44,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   Future<void> updateNplay() async {
     List<MediaItem> globalQueue = <MediaItem>[];
     globalQueue.add(MediaItem(
-        id: "asss",
+        id: "1",
         title: "隋唐演义001集",
         album: "隋唐演义",
         artist: "田连元",
@@ -56,7 +56,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
               'https://www.chiyustudio.com:81/tingfm/隋唐演义·田连元|田连元/隋唐演义001集.aac',
         }));
     globalQueue.add(MediaItem(
-        id: "asss",
+        id: "2",
         title: "隋唐演义002集",
         album: "隋唐演义",
         artist: "田连元",
@@ -68,7 +68,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
               'https://www.chiyustudio.com:81/tingfm/隋唐演义·田连元|田连元/隋唐演义002集.aac',
         }));
     globalQueue.add(MediaItem(
-        id: "asss",
+        id: "3",
         title: "隋唐演义003集",
         album: "隋唐演义",
         artist: "田连元",
