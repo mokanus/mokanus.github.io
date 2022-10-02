@@ -289,6 +289,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       index:
           _player!.shuffleModeEnabled ? _player!.shuffleIndices![index] : index,
     );
+    _player!.play();
   }
 
   @override

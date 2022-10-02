@@ -50,7 +50,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
     var globalQueue = await MockItems();
     await audioHandler.setShuffleMode(AudioServiceShuffleMode.none);
     await audioHandler.updateQueue(globalQueue);
-    await audioHandler.skipToQueueItem(4);
+    await audioHandler.skipToQueueItem(0);
     audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
     await audioHandler.play();
   }
@@ -58,7 +58,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   Future<List<MediaItem>> MockItems() async {
     List<MediaItem> globalQueue = <MediaItem>[];
 
-    for (var i = 1; i < 10; i++) {
+    for (var i = 1; i <= 3; i++) {
       var num = "";
       if (i < 10) {
         num = "00$i";
@@ -141,169 +141,176 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                     BoxConstraints constraints,
                   ) {
                     return SafeArea(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.fromLTRB(
-                                    ScreenUtil().setWidth(200),
-                                    ScreenUtil().setHeight(30),
-                                    ScreenUtil().setWidth(200),
-                                    ScreenUtil().setHeight(30)),
-                                decoration: ShapeDecoration(
-                                  image: DecorationImage(
-                                    //设置背景图片
-                                    image: NetworkImage(
-                                      metadata.artUri.toString(),
-                                    ),
-                                  ),
-                                  //设置圆角
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadiusDirectional.circular(10)),
-                                ),
-                                height: ScreenUtil().setHeight(600),
-                                width: ScreenUtil().setWidth(600),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                    ScreenUtil().setWidth(200),
-                                    ScreenUtil().setHeight(10),
-                                    ScreenUtil().setWidth(200),
-                                    ScreenUtil().setHeight(20)),
-                                child: Text(metadata.album.toString(),
-                                    style:
-                                        Theme.of(context).textTheme.headline5),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                    ScreenUtil().setWidth(200),
-                                    ScreenUtil().setHeight(5),
-                                    ScreenUtil().setWidth(200),
-                                    ScreenUtil().setHeight(10)),
-                                child: Text(metadata.title),
-                              ),
-                            ],
-                          ),
-
-                          // 控件
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                ScreenUtil().setWidth(20),
-                                ScreenUtil().setHeight(5),
-                                ScreenUtil().setWidth(20),
-                                ScreenUtil().setHeight(10)),
-                            child: Row(
+                      child: Stack(children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                StreamBuilder<AudioServiceRepeatMode>(
-                                  stream: audioHandler.playbackState
-                                      .map((state) => state.repeatMode)
-                                      .distinct(),
-                                  builder: (context, snapshot) {
-                                    final repeatMode = snapshot.data ??
-                                        AudioServiceRepeatMode.none;
-                                    const icons = [
-                                      Icon(Icons.repeat, color: Colors.grey),
-                                      Icon(Icons.repeat, color: Colors.orange),
-                                      Icon(Icons.repeat_one,
-                                          color: Colors.orange),
-                                    ];
-                                    const cycleModes = [
-                                      AudioServiceRepeatMode.none,
-                                      AudioServiceRepeatMode.all,
-                                      AudioServiceRepeatMode.one,
-                                    ];
-                                    final index =
-                                        cycleModes.indexOf(repeatMode);
-                                    return IconButton(
-                                      icon: icons[index],
-                                      onPressed: () async {
-                                        await audioHandler.setRepeatMode(
-                                          cycleModes[
-                                              (cycleModes.indexOf(repeatMode) +
-                                                      1) %
-                                                  cycleModes.length],
-                                        );
-                                      },
-                                    );
-                                  },
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(
+                                      ScreenUtil().setWidth(200),
+                                      ScreenUtil().setHeight(30),
+                                      ScreenUtil().setWidth(200),
+                                      ScreenUtil().setHeight(30)),
+                                  decoration: ShapeDecoration(
+                                    image: DecorationImage(
+                                      //设置背景图片
+                                      image: NetworkImage(
+                                        metadata.artUri.toString(),
+                                      ),
+                                    ),
+                                    //设置圆角
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadiusDirectional.circular(
+                                                10)),
+                                  ),
+                                  height: ScreenUtil().setHeight(800),
+                                  width: ScreenUtil().setWidth(800),
                                 ),
-                                const Expanded(
-                                  child: SizedBox(),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      ScreenUtil().setWidth(200),
+                                      ScreenUtil().setHeight(10),
+                                      ScreenUtil().setWidth(200),
+                                      ScreenUtil().setHeight(20)),
+                                  child: Text(metadata.album.toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline5),
                                 ),
-                                StreamBuilder<bool>(
-                                  stream: audioHandler.playbackState
-                                      .map(
-                                        (state) =>
-                                            state.shuffleMode ==
-                                            AudioServiceShuffleMode.all,
-                                      )
-                                      .distinct(),
-                                  builder: (context, snapshot) {
-                                    final shuffleModeEnabled =
-                                        snapshot.data ?? false;
-                                    return IconButton(
-                                      icon: shuffleModeEnabled
-                                          ? const Icon(Icons.shuffle,
-                                              color: Colors.orange)
-                                          : const Icon(Icons.shuffle,
-                                              color: Colors.grey),
-                                      onPressed: () async {
-                                        final enable = !shuffleModeEnabled;
-                                        await audioHandler.setShuffleMode(
-                                          enable
-                                              ? AudioServiceShuffleMode.all
-                                              : AudioServiceShuffleMode.none,
-                                        );
-                                      },
-                                    );
-                                  },
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      ScreenUtil().setWidth(200),
+                                      ScreenUtil().setHeight(5),
+                                      ScreenUtil().setWidth(200),
+                                      ScreenUtil().setHeight(10)),
+                                  child: Text(metadata.title),
                                 ),
                               ],
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                ScreenUtil().setWidth(20),
-                                ScreenUtil().setHeight(5),
-                                ScreenUtil().setWidth(20),
-                                ScreenUtil().setHeight(10)),
-                            child: StreamBuilder<PositionData>(
-                                stream: _positionDataStream,
-                                builder: (context, snapshot) {
-                                  final positionData = snapshot.data ??
-                                      PositionData(
-                                        Duration.zero,
-                                        Duration.zero,
-                                        metadata.duration ?? Duration.zero,
-                                      );
-                                  return SeekBar(
-                                    duration: positionData.bufferedPosition,
-                                    position: positionData.position,
-                                    bufferedPosition:
-                                        positionData.bufferedPosition,
-                                    onChangeEnd: (newPosition) {
-                                      audioHandler.seek(newPosition);
-                                    },
-                                  );
-                                }),
-                          ),
-                          Expanded(
-                            child: ControlButtons(audioHandler),
-                          ),
 
-                          // Up Next with blur background
-                          SlidingUpPanel(
+                            // 控件
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  ScreenUtil().setWidth(20),
+                                  ScreenUtil().setHeight(5),
+                                  ScreenUtil().setWidth(20),
+                                  ScreenUtil().setHeight(10)),
+                              child: Row(
+                                children: [
+                                  StreamBuilder<AudioServiceRepeatMode>(
+                                    stream: audioHandler.playbackState
+                                        .map((state) => state.repeatMode)
+                                        .distinct(),
+                                    builder: (context, snapshot) {
+                                      final repeatMode = snapshot.data ??
+                                          AudioServiceRepeatMode.none;
+                                      const icons = [
+                                        Icon(Icons.repeat, color: Colors.grey),
+                                        Icon(Icons.repeat,
+                                            color: Colors.orange),
+                                        Icon(Icons.repeat_one,
+                                            color: Colors.orange),
+                                      ];
+                                      const cycleModes = [
+                                        AudioServiceRepeatMode.none,
+                                        AudioServiceRepeatMode.all,
+                                        AudioServiceRepeatMode.one,
+                                      ];
+                                      final index =
+                                          cycleModes.indexOf(repeatMode);
+                                      return IconButton(
+                                        icon: icons[index],
+                                        onPressed: () async {
+                                          await audioHandler.setRepeatMode(
+                                            cycleModes[(cycleModes
+                                                        .indexOf(repeatMode) +
+                                                    1) %
+                                                cycleModes.length],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  const Expanded(
+                                    child: SizedBox(),
+                                  ),
+                                  StreamBuilder<bool>(
+                                    stream: audioHandler.playbackState
+                                        .map(
+                                          (state) =>
+                                              state.shuffleMode ==
+                                              AudioServiceShuffleMode.all,
+                                        )
+                                        .distinct(),
+                                    builder: (context, snapshot) {
+                                      final shuffleModeEnabled =
+                                          snapshot.data ?? false;
+                                      return IconButton(
+                                        icon: shuffleModeEnabled
+                                            ? const Icon(Icons.shuffle,
+                                                color: Colors.orange)
+                                            : const Icon(Icons.shuffle,
+                                                color: Colors.grey),
+                                        onPressed: () async {
+                                          final enable = !shuffleModeEnabled;
+                                          await audioHandler.setShuffleMode(
+                                            enable
+                                                ? AudioServiceShuffleMode.all
+                                                : AudioServiceShuffleMode.none,
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  ScreenUtil().setWidth(20),
+                                  ScreenUtil().setHeight(5),
+                                  ScreenUtil().setWidth(20),
+                                  ScreenUtil().setHeight(10)),
+                              child: StreamBuilder<PositionData>(
+                                  stream: _positionDataStream,
+                                  builder: (context, snapshot) {
+                                    final positionData = snapshot.data ??
+                                        PositionData(
+                                          Duration.zero,
+                                          Duration.zero,
+                                          metadata.duration ?? Duration.zero,
+                                        );
+                                    return SeekBar(
+                                      duration: positionData.bufferedPosition,
+                                      position: positionData.position,
+                                      bufferedPosition:
+                                          positionData.bufferedPosition,
+                                      onChangeEnd: (newPosition) {
+                                        audioHandler.seek(newPosition);
+                                      },
+                                    );
+                                  }),
+                            ),
+                            Expanded(
+                              child: ControlButtons(audioHandler),
+                            ),
+
+                            // Up Next with blur background
+                          ],
+                        ),
+                        Positioned(
+                          child: SlidingUpPanel(
                             minHeight: ScreenUtil().setHeight(100),
-                            maxHeight: ScreenUtil().setHeight(850),
+                            maxHeight: constraints.maxHeight * 0.6,
                             margin: EdgeInsets.zero,
                             padding: EdgeInsets.zero,
                             boxShadow: const [],
-                            color: const Color.fromRGBO(0, 0, 0, 0.01),
+                            color: const Color.fromARGB(255, 245, 245, 245),
                             controller: panelController,
                             panelBuilder: (ScrollController scrollController) {
                               return ClipRRect(
@@ -313,8 +320,8 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                 ),
                                 child: BackdropFilter(
                                   filter: ui.ImageFilter.blur(
-                                    sigmaX: 8.0,
-                                    sigmaY: 8.0,
+                                    sigmaX: 1.0,
+                                    sigmaY: 1.0,
                                   ),
                                   child: ShaderMask(
                                     shaderCallback: (rect) {
@@ -325,8 +332,8 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                           Colors.black,
                                           Colors.black,
                                           Colors.black,
-                                          Colors.transparent,
-                                          Colors.transparent,
+                                          Color.fromARGB(255, 255, 255, 255),
+                                          Color.fromARGB(255, 255, 255, 255),
                                         ],
                                       ).createShader(
                                         Rect.fromLTRB(
@@ -369,7 +376,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                               child: Container(
                                 height: 50,
                                 width: constraints.maxWidth,
-                                color: Colors.transparent,
+                                color: const Color.fromARGB(255, 245, 245, 245),
                                 child: Column(
                                   children: [
                                     const SizedBox(
@@ -402,14 +409,18 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                     ),
                                     const SizedBox(
                                       height: 5,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(5),
+                                        child: Divider(),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        )
+                      ]),
                     );
                   }));
             }));
@@ -567,7 +578,6 @@ void showSliderDialog({
   required double min,
   required double max,
   String valueSuffix = '',
-  // TODO: Replace these two by ValueStream.
   required double value,
   required Stream<double> stream,
   required ValueChanged<double> onChanged,
