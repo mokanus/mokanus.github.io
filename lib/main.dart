@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:tingfm/config/config.dart';
+import 'package:tingfm/pages/broadcast/broadcast.dart';
 import 'package:tingfm/pages/home/home.dart';
 import 'package:tingfm/pages/my/my.dart';
 import 'package:tingfm/pages/player/player.dart';
@@ -14,8 +18,6 @@ import 'package:tingfm/widgets/mini_player.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Paint.enableDithering = true;
-  // await Global.init();
-
   await startService();
   runApp(const MyApp());
 }
@@ -36,6 +38,8 @@ Future<void> startService() async {
   );
   GetIt.I.registerSingleton<AudioPlayerHandler>(audioHandler);
 }
+
+getApplicationDocumentsDirectory() {}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -92,7 +96,7 @@ class _MyAppState extends State<MyApp> {
                                   controller: _pageController,
                                   children: const [
                                     HomePage(),
-                                    HomePage(),
+                                    BroadcastPage(),
                                     MyPage()
                                   ]),
                             ),

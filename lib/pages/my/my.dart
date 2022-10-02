@@ -21,9 +21,7 @@ class _MyPageState extends State<MyPage> {
         ),
         elevation: 0.2,
       ),
-      body: const Center(
-        child: CircularProgressIndicator(),
-      ),
+      body: const Center(),
     );
   }
 }
