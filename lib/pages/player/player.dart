@@ -1,13 +1,15 @@
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:tingfm/config/config.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'dart:ui' as ui;
 import 'package:tingfm/pages/player/common.dart';
 
 class PlayerPage extends StatefulWidget {
@@ -24,6 +26,7 @@ class PlayerPage extends StatefulWidget {
 
 class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
+  final PanelController panelController = PanelController();
   List<MediaItem> globalQueue = [];
 
   @override
@@ -55,7 +58,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   Future<List<MediaItem>> MockItems() async {
     List<MediaItem> globalQueue = <MediaItem>[];
 
-    for (var i = 1; i < 2; i++) {
+    for (var i = 1; i < 10; i++) {
       var num = "";
       if (i < 10) {
         num = "00$i";
@@ -133,162 +136,282 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                       },
                     ),
                   ),
-                  body: SafeArea(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(
-                                  ScreenUtil().setWidth(200),
-                                  ScreenUtil().setHeight(30),
-                                  ScreenUtil().setWidth(200),
-                                  ScreenUtil().setHeight(30)),
-                              decoration: ShapeDecoration(
-                                image: DecorationImage(
-                                  //设置背景图片
-                                  image: NetworkImage(
-                                    metadata.artUri.toString(),
-                                  ),
-                                ),
-                                //设置圆角
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadiusDirectional.circular(10)),
-                              ),
-                              height: ScreenUtil().setHeight(800),
-                              width: ScreenUtil().setWidth(800),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                  ScreenUtil().setWidth(200),
-                                  ScreenUtil().setHeight(10),
-                                  ScreenUtil().setWidth(200),
-                                  ScreenUtil().setHeight(30)),
-                              child: Text(metadata.album.toString(),
-                                  style: Theme.of(context).textTheme.headline5),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                  ScreenUtil().setWidth(200),
-                                  ScreenUtil().setHeight(5),
-                                  ScreenUtil().setWidth(200),
-                                  ScreenUtil().setHeight(60)),
-                              child: Text(metadata.title),
-                            ),
-                          ],
-                        ),
-
-                        // 控件
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              ScreenUtil().setWidth(20),
-                              ScreenUtil().setHeight(5),
-                              ScreenUtil().setWidth(20),
-                              ScreenUtil().setHeight(20)),
-                          child: Row(
+                  body: LayoutBuilder(builder: (
+                    BuildContext context,
+                    BoxConstraints constraints,
+                  ) {
+                    return SafeArea(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              StreamBuilder<AudioServiceRepeatMode>(
-                                stream: audioHandler.playbackState
-                                    .map((state) => state.repeatMode)
-                                    .distinct(),
-                                builder: (context, snapshot) {
-                                  final repeatMode = snapshot.data ??
-                                      AudioServiceRepeatMode.none;
-                                  const icons = [
-                                    Icon(Icons.repeat, color: Colors.grey),
-                                    Icon(Icons.repeat, color: Colors.orange),
-                                    Icon(Icons.repeat_one,
-                                        color: Colors.orange),
-                                  ];
-                                  const cycleModes = [
-                                    AudioServiceRepeatMode.none,
-                                    AudioServiceRepeatMode.all,
-                                    AudioServiceRepeatMode.one,
-                                  ];
-                                  final index = cycleModes.indexOf(repeatMode);
-                                  return IconButton(
-                                    icon: icons[index],
-                                    onPressed: () async {
-                                      await audioHandler.setRepeatMode(
-                                        cycleModes[
-                                            (cycleModes.indexOf(repeatMode) +
-                                                    1) %
-                                                cycleModes.length],
-                                      );
-                                    },
-                                  );
-                                },
+                              Container(
+                                margin: EdgeInsets.fromLTRB(
+                                    ScreenUtil().setWidth(200),
+                                    ScreenUtil().setHeight(30),
+                                    ScreenUtil().setWidth(200),
+                                    ScreenUtil().setHeight(30)),
+                                decoration: ShapeDecoration(
+                                  image: DecorationImage(
+                                    //设置背景图片
+                                    image: NetworkImage(
+                                      metadata.artUri.toString(),
+                                    ),
+                                  ),
+                                  //设置圆角
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadiusDirectional.circular(10)),
+                                ),
+                                height: ScreenUtil().setHeight(600),
+                                width: ScreenUtil().setWidth(600),
                               ),
-                              const Expanded(
-                                child: SizedBox(),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    ScreenUtil().setWidth(200),
+                                    ScreenUtil().setHeight(10),
+                                    ScreenUtil().setWidth(200),
+                                    ScreenUtil().setHeight(20)),
+                                child: Text(metadata.album.toString(),
+                                    style:
+                                        Theme.of(context).textTheme.headline5),
                               ),
-                              StreamBuilder<bool>(
-                                stream: audioHandler.playbackState
-                                    .map(
-                                      (state) =>
-                                          state.shuffleMode ==
-                                          AudioServiceShuffleMode.all,
-                                    )
-                                    .distinct(),
-                                builder: (context, snapshot) {
-                                  final shuffleModeEnabled =
-                                      snapshot.data ?? false;
-                                  return IconButton(
-                                    icon: shuffleModeEnabled
-                                        ? const Icon(Icons.shuffle,
-                                            color: Colors.orange)
-                                        : const Icon(Icons.shuffle,
-                                            color: Colors.grey),
-                                    onPressed: () async {
-                                      final enable = !shuffleModeEnabled;
-                                      await audioHandler.setShuffleMode(
-                                        enable
-                                            ? AudioServiceShuffleMode.all
-                                            : AudioServiceShuffleMode.none,
-                                      );
-                                    },
-                                  );
-                                },
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    ScreenUtil().setWidth(200),
+                                    ScreenUtil().setHeight(5),
+                                    ScreenUtil().setWidth(200),
+                                    ScreenUtil().setHeight(10)),
+                                child: Text(metadata.title),
                               ),
                             ],
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              ScreenUtil().setWidth(20),
-                              ScreenUtil().setHeight(5),
-                              ScreenUtil().setWidth(20),
-                              ScreenUtil().setHeight(20)),
-                          child: StreamBuilder<PositionData>(
-                              stream: _positionDataStream,
-                              builder: (context, snapshot) {
-                                final positionData = snapshot.data ??
-                                    PositionData(
-                                      Duration.zero,
-                                      Duration.zero,
-                                      metadata.duration ?? Duration.zero,
+
+                          // 控件
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                ScreenUtil().setWidth(20),
+                                ScreenUtil().setHeight(5),
+                                ScreenUtil().setWidth(20),
+                                ScreenUtil().setHeight(10)),
+                            child: Row(
+                              children: [
+                                StreamBuilder<AudioServiceRepeatMode>(
+                                  stream: audioHandler.playbackState
+                                      .map((state) => state.repeatMode)
+                                      .distinct(),
+                                  builder: (context, snapshot) {
+                                    final repeatMode = snapshot.data ??
+                                        AudioServiceRepeatMode.none;
+                                    const icons = [
+                                      Icon(Icons.repeat, color: Colors.grey),
+                                      Icon(Icons.repeat, color: Colors.orange),
+                                      Icon(Icons.repeat_one,
+                                          color: Colors.orange),
+                                    ];
+                                    const cycleModes = [
+                                      AudioServiceRepeatMode.none,
+                                      AudioServiceRepeatMode.all,
+                                      AudioServiceRepeatMode.one,
+                                    ];
+                                    final index =
+                                        cycleModes.indexOf(repeatMode);
+                                    return IconButton(
+                                      icon: icons[index],
+                                      onPressed: () async {
+                                        await audioHandler.setRepeatMode(
+                                          cycleModes[
+                                              (cycleModes.indexOf(repeatMode) +
+                                                      1) %
+                                                  cycleModes.length],
+                                        );
+                                      },
                                     );
-                                return SeekBar(
-                                  duration: positionData.bufferedPosition,
-                                  position: positionData.position,
-                                  bufferedPosition:
-                                      positionData.bufferedPosition,
-                                  onChangeEnd: (newPosition) {
-                                    audioHandler.seek(newPosition);
                                   },
-                                );
-                              }),
-                        ),
-                        Expanded(
-                          child: ControlButtons(audioHandler),
-                        ),
-                      ],
-                    ),
-                  ));
+                                ),
+                                const Expanded(
+                                  child: SizedBox(),
+                                ),
+                                StreamBuilder<bool>(
+                                  stream: audioHandler.playbackState
+                                      .map(
+                                        (state) =>
+                                            state.shuffleMode ==
+                                            AudioServiceShuffleMode.all,
+                                      )
+                                      .distinct(),
+                                  builder: (context, snapshot) {
+                                    final shuffleModeEnabled =
+                                        snapshot.data ?? false;
+                                    return IconButton(
+                                      icon: shuffleModeEnabled
+                                          ? const Icon(Icons.shuffle,
+                                              color: Colors.orange)
+                                          : const Icon(Icons.shuffle,
+                                              color: Colors.grey),
+                                      onPressed: () async {
+                                        final enable = !shuffleModeEnabled;
+                                        await audioHandler.setShuffleMode(
+                                          enable
+                                              ? AudioServiceShuffleMode.all
+                                              : AudioServiceShuffleMode.none,
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                ScreenUtil().setWidth(20),
+                                ScreenUtil().setHeight(5),
+                                ScreenUtil().setWidth(20),
+                                ScreenUtil().setHeight(10)),
+                            child: StreamBuilder<PositionData>(
+                                stream: _positionDataStream,
+                                builder: (context, snapshot) {
+                                  final positionData = snapshot.data ??
+                                      PositionData(
+                                        Duration.zero,
+                                        Duration.zero,
+                                        metadata.duration ?? Duration.zero,
+                                      );
+                                  return SeekBar(
+                                    duration: positionData.bufferedPosition,
+                                    position: positionData.position,
+                                    bufferedPosition:
+                                        positionData.bufferedPosition,
+                                    onChangeEnd: (newPosition) {
+                                      audioHandler.seek(newPosition);
+                                    },
+                                  );
+                                }),
+                          ),
+                          Expanded(
+                            child: ControlButtons(audioHandler),
+                          ),
+
+                          // Up Next with blur background
+                          SlidingUpPanel(
+                            minHeight: ScreenUtil().setHeight(100),
+                            maxHeight: ScreenUtil().setHeight(850),
+                            margin: EdgeInsets.zero,
+                            padding: EdgeInsets.zero,
+                            boxShadow: const [],
+                            color: const Color.fromRGBO(0, 0, 0, 0.01),
+                            controller: panelController,
+                            panelBuilder: (ScrollController scrollController) {
+                              return ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10.0),
+                                  topRight: Radius.circular(10.0),
+                                ),
+                                child: BackdropFilter(
+                                  filter: ui.ImageFilter.blur(
+                                    sigmaX: 8.0,
+                                    sigmaY: 8.0,
+                                  ),
+                                  child: ShaderMask(
+                                    shaderCallback: (rect) {
+                                      return const LinearGradient(
+                                        end: Alignment.topCenter,
+                                        begin: Alignment.center,
+                                        colors: [
+                                          Colors.black,
+                                          Colors.black,
+                                          Colors.black,
+                                          Colors.transparent,
+                                          Colors.transparent,
+                                        ],
+                                      ).createShader(
+                                        Rect.fromLTRB(
+                                          0,
+                                          0,
+                                          rect.width,
+                                          rect.height,
+                                        ),
+                                      );
+                                    },
+                                    blendMode: BlendMode.dstIn,
+                                    child: NowPlayingStream(
+                                      head: true,
+                                      headHeight: 50,
+                                      audioHandler: audioHandler,
+                                      scrollController: scrollController,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            header: GestureDetector(
+                              onTap: () {
+                                if (panelController.isPanelOpen) {
+                                  panelController.close();
+                                } else {
+                                  if (panelController.panelPosition > 0.9) {
+                                    panelController.close();
+                                  } else {
+                                    panelController.open();
+                                  }
+                                }
+                              },
+                              onVerticalDragUpdate:
+                                  (DragUpdateDetails details) {
+                                if (details.delta.dy > 0.0) {
+                                  panelController.animatePanelToPosition(0.0);
+                                }
+                              },
+                              child: Container(
+                                height: 50,
+                                width: constraints.maxWidth,
+                                color: Colors.transparent,
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Center(
+                                      child: Container(
+                                        width: 50,
+                                        height: 5,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              180, 0, 0, 0),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                    ),
+                                    const Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          "弹出列表",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                            color: Color.fromARGB(100, 0, 0, 0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }));
             }));
   }
 }
@@ -387,7 +510,7 @@ class ControlButtons extends StatelessWidget {
             onPressed: () {
               showSliderDialog(
                 context: context,
-                title: "Adjust speed",
+                title: "播放速度",
                 divisions: 10,
                 min: 0.5,
                 max: 1.5,
@@ -480,3 +603,131 @@ void showSliderDialog({
 }
 
 T? ambiguate<T>(T? value) => value;
+
+class NowPlayingStream extends StatelessWidget {
+  final AudioPlayerHandler audioHandler;
+  final ScrollController? scrollController;
+  final bool head;
+  final double headHeight;
+
+  const NowPlayingStream({
+    super.key,
+    required this.audioHandler,
+    this.scrollController,
+    this.head = false,
+    this.headHeight = 50,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QueueState>(
+      stream: audioHandler.queueState,
+      builder: (context, snapshot) {
+        final queueState = snapshot.data ?? QueueState.empty;
+        final queue = queueState.queue;
+
+        return ReorderableListView.builder(
+          header: SizedBox(
+            height: head ? headHeight : 0,
+          ),
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex--;
+            }
+            audioHandler.moveQueueItem(oldIndex, newIndex);
+          },
+          scrollController: scrollController,
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 10),
+          shrinkWrap: true,
+          itemCount: queue.length,
+          itemBuilder: (context, index) {
+            return Dismissible(
+              key: ValueKey(queue[index].id),
+              direction: index == queueState.queueIndex
+                  ? DismissDirection.none
+                  : DismissDirection.horizontal,
+              onDismissed: (dir) {
+                audioHandler.removeQueueItemAt(index);
+              },
+              child: ListTileTheme(
+                selectedColor: Theme.of(context).colorScheme.secondary,
+                child: ListTile(
+                  contentPadding:
+                      const EdgeInsets.only(left: 16.0, right: 10.0),
+                  selected: index == queueState.queueIndex,
+                  trailing: index == queueState.queueIndex
+                      ? IconButton(
+                          icon: const Icon(
+                            Icons.bar_chart_rounded,
+                          ),
+                          tooltip: "播放中",
+                          onPressed: () {},
+                        )
+                      : const SizedBox(),
+                  leading: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7.0),
+                        ),
+                        clipBehavior: Clip.antiAlias,
+                        child: (queue[index].artUri == null)
+                            ? const SizedBox.square(
+                                dimension: 50,
+                                child: Image(
+                                  image: AssetImage('assets/images/cover.jpg'),
+                                ),
+                              )
+                            : SizedBox.square(
+                                dimension: 50,
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  errorWidget: (BuildContext context, _, __) =>
+                                      const Image(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(
+                                      'assets/images/cover.jpg',
+                                    ),
+                                  ),
+                                  placeholder: (BuildContext context, _) =>
+                                      const Image(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(
+                                      'assets/images/cover.jpg',
+                                    ),
+                                  ),
+                                  imageUrl: queue[index].artUri.toString(),
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
+                  title: Text(
+                    queue[index].title,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: index == queueState.queueIndex
+                          ? FontWeight.w600
+                          : FontWeight.normal,
+                    ),
+                  ),
+                  subtitle: Text(
+                    queue[index].artist!,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  onTap: () {
+                    audioHandler.skipToQueueItem(index);
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}

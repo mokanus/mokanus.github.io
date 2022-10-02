@@ -63,6 +63,8 @@ flutter:
   assets:
     - assets/images/round.png
     - assets/images/milk.png
+    - assets/images/album.png
+    - assets/images/cover.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
