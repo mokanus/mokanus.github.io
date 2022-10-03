@@ -149,28 +149,75 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(
-                                      ScreenUtil().setWidth(200),
-                                      ScreenUtil().setHeight(30),
-                                      ScreenUtil().setWidth(200),
-                                      ScreenUtil().setHeight(30)),
-                                  decoration: ShapeDecoration(
-                                    image: DecorationImage(
-                                      //设置背景图片
-                                      image: NetworkImage(
-                                        metadata.artUri.toString(),
-                                      ),
-                                    ),
-                                    //设置圆角
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadiusDirectional.circular(
-                                                10)),
+                                Card(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(7.0),
                                   ),
-                                  height: ScreenUtil().setHeight(800),
-                                  width: ScreenUtil().setWidth(800),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: SizedBox.square(
+                                    dimension: constraints.maxWidth * 0.8,
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.fill,
+                                      errorWidget:
+                                          (BuildContext context, _, __) =>
+                                              const Image(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage(
+                                          'assets/images/cover.jpg',
+                                        ),
+                                      ),
+                                      placeholder: (BuildContext context, _) =>
+                                          const Image(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage(
+                                          'assets/images/cover.jpg',
+                                        ),
+                                      ),
+                                      imageUrl: metadata.artUri.toString(),
+                                    ),
+                                  ),
                                 ),
+
+                                // Container(
+                                //   margin: EdgeInsets.fromLTRB(
+                                //       ScreenUtil().setWidth(200),
+                                //       ScreenUtil().setHeight(30),
+                                //       ScreenUtil().setWidth(200),
+                                //       ScreenUtil().setHeight(30)),
+                                //   decoration: ShapeDecoration(
+                                //     image: DecorationImage(
+                                //       //设置背景图片
+                                //       image: CachedNetworkImage(
+                                //         fit: BoxFit.cover,
+                                //         errorWidget:
+                                //             (BuildContext context, _, __) =>
+                                //                 const Image(
+                                //           fit: BoxFit.cover,
+                                //           image: AssetImage(
+                                //             'assets/images/cover.jpg',
+                                //           ),
+                                //         ),
+                                //         placeholder:
+                                //             (BuildContext context, _) =>
+                                //                 const Image(
+                                //           fit: BoxFit.cover,
+                                //           image: AssetImage(
+                                //             'assets/images/cover.jpg',
+                                //           ),
+                                //         ),
+                                //         imageUrl: metadata.artUri.toString(),
+                                //       ),
+                                //     ),
+                                //     //设置圆角
+                                //     shape: RoundedRectangleBorder(
+                                //         borderRadius:
+                                //             BorderRadiusDirectional.circular(
+                                //                 10)),
+                                //   ),
+                                //   height: ScreenUtil().setHeight(800),
+                                //   width: ScreenUtil().setWidth(800),
+                                // ),
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(
                                       ScreenUtil().setWidth(200),
@@ -680,7 +727,7 @@ class NowPlayingStream extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Card(
-                        elevation: 5,
+                        elevation: 0.1,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7.0),
                         ),
