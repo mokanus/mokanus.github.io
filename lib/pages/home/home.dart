@@ -73,25 +73,27 @@ class _HomePageState extends State<HomePage>
           indicatorColor: const Color.fromARGB(255, 234, 78, 94),
           indicatorWeight: 3.0,
           controller: _tabController,
-          tabs: [
+          labelColor: Colors.black,
+          labelStyle: TextStyle(
+            color: Colors.black,
+            fontSize: ScreenUtil().setSp(52),
+            fontWeight: FontWeight.bold,
+          ),
+          unselectedLabelColor: Colors.grey,
+          unselectedLabelStyle: TextStyle(
+            color: Colors.grey,
+            fontSize: ScreenUtil().setSp(52),
+            fontWeight: FontWeight.bold,
+          ),
+          tabs: const [
             Tab(
               child: Text(
                 "推荐",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: ScreenUtil().setSp(52),
-                  fontWeight: FontWeight.bold,
-                ),
               ),
             ),
             Tab(
               child: Text(
                 "分类",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: ScreenUtil().setSp(52),
-                  fontWeight: FontWeight.bold,
-                ),
               ),
             ),
           ],
@@ -99,7 +101,7 @@ class _HomePageState extends State<HomePage>
       ),
       body: TabBarView(
           controller: _tabController,
-          children: const [RecommendPage(), ClassifyPage()]),
+          children: const [RecommendView(), ClassifyView()]),
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tingfm/pages/player/player.dart';
+import 'package:tingfm/services/audio_service.dart';
 
 class MiniPlayer extends StatefulWidget {
   const MiniPlayer({super.key});

@@ -11,6 +11,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'dart:ui' as ui;
 import 'package:tingfm/pages/player/common.dart';
+import 'package:tingfm/services/audio_service.dart';
 
 class PlayerPage extends StatefulWidget {
   final bool fromMiniplayer;
@@ -156,7 +157,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                   ),
                                   clipBehavior: Clip.antiAlias,
                                   child: SizedBox.square(
-                                    dimension: constraints.maxWidth * 0.8,
+                                    dimension: constraints.maxWidth * 0.7,
                                     child: CachedNetworkImage(
                                       fit: BoxFit.fill,
                                       errorWidget:
@@ -178,46 +179,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                     ),
                                   ),
                                 ),
-
-                                // Container(
-                                //   margin: EdgeInsets.fromLTRB(
-                                //       ScreenUtil().setWidth(200),
-                                //       ScreenUtil().setHeight(30),
-                                //       ScreenUtil().setWidth(200),
-                                //       ScreenUtil().setHeight(30)),
-                                //   decoration: ShapeDecoration(
-                                //     image: DecorationImage(
-                                //       //设置背景图片
-                                //       image: CachedNetworkImage(
-                                //         fit: BoxFit.cover,
-                                //         errorWidget:
-                                //             (BuildContext context, _, __) =>
-                                //                 const Image(
-                                //           fit: BoxFit.cover,
-                                //           image: AssetImage(
-                                //             'assets/images/cover.jpg',
-                                //           ),
-                                //         ),
-                                //         placeholder:
-                                //             (BuildContext context, _) =>
-                                //                 const Image(
-                                //           fit: BoxFit.cover,
-                                //           image: AssetImage(
-                                //             'assets/images/cover.jpg',
-                                //           ),
-                                //         ),
-                                //         imageUrl: metadata.artUri.toString(),
-                                //       ),
-                                //     ),
-                                //     //设置圆角
-                                //     shape: RoundedRectangleBorder(
-                                //         borderRadius:
-                                //             BorderRadiusDirectional.circular(
-                                //                 10)),
-                                //   ),
-                                //   height: ScreenUtil().setHeight(800),
-                                //   width: ScreenUtil().setWidth(800),
-                                // ),
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(
                                       ScreenUtil().setWidth(200),
@@ -248,6 +209,8 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                   ScreenUtil().setWidth(20),
                                   ScreenUtil().setHeight(10)),
                               child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   StreamBuilder<AudioServiceRepeatMode>(
                                     stream: audioHandler.playbackState
@@ -283,9 +246,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                       );
                                     },
                                   ),
-                                  const Expanded(
-                                    child: SizedBox(),
-                                  ),
                                   StreamBuilder<bool>(
                                     stream: audioHandler.playbackState
                                         .map(
@@ -311,6 +271,56 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                                 : AudioServiceShuffleMode.none,
                                           );
                                         },
+                                      );
+                                    },
+                                  ),
+                                  StreamBuilder<double>(
+                                    stream: audioHandler.speed,
+                                    builder: (context, snapshot) => IconButton(
+                                      icon: Stack(
+                                          clipBehavior: Clip.none,
+                                          children: [
+                                            Positioned(
+                                              top: -8.0,
+                                              right: -8.0,
+                                              child: Text(
+                                                "${snapshot.data?.toStringAsFixed(1)}x",
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 8,
+                                                ),
+                                              ),
+                                            ),
+                                            const Positioned(
+                                              child: Icon(Icons.speed_rounded),
+                                            ),
+                                          ]),
+                                      onPressed: () {
+                                        showSliderDialog(
+                                          context: context,
+                                          title: "播放速度",
+                                          divisions: 3,
+                                          min: 0.5,
+                                          max: 2.0,
+                                          value: audioHandler.speed.value,
+                                          stream: audioHandler.speed,
+                                          onChanged: audioHandler.setSpeed,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.timer),
+                                    onPressed: () {
+                                      showSliderDialog(
+                                        context: context,
+                                        title: "定时关闭",
+                                        divisions: 10,
+                                        min: 0.0,
+                                        max: 1.0,
+                                        value: audioHandler.volume.value,
+                                        stream: audioHandler.volume,
+                                        onChanged: audioHandler.setVolume,
                                       );
                                     },
                                   ),
@@ -344,7 +354,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                   }),
                             ),
                             Expanded(
-                              child: ControlButtons(audioHandler),
+                              child: PlayerContros(audioHandler),
                             ),
 
                             // Up Next with blur background
@@ -474,37 +484,26 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   }
 }
 
-class ControlButtons extends StatelessWidget {
+// 播放暂停 - 上下一曲
+class PlayerContros extends StatelessWidget {
   final AudioPlayerHandler audioHandler;
 
-  const ControlButtons(this.audioHandler, {Key? key}) : super(key: key);
+  const PlayerContros(this.audioHandler, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        IconButton(
-          icon: const Icon(Icons.volume_up_rounded),
-          onPressed: () {
-            showSliderDialog(
-              context: context,
-              title: "调整音量",
-              divisions: 10,
-              min: 0.0,
-              max: 1.0,
-              value: audioHandler.volume.value,
-              stream: audioHandler.volume,
-              onChanged: audioHandler.setVolume,
-            );
-          },
-        ),
         StreamBuilder<QueueState?>(
             stream: audioHandler.queueState,
             builder: (context, snapshot) {
               final queueState = snapshot.data;
               return IconButton(
-                icon: const Icon(Icons.skip_previous_rounded),
+                icon: const Icon(
+                  Icons.skip_previous_rounded,
+                  size: 32,
+                ),
                 onPressed: queueState?.hasPrevious ?? true
                     ? audioHandler.skipToPrevious
                     : null,
@@ -531,19 +530,19 @@ class ControlButtons extends StatelessWidget {
             } else if (playing != true) {
               return IconButton(
                 icon: const Icon(Icons.play_circle_fill_rounded),
-                iconSize: 64.0,
+                iconSize: 90.0,
                 onPressed: audioHandler.play,
               );
             } else if (processingState != ProcessingState.completed) {
               return IconButton(
                 icon: const Icon(Icons.pause_circle_rounded),
-                iconSize: 64.0,
+                iconSize: 90.0,
                 onPressed: audioHandler.pause,
               );
             } else {
               return IconButton(
                 icon: const Icon(Icons.replay),
-                iconSize: 64.0,
+                iconSize: 90.0,
                 onPressed: () => audioHandler.pause,
               );
             }
@@ -554,68 +553,18 @@ class ControlButtons extends StatelessWidget {
             builder: (context, snapshot) {
               final queueState = snapshot.data;
               return IconButton(
-                icon: const Icon(Icons.skip_next_rounded),
+                icon: const Icon(
+                  Icons.skip_next_rounded,
+                  size: 32,
+                ),
                 onPressed: queueState?.hasNext ?? true
                     ? audioHandler.skipToNext
                     : null,
               );
             }),
-        StreamBuilder<double>(
-          stream: audioHandler.speed,
-          builder: (context, snapshot) => IconButton(
-            icon: Text("${snapshot.data?.toStringAsFixed(1)}x",
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            onPressed: () {
-              showSliderDialog(
-                context: context,
-                title: "播放速度",
-                divisions: 10,
-                min: 0.5,
-                max: 1.5,
-                value: audioHandler.speed.value,
-                stream: audioHandler.speed,
-                onChanged: audioHandler.setSpeed,
-              );
-            },
-          ),
-        ),
       ],
     );
   }
-}
-
-abstract class AudioPlayerHandler implements AudioHandler {
-  Stream<QueueState> get queueState;
-  Future<void> moveQueueItem(int currentIndex, int newIndex);
-  ValueStream<double> get volume;
-  Future<void> setVolume(double volume);
-  ValueStream<double> get speed;
-}
-
-class QueueState {
-  static const QueueState empty =
-      QueueState([], 0, [], AudioServiceRepeatMode.none);
-
-  final List<MediaItem> queue;
-  final int? queueIndex;
-  final List<int>? shuffleIndices;
-  final AudioServiceRepeatMode repeatMode;
-
-  const QueueState(
-    this.queue,
-    this.queueIndex,
-    this.shuffleIndices,
-    this.repeatMode,
-  );
-
-  bool get hasPrevious =>
-      repeatMode != AudioServiceRepeatMode.none || (queueIndex ?? 0) > 0;
-  bool get hasNext =>
-      repeatMode != AudioServiceRepeatMode.none ||
-      (queueIndex ?? 0) + 1 < queue.length;
-
-  List<int> get indices =>
-      shuffleIndices ?? List.generate(queue.length, (i) => i);
 }
 
 void showSliderDialog({

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tingfm/pages/home/album_list.dart';
 
-class ClassifyView extends StatefulWidget {
-  const ClassifyView({super.key});
+class BroadedView extends StatefulWidget {
+  const BroadedView({super.key});
 
   @override
-  State<ClassifyView> createState() => _ClassifyViewState();
+  State<BroadedView> createState() => _BroadedViewState();
 }
 
-class _ClassifyViewState extends State<ClassifyView> {
+class _BroadedViewState extends State<BroadedView> {
   final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -52,12 +52,12 @@ class _ClassifyViewState extends State<ClassifyView> {
                           ),
                           //设置边距
                           margin: EdgeInsets.fromLTRB(
-                              ScreenUtil().setWidth(20),
-                              ScreenUtil().setHeight(20),
                               ScreenUtil().setWidth(30),
-                              ScreenUtil().setHeight(20)),
-                          height: ScreenUtil().setHeight(160),
-                          width: ScreenUtil().setWidth(160),
+                              ScreenUtil().setHeight(30),
+                              ScreenUtil().setWidth(30),
+                              ScreenUtil().setHeight(30)),
+                          height: ScreenUtil().setHeight(270),
+                          width: ScreenUtil().setWidth(270),
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -95,69 +95,10 @@ class _ClassifyViewState extends State<ClassifyView> {
                   },
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: Card(
-                  elevation: 0.2,
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: ShapeDecoration(
-                          image: const DecorationImage(
-                            //设置背景图片
-                            image: AssetImage(
-                              "assets/images/milk.png",
-                            ),
-                          ),
-                          //设置圆角
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadiusDirectional.circular(5)),
-                        ),
-                        //设置边距
-                        margin: EdgeInsets.fromLTRB(
-                            ScreenUtil().setWidth(20),
-                            ScreenUtil().setHeight(20),
-                            ScreenUtil().setWidth(30),
-                            ScreenUtil().setHeight(20)),
-                        height: ScreenUtil().setHeight(160),
-                        width: ScreenUtil().setWidth(160),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                            child: Text(
-                              "相声评书",
-                              style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(40),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Text(
-                            "共300个专辑",
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(30),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ],
           ),
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
   }
 }
