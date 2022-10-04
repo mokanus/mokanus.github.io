@@ -48,6 +48,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                             opaque: false,
                             pageBuilder: (_, __, ___) => const PlayerPage(
                               fromMiniplayer: true,
+                              album: "隋唐演义",
                             ),
                           ),
                         );

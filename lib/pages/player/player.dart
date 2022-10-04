@@ -15,10 +15,12 @@ import 'package:tingfm/services/audio_service.dart';
 
 class PlayerPage extends StatefulWidget {
   final bool fromMiniplayer;
+  final String album;
 
   const PlayerPage({
     super.key,
     required this.fromMiniplayer,
+    required this.album,
   });
 
   @override
@@ -29,7 +31,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
   final PanelController panelController = PanelController();
   List<MediaItem> globalQueue = [];
-
+  var isPanelOpened = false;
   @override
   void initState() {
     super.initState();
@@ -74,7 +76,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
           title: "隋唐演义$num集",
           album: "隋唐演义",
           artist: "田连元",
-          duration: const Duration(minutes: 23, seconds: 20),
+          duration: const Duration(seconds: 1800),
           artUri: Uri.parse(
               "https://www.chiyustudio.com:81/tingfm/隋唐演义·田连元|田连元/隋唐演义·田连元.png"),
           extras: {
@@ -90,22 +92,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
     ambiguate(WidgetsBinding.instance)!.removeObserver(this);
     super.dispose();
   }
-
-  Stream<PositionData> get _positionDataStream =>
-      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-        AudioService.position,
-        _bufferedPositionStream,
-        _durationStream,
-        (position, bufferedPosition, duration) =>
-            PositionData(position, bufferedPosition, duration ?? Duration.zero),
-      );
-
-  Stream<Duration> get _bufferedPositionStream => audioHandler.playbackState
-      .map((state) => state.bufferedPosition)
-      .distinct();
-
-  Stream<Duration?> get _durationStream =>
-      audioHandler.mediaItem.map((item) => item?.duration).distinct();
 
   @override
   Widget build(BuildContext context) {
@@ -342,6 +328,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                           Duration.zero,
                                           metadata.duration ?? Duration.zero,
                                         );
+
                                     return SeekBar(
                                       duration: positionData.bufferedPosition,
                                       position: positionData.position,
@@ -363,10 +350,12 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                         Positioned(
                           child: SlidingUpPanel(
                             minHeight: ScreenUtil().setHeight(100),
-                            maxHeight: constraints.maxHeight * 0.6,
+                            maxHeight: constraints.maxHeight * 0.75,
                             margin: EdgeInsets.zero,
                             padding: EdgeInsets.zero,
+                            backdropEnabled: true,
                             boxShadow: const [],
+                            backdropOpacity: 0.01,
                             color: const Color.fromARGB(255, 245, 245, 245),
                             controller: panelController,
                             panelBuilder: (ScrollController scrollController) {
@@ -451,12 +440,12 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                         ),
                                       ),
                                     ),
-                                    const Expanded(
+                                    Expanded(
                                       child: Center(
                                         child: Text(
-                                          "弹出列表",
+                                          isPanelOpened ? "收缩列表" : "弹出列表",
                                           textAlign: TextAlign.center,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 14,
                                             color: Color.fromARGB(100, 0, 0, 0),
@@ -475,6 +464,16 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                 ),
                               ),
                             ),
+                            onPanelOpened: () {
+                              setState(() {
+                                isPanelOpened = true;
+                              });
+                            },
+                            onPanelClosed: () {
+                              setState(() {
+                                isPanelOpened = false;
+                              });
+                            },
                           ),
                         )
                       ]),
@@ -482,6 +481,22 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                   }));
             }));
   }
+
+  Stream<PositionData> get _positionDataStream =>
+      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+        AudioService.position,
+        _bufferedPositionStream,
+        _durationStream,
+        (position, bufferedPosition, duration) =>
+            PositionData(position, bufferedPosition, duration ?? Duration.zero),
+      );
+
+  Stream<Duration> get _bufferedPositionStream => audioHandler.playbackState
+      .map((state) => state.bufferedPosition)
+      .distinct();
+
+  Stream<Duration?> get _durationStream =>
+      audioHandler.mediaItem.map((item) => item?.duration).distinct();
 }
 
 // 播放暂停 - 上下一曲
@@ -500,6 +515,7 @@ class PlayerContros extends StatelessWidget {
             builder: (context, snapshot) {
               final queueState = snapshot.data;
               return IconButton(
+                splashRadius: 1,
                 icon: const Icon(
                   Icons.skip_previous_rounded,
                   size: 32,
@@ -529,18 +545,21 @@ class PlayerContros extends StatelessWidget {
               );
             } else if (playing != true) {
               return IconButton(
+                splashRadius: 1,
                 icon: const Icon(Icons.play_circle_fill_rounded),
                 iconSize: 90.0,
                 onPressed: audioHandler.play,
               );
             } else if (processingState != ProcessingState.completed) {
               return IconButton(
+                splashRadius: 1,
                 icon: const Icon(Icons.pause_circle_rounded),
                 iconSize: 90.0,
                 onPressed: audioHandler.pause,
               );
             } else {
               return IconButton(
+                splashRadius: 1,
                 icon: const Icon(Icons.replay),
                 iconSize: 90.0,
                 onPressed: () => audioHandler.pause,
@@ -553,6 +572,7 @@ class PlayerContros extends StatelessWidget {
             builder: (context, snapshot) {
               final queueState = snapshot.data;
               return IconButton(
+                splashRadius: 1,
                 icon: const Icon(
                   Icons.skip_next_rounded,
                   size: 32,

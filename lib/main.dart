@@ -10,12 +10,23 @@ import 'package:tingfm/pages/my/my.dart';
 import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/widgets/custom_physics.dart';
 import 'package:tingfm/widgets/mini_player.dart';
+import 'package:provider/provider.dart';
+
+import 'providers/app_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Paint.enableDithering = true;
   await startService();
-  runApp(const MyApp());
+  runApp(
+    //做灰度处理
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AppProvider()),
+      ],
+      child: const App(),
+    ),
+  );
 }
 
 Future<void> startService() async {
@@ -37,14 +48,14 @@ Future<void> startService() async {
 
 getApplicationDocumentsDirectory() {}
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class App extends StatefulWidget {
+  const App({super.key});
 
   @override
-  State<StatefulWidget> createState() => _MyAppState();
+  State<StatefulWidget> createState() => _AppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _AppState extends State<App> {
   final ScrollController _scrollController = ScrollController();
   final PageController _pageController = PageController();
   final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(0);
