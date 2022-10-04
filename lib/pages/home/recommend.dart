@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tingfm/pages/player/player.dart';
+import 'package:tingfm/utils/http.dart';
 
 class RecommendView extends StatefulWidget {
   const RecommendView({super.key});
@@ -89,16 +90,23 @@ class _RecommendViewState extends State<RecommendView> {
                         ),
                       ],
                     ),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          opaque: false,
-                          pageBuilder: (_, __, ___) => const PlayerPage(
-                            fromMiniplayer: false,
-                            album: "隋唐演义",
-                          ),
-                        ),
-                      );
+                    onTap: () async {
+                      Map<String, dynamic> parameters = {
+                        "album_name": "三国演义·袁阔成",
+                      };
+                      var data = await HttpUtil().post(
+                          "http://localhost:80/api/v1/albums/albumInfo",
+                          parameters: parameters);
+                      print(data);
+                      // Navigator.of(context).push(
+                      //   PageRouteBuilder(
+                      //     opaque: false,
+                      //     pageBuilder: (_, __, ___) => const PlayerPage(
+                      //       fromMiniplayer: false,
+                      //       album: "隋唐演义",
+                      //     ),
+                      //   ),
+                      // );
                     },
                   ),
                 ),

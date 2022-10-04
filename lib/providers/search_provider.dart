@@ -25,11 +25,11 @@ class SearchProvider with ChangeNotifier {
       };
 
       var searchAlbumnResponseEntity = await SearchAPI.searchAlbums(
-        url: APIRouter.getSearchAlbum,
+        url: APIRouter.Search,
         params: params,
         context: context,
       );
-
+      print(searchAlbumnResponseEntity);
       if (searchAlbumnResponseEntity != null &&
           searchAlbumnResponseEntity.listItemAlbums.isNotEmpty) {
         searchedAlbumnList.addAll(searchAlbumnResponseEntity.listItemAlbums);

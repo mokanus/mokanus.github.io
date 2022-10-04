@@ -12,7 +12,7 @@ class HttpUtil {
   getHeader() {
     return {
       'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'multipart/form-data',
+      'Content-Type': 'application/json; charset=utf-8',
       'Authorization': "*",
       'User-Aagent': "4.1.0;android;6.0.1;default;A001",
       "HZUID": "2",

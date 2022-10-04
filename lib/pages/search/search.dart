@@ -25,7 +25,6 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _buildBody() {
     return Scaffold(
-      backgroundColor: Colors.black45.withOpacity(0.2),
       body: Stack(
         children: [
           buildFloatingSearchBar(),
@@ -39,7 +38,7 @@ class _SearchPageState extends State<SearchPage> {
         MediaQuery.of(context).orientation == Orientation.portrait;
 
     return FloatingSearchBar(
-      hint: '搜索 平凡的世界',
+      hint: '搜索 隋唐演义',
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
       transitionDuration: const Duration(milliseconds: 500),
       transitionCurve: Curves.easeInOut,
@@ -48,6 +47,7 @@ class _SearchPageState extends State<SearchPage> {
       openAxisAlignment: 0.0,
       openWidth: isPortrait ? 600 : 500,
       debounceDelay: const Duration(milliseconds: 500),
+      elevation: 1.0,
       onQueryChanged: (query) {
         query = query.trim();
         if (query.isNotEmpty) {
@@ -57,14 +57,11 @@ class _SearchPageState extends State<SearchPage> {
       },
       transition: CircularFloatingSearchBarTransition(),
       actions: [
-        FloatingSearchBarAction(
+        const FloatingSearchBarAction(
           showIfOpened: false,
-          child: CircularButton(
-            icon: const Icon(
-              Icons.multitrack_audio,
-              color: Colors.red,
-            ),
-            onPressed: () {},
+          child: Icon(
+            Icons.multitrack_audio,
+            color: Colors.red,
           ),
         ),
         FloatingSearchBarAction.searchToClear(
@@ -79,7 +76,7 @@ class _SearchPageState extends State<SearchPage> {
               borderRadius: BorderRadius.circular(8),
               child: Material(
                 color: Theme.of(context).cardColor,
-                elevation: 8.0,
+                elevation: 2.0,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: searchProvider.searchedAlbumnList.map((album) {
