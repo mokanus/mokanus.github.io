@@ -6,4 +6,5 @@ class APIRouter {
 
   /// 搜索API
   static const String Search = 'http://localhost:80/api/v1/album/search';
+  static const String Recommend = 'http://localhost:80/api/v1/album/recommend';
 }
