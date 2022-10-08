@@ -5,7 +5,7 @@ import 'package:tingfm/entities/list_item_albums.dart';
 import 'package:tingfm/utils/http.dart';
 
 class RecommendAPI {
-  static Future<ListItemAlbumsEntity?> recommendAlbums({
+  static Future<Albums?> recommendAlbums({
     required BuildContext context,
     required String url,
     dynamic params,
@@ -15,8 +15,12 @@ class RecommendAPI {
         url,
         parameters: params,
       );
-      return ListItemAlbumsEntity.fromJson(response);
+      print("----->1");
+      print(response);
+      return Albums.fromRawJson(response.toString());
     } catch (e) {
+      print("----->3");
+      print(e);
       return null;
     }
   }

@@ -91,7 +91,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget albumnItemWidget(ListItemAlbum album) {
+  Widget albumnItemWidget(Datum album) {
     return GestureDetector(
       onTap: () => {
         // 灰度处理的上下文

@@ -7,7 +7,6 @@ import 'package:hive/hive.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tingfm/helper/mediaitem_converter.dart';
-import 'package:tingfm/pages/player/player.dart';
 
 class AudioPlayerHandlerImpl extends BaseAudioHandler
     with QueueHandler, SeekHandler
@@ -27,7 +26,8 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   final BehaviorSubject<List<MediaItem>> _recentSubject =
       BehaviorSubject.seeded(<MediaItem>[]);
-  final _playlist = ConcatenatingAudioSource(children: []);
+  final _playlist =
+      ConcatenatingAudioSource(children: [], useLazyPreparation: true);
   @override
   final BehaviorSubject<double> volume = BehaviorSubject.seeded(1.0);
   @override
@@ -147,7 +147,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         )
         .pipe(queue);
 
-    await _player!.setAudioSource(_playlist, preload: false);
+    await _player!.setAudioSource(_playlist, preload: true);
   }
 
   AudioSource _itemToSource(MediaItem mediaItem) {

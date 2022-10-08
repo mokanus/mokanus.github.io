@@ -1,38 +1,54 @@
 // To parse this JSON data, do
 //
-//     final coordinate = coordinateFromJson(jsonString);
+//     final albums = albumsFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
-class ListItemAlbumsEntity {
-  ListItemAlbumsEntity({
-    required this.listItemAlbums,
+class Albums {
+  Albums({
+    required this.data,
+    required this.error,
+    required this.msg,
+    required this.status,
   });
 
-  List<ListItemAlbum> listItemAlbums;
+  List<Datum> data;
+  String error;
+  String msg;
+  double status;
 
-  factory ListItemAlbumsEntity.fromRawJson(String str) =>
-      ListItemAlbumsEntity.fromJson(json.decode(str));
+  factory Albums.fromRawJson(String str) {
+    print("----->2");
+    print(str);
+    return Albums.fromJson(json.decode(str));
+  }
 
   String toRawJson() => json.encode(toJson());
 
-  factory ListItemAlbumsEntity.fromJson(Map<String, dynamic> json) =>
-      ListItemAlbumsEntity(
-        listItemAlbums: List<ListItemAlbum>.from(
-            json["list_item_albums"].map((x) => ListItemAlbum.fromJson(x))),
-      );
+  factory Albums.fromJson(Map<String, dynamic> json) {
+    return Albums(
+      data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+      error: json["error"],
+      msg: json["msg"],
+      status: json["status"].toDouble(),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
-        "list_item_albums":
-            List<dynamic>.from(listItemAlbums.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "error": error,
+        "msg": msg,
+        "status": status,
       };
 }
 
-class ListItemAlbum {
-  ListItemAlbum({
+class Datum {
+  Datum({
     required this.album,
     required this.artist,
     required this.artUri,
+    required this.count,
     required this.id,
     required this.title,
   });
@@ -40,18 +56,19 @@ class ListItemAlbum {
   String album;
   String artist;
   String artUri;
+  String count;
   String id;
   String title;
 
-  factory ListItemAlbum.fromRawJson(String str) =>
-      ListItemAlbum.fromJson(json.decode(str));
+  factory Datum.fromRawJson(String str) => Datum.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ListItemAlbum.fromJson(Map<String, dynamic> json) => ListItemAlbum(
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         album: json["album"],
         artist: json["artist"],
         artUri: json["artUri"],
+        count: json["count"],
         id: json["id"],
         title: json["title"],
       );
@@ -60,6 +77,7 @@ class ListItemAlbum {
         "album": album,
         "artist": artist,
         "artUri": artUri,
+        "count": count,
         "id": id,
         "title": title,
       };

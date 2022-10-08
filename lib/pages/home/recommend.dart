@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,23 +60,21 @@ class _RecommendViewState extends State<RecommendView>
                       child: GestureDetector(
                         child: Column(
                           children: [
-                            Container(
-                              decoration: ShapeDecoration(
-                                image: const DecorationImage(
-                                  //设置背景图片
-                                  image: AssetImage(
-                                    "assets/images/milk.png",
-                                  ),
-                                ),
-                                //设置圆角
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadiusDirectional.circular(10)),
-                              ),
-                              //设置边距
+                            Card(
                               margin: const EdgeInsets.only(top: 16),
-                              height: ScreenUtil().setHeight(371),
-                              width: ScreenUtil().setWidth(371),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(7.0),
+                              ),
+                              clipBehavior: Clip.antiAlias,
+                              child: SizedBox.square(
+                                dimension: ScreenUtil().setWidth(371),
+                                child: CachedNetworkImage(
+                                    height: ScreenUtil().setHeight(371),
+                                    width: ScreenUtil().setWidth(371),
+                                    imageUrl:
+                                        "https://www.chiyustudio.com:81/tingfm/${recommendProvider.recommendAlbumnList[0].album}|${recommendProvider.recommendAlbumnList[0].artist}/${recommendProvider.recommendAlbumnList[0].artUri}"),
+                              ),
                             ),
                             Container(
                               padding: EdgeInsets.fromLTRB(
@@ -130,59 +129,71 @@ class _RecommendViewState extends State<RecommendView>
                     flex: 1,
                     child: Card(
                       elevation: 0.2,
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: ShapeDecoration(
-                              image: const DecorationImage(
-                                //设置背景图片
-                                image: AssetImage(
-                                  "assets/images/milk.png",
-                                ),
-                              ),
-                              //设置圆角
+                      child: GestureDetector(
+                        child: Column(
+                          children: [
+                            Card(
+                              margin: const EdgeInsets.only(top: 16),
+                              elevation: 0,
                               shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadiusDirectional.circular(10)),
-                            ),
-                            //设置边距
-                            margin: const EdgeInsets.only(top: 16),
-                            height: ScreenUtil().setHeight(371),
-                            width: ScreenUtil().setWidth(371),
-                          ),
-                          Container(
-                            padding: EdgeInsets.fromLTRB(
-                                ScreenUtil().setWidth(60),
-                                ScreenUtil().setHeight(50),
-                                ScreenUtil().setWidth(55),
-                                ScreenUtil().setHeight(10)),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "隋唐演义",
-                              style: TextStyle(
-                                color: const Color.fromRGBO(51, 51, 51, 1),
-                                fontSize: ScreenUtil().setSp(43),
+                                borderRadius: BorderRadius.circular(7.0),
                               ),
-                              textAlign: TextAlign.start,
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            padding: EdgeInsets.fromLTRB(
-                                ScreenUtil().setWidth(60),
-                                ScreenUtil().setHeight(10),
-                                ScreenUtil().setWidth(55),
-                                ScreenUtil().setHeight(70)),
-                            child: Text(
-                              "田连元 · 100万人收听",
-                              style: TextStyle(
-                                color: const Color.fromARGB(255, 136, 136, 136),
-                                fontSize: ScreenUtil().setSp(33),
+                              clipBehavior: Clip.antiAlias,
+                              child: SizedBox.square(
+                                dimension: ScreenUtil().setWidth(371),
+                                child: CachedNetworkImage(
+                                    height: ScreenUtil().setHeight(371),
+                                    width: ScreenUtil().setWidth(371),
+                                    imageUrl:
+                                        "https://www.chiyustudio.com:81/tingfm/${recommendProvider.recommendAlbumnList[1].album}|${recommendProvider.recommendAlbumnList[1].artist}/${recommendProvider.recommendAlbumnList[1].artUri}"),
                               ),
-                              textAlign: TextAlign.start,
                             ),
-                          ),
-                        ],
+                            Container(
+                              padding: EdgeInsets.fromLTRB(
+                                  ScreenUtil().setWidth(60),
+                                  ScreenUtil().setHeight(50),
+                                  ScreenUtil().setWidth(55),
+                                  ScreenUtil().setHeight(10)),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "隋唐演义",
+                                style: TextStyle(
+                                  color: const Color.fromARGB(255, 51, 51, 51),
+                                  fontSize: ScreenUtil().setSp(43),
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              padding: EdgeInsets.fromLTRB(
+                                  ScreenUtil().setWidth(60),
+                                  ScreenUtil().setHeight(10),
+                                  ScreenUtil().setWidth(55),
+                                  ScreenUtil().setHeight(70)),
+                              child: Text(
+                                "田连元 · 100万人收听",
+                                style: TextStyle(
+                                  color:
+                                      const Color.fromARGB(255, 136, 136, 136),
+                                  fontSize: ScreenUtil().setSp(33),
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ],
+                        ),
+                        onTap: () async {
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (_, __, ___) => const PlayerPage(
+                                fromMiniplayer: false,
+                                album: "隋唐演义",
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),

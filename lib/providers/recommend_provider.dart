@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tingfm/api/api_status.dart';
 import 'package:tingfm/api/recommend.dart';
@@ -9,7 +11,7 @@ class RecommendProvider with ChangeNotifier {
   ///加载状态码
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
 
-  List<ListItemAlbum> recommendAlbumnList = <ListItemAlbum>[];
+  List<Datum> recommendAlbumnList = <Datum>[];
 
   ///
   ///获取当前专辑的数据
@@ -30,13 +32,14 @@ class RecommendProvider with ChangeNotifier {
         params: params,
         context: context,
       );
+      print("---->4");
 
-      print(recommendAlbumnResponseEntity);
       if (recommendAlbumnResponseEntity != null &&
-          recommendAlbumnResponseEntity.listItemAlbums.isNotEmpty) {
-        recommendAlbumnList
-            .addAll(recommendAlbumnResponseEntity.listItemAlbums);
+          recommendAlbumnResponseEntity.data.isNotEmpty) {
+        recommendAlbumnList.addAll(recommendAlbumnResponseEntity.data);
       }
+
+      print(recommendAlbumnList.length);
     } catch (e) {
       checkError(e);
     }

@@ -9,7 +9,7 @@ class SearchProvider with ChangeNotifier {
   ///加载状态码
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
 
-  List<ListItemAlbum> searchedAlbumnList = <ListItemAlbum>[];
+  List<Datum> searchedAlbumnList = <Datum>[];
 
   ///
   ///获取当前专辑的数据
@@ -31,8 +31,8 @@ class SearchProvider with ChangeNotifier {
       );
       print(searchAlbumnResponseEntity);
       if (searchAlbumnResponseEntity != null &&
-          searchAlbumnResponseEntity.listItemAlbums.isNotEmpty) {
-        searchedAlbumnList.addAll(searchAlbumnResponseEntity.listItemAlbums);
+          searchAlbumnResponseEntity.data.isNotEmpty) {
+        searchedAlbumnList.addAll(searchAlbumnResponseEntity.data);
       }
     } catch (e) {
       checkError(e);
