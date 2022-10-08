@@ -32,14 +32,10 @@ class RecommendProvider with ChangeNotifier {
         params: params,
         context: context,
       );
-      print("---->4");
-
       if (recommendAlbumnResponseEntity != null &&
           recommendAlbumnResponseEntity.data.isNotEmpty) {
         recommendAlbumnList.addAll(recommendAlbumnResponseEntity.data);
       }
-
-      print(recommendAlbumnList.length);
     } catch (e) {
       checkError(e);
     }
