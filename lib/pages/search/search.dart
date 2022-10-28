@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:tingfm/entities/list_item_albums.dart';
+import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/pages/player/player.dart';
-import 'package:tingfm/providers/search_provider.dart';
+import 'package:tingfm/providers/search.dart';
 import 'package:tingfm/utils/router.dart';
 import 'package:tingfm/utils/vibration.dart';
 import 'package:tingfm/widgets/image.dart';
@@ -91,7 +91,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget albumnItemWidget(Datum album) {
+  Widget albumnItemWidget(AlbumItem album) {
     return GestureDetector(
       onTap: () => {
         // 灰度处理的上下文
@@ -127,7 +127,7 @@ class _SearchPageState extends State<SearchPage> {
                       borderRadius: BorderRadius.circular(6.0),
                       child: imageCached(
                         album.artUri,
-                        album.title,
+                        album.album,
                         width: 80,
                         height: 80,
                       ),

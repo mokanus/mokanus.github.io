@@ -4,7 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/pages/player/player.dart';
-import 'package:tingfm/providers/recommend_provider.dart';
+import 'package:tingfm/providers/recommend.dart';
 import 'package:tingfm/widgets/body_builder.dart';
 
 class RecommendView extends StatefulWidget {
@@ -40,7 +40,7 @@ class _RecommendViewState extends State<RecommendView>
           scrollDirection: Axis.vertical,
           controller: _scrollController,
           padding: const EdgeInsets.symmetric(vertical: 10.0),
-          itemCount: 10,
+          itemCount: recommendProvider.recommendAlbumnList.length ~/ 2,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             return Container(
@@ -73,7 +73,7 @@ class _RecommendViewState extends State<RecommendView>
                                     height: ScreenUtil().setHeight(371),
                                     width: ScreenUtil().setWidth(371),
                                     imageUrl:
-                                        "https://www.chiyustudio.com:81/tingfm/${recommendProvider.recommendAlbumnList[0].album}|${recommendProvider.recommendAlbumnList[0].artist}/${recommendProvider.recommendAlbumnList[0].artUri}"),
+                                        "https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/水浒传·田连元|田连元/水浒传·田连元.png"),
                               ),
                             ),
                             Container(
@@ -84,7 +84,8 @@ class _RecommendViewState extends State<RecommendView>
                                   ScreenUtil().setHeight(10)),
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "隋唐演义",
+                                recommendProvider
+                                    .recommendAlbumnList[index * 2].album,
                                 style: TextStyle(
                                   color: const Color.fromARGB(255, 51, 51, 51),
                                   fontSize: ScreenUtil().setSp(43),
@@ -100,7 +101,7 @@ class _RecommendViewState extends State<RecommendView>
                                   ScreenUtil().setWidth(55),
                                   ScreenUtil().setHeight(70)),
                               child: Text(
-                                "田连元 · 100万人收听",
+                                "${recommendProvider.recommendAlbumnList[index * 2].artist}·${recommendProvider.recommendAlbumnList[index * 2].listenTimes}人收听",
                                 style: TextStyle(
                                   color:
                                       const Color.fromARGB(255, 136, 136, 136),
@@ -145,7 +146,7 @@ class _RecommendViewState extends State<RecommendView>
                                     height: ScreenUtil().setHeight(371),
                                     width: ScreenUtil().setWidth(371),
                                     imageUrl:
-                                        "https://www.chiyustudio.com:81/tingfm/${recommendProvider.recommendAlbumnList[1].album}|${recommendProvider.recommendAlbumnList[1].artist}/${recommendProvider.recommendAlbumnList[1].artUri}"),
+                                        "https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/水浒传·田连元|田连元/水浒传·田连元.png"),
                               ),
                             ),
                             Container(
@@ -156,7 +157,8 @@ class _RecommendViewState extends State<RecommendView>
                                   ScreenUtil().setHeight(10)),
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "隋唐演义",
+                                recommendProvider
+                                    .recommendAlbumnList[index * 2 + 1].album,
                                 style: TextStyle(
                                   color: const Color.fromARGB(255, 51, 51, 51),
                                   fontSize: ScreenUtil().setSp(43),
@@ -172,7 +174,7 @@ class _RecommendViewState extends State<RecommendView>
                                   ScreenUtil().setWidth(55),
                                   ScreenUtil().setHeight(70)),
                               child: Text(
-                                "田连元 · 100万人收听",
+                                "${recommendProvider.recommendAlbumnList[index * 2 + 1].artist}·${recommendProvider.recommendAlbumnList[index * 2 + 1].listenTimes}人收听",
                                 style: TextStyle(
                                   color:
                                       const Color.fromARGB(255, 136, 136, 136),

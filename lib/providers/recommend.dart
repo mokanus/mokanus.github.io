@@ -1,17 +1,15 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tingfm/api/api_status.dart';
 import 'package:tingfm/api/recommend.dart';
 import 'package:tingfm/api/router.dart';
-import 'package:tingfm/entities/list_item_albums.dart';
+import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/utils/functions.dart';
 
 class RecommendProvider with ChangeNotifier {
   ///加载状态码
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
 
-  List<Datum> recommendAlbumnList = <Datum>[];
+  List<AlbumItem> recommendAlbumnList = <AlbumItem>[];
 
   ///
   ///获取当前专辑的数据
@@ -27,14 +25,13 @@ class RecommendProvider with ChangeNotifier {
         "len": len,
       };
 
-      var recommendAlbumnResponseEntity = await RecommendAPI.recommendAlbums(
-        url: APIRouter.Recommend,
+      var recommendRsp = await RecommendAPI.recommendAlbums(
+        url: APIRouter.router(APIRouter.recommendAPI),
         params: params,
         context: context,
       );
-      if (recommendAlbumnResponseEntity != null &&
-          recommendAlbumnResponseEntity.data.isNotEmpty) {
-        recommendAlbumnList.addAll(recommendAlbumnResponseEntity.data);
+      if (recommendRsp != null && recommendRsp.data.isNotEmpty) {
+        recommendAlbumnList.addAll(recommendRsp.data);
       }
     } catch (e) {
       checkError(e);

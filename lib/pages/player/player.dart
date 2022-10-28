@@ -73,15 +73,15 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
 
       globalQueue.add(MediaItem(
           id: i.toString(),
-          title: "隋唐演义$num集",
-          album: "隋唐演义",
+          title: "水浒传$num集",
+          album: "水浒传",
           artist: "田连元",
           duration: const Duration(seconds: 1800),
           artUri: Uri.parse(
-              "https://www.chiyustudio.com:81/tingfm/隋唐演义·田连元|田连元/隋唐演义·田连元.png"),
+              "https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/水浒传·田连元|田连元/水浒传·田连元.png"),
           extras: {
             'url':
-                'https://www.chiyustudio.com:81/tingfm/隋唐演义·田连元|田连元/隋唐演义$num集.aac',
+                'https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/水浒传·田连元|田连元/水浒传$num集.aac',
           }));
     }
     return globalQueue;

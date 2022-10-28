@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:tingfm/api/api_status.dart';
 import 'package:tingfm/api/router.dart';
 import 'package:tingfm/api/search.dart';
-import 'package:tingfm/entities/list_item_albums.dart';
+import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/utils/functions.dart';
 
 class SearchProvider with ChangeNotifier {
   ///加载状态码
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
 
-  List<Datum> searchedAlbumnList = <Datum>[];
+  List<AlbumItem> searchedAlbumnList = <AlbumItem>[];
 
   ///
   ///获取当前专辑的数据
@@ -25,7 +25,7 @@ class SearchProvider with ChangeNotifier {
       };
 
       var searchAlbumnResponseEntity = await SearchAPI.searchAlbums(
-        url: APIRouter.Search,
+        url: APIRouter.searchAPI,
         params: params,
         context: context,
       );

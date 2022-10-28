@@ -1,11 +1,11 @@
 // 专辑种类的model类
 
 import 'package:flutter/material.dart';
-import 'package:tingfm/entities/list_item_albums.dart';
+import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/utils/http.dart';
 
 class SearchAPI {
-  static Future<Albums?> searchAlbums({
+  static Future<AlbumRsp?> searchAlbums({
     required BuildContext context,
     required String url,
     dynamic params,
@@ -15,7 +15,7 @@ class SearchAPI {
         url,
         parameters: params,
       );
-      return Albums.fromJson(response);
+      return AlbumRsp.fromJson(response);
     } catch (e) {
       return null;
     }
