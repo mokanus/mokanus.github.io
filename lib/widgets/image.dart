@@ -37,7 +37,7 @@ Widget imageCached(
       );
     },
     errorWidget: (context, url, error) => Image.asset(
-      'assets/images/empty.png',
+      'assets/images/cover.jpg',
       fit: BoxFit.cover,
       height: height,
       width: width,

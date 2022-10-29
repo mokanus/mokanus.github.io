@@ -7,6 +7,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tingfm/pages/broadcast/broadcast.dart';
 import 'package:tingfm/pages/home/home.dart';
 import 'package:tingfm/pages/my/my.dart';
+import 'package:tingfm/providers/player.dart';
 import 'package:tingfm/providers/recommend.dart';
 import 'package:tingfm/providers/search.dart';
 import 'package:tingfm/services/audio_service.dart';
@@ -14,7 +15,7 @@ import 'package:tingfm/widgets/custom_physics.dart';
 import 'package:tingfm/widgets/mini_player.dart';
 import 'package:provider/provider.dart';
 
-import 'providers/app_provider.dart';
+import 'providers/app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => AppProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProvider(create: (_) => RecommendProvider()),
+        ChangeNotifierProvider(create: (_) => PlayerProvider()),
       ],
       child: const App(),
     ),
@@ -38,7 +40,7 @@ Future<void> startService() async {
     builder: () => AudioPlayerHandlerImpl(),
     config: AudioServiceConfig(
       androidNotificationChannelId: 'com.red.feather.ting.fm',
-      androidNotificationChannelName: 'TingFM',
+      androidNotificationChannelName: '听书铺子',
       androidNotificationOngoing: true,
       androidNotificationIcon: 'drawable/ic_stat_music_note',
       androidShowNotificationBadge: true,

@@ -106,6 +106,7 @@ class _AlbumListPageState extends State<AlbumListPage> {
                         pageBuilder: (_, __, ___) => const PlayerPage(
                           fromMiniplayer: false,
                           album: "隋唐演义",
+                          albumId: 1,
                         ),
                       ),
                     );

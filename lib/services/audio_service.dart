@@ -147,7 +147,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         )
         .pipe(queue);
 
-    await _player!.setAudioSource(_playlist, preload: true);
+    await _player!.setAudioSource(_playlist, preload: false);
   }
 
   AudioSource _itemToSource(MediaItem mediaItem) {

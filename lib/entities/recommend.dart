@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:tingfm/entities/album.dart';
 
-class AlbumInfoRsp {
-  AlbumInfoRsp({
+class RecommendAlbumsRsp {
+  RecommendAlbumsRsp({
     required this.status,
     required this.data,
     required this.msg,
@@ -10,25 +10,27 @@ class AlbumInfoRsp {
   });
 
   int status;
-  AlbumItem data;
+  List<AlbumItem> data;
   String msg;
   String error;
 
-  factory AlbumInfoRsp.fromJson(String str) =>
-      AlbumInfoRsp.fromMap(json.decode(str));
+  factory RecommendAlbumsRsp.fromJson(String str) =>
+      RecommendAlbumsRsp.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory AlbumInfoRsp.fromMap(Map<String, dynamic> json) => AlbumInfoRsp(
+  factory RecommendAlbumsRsp.fromMap(Map<String, dynamic> json) =>
+      RecommendAlbumsRsp(
         status: json["status"],
-        data: AlbumItem.fromMap(json["data"]),
+        data:
+            List<AlbumItem>.from(json["data"].map((x) => AlbumItem.fromMap(x))),
         msg: json["msg"],
         error: json["error"],
       );
 
   Map<String, dynamic> toMap() => {
         "status": status,
-        "data": data.toMap(),
+        "data": List<dynamic>.from(data.map((x) => x.toMap())),
         "msg": msg,
         "error": error,
       };

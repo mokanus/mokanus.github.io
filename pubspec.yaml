@@ -25,7 +25,7 @@ dependencies:
   flutter_screenutil: ^5.5.4
   salomon_bottom_bar: ^3.3.1
   get_it: ^7.2.0
-  just_audio: ^0.9.29
+  just_audio: ^0.9.30
   audio_service: ^0.18.7
   rxdart: ^0.27.5
   hive: ^2.2.3

@@ -104,6 +104,7 @@ class _SearchPageState extends State<SearchPage> {
             PlayerPage(
               fromMiniplayer: false,
               album: album.album,
+              albumId: album.id,
             )),
       },
       child: Card(

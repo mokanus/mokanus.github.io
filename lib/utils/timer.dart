@@ -1,7 +1,3 @@
-import 'dart:async';
-
-import 'package:tingfm/global/global.dart';
-
 ///本类是自定义的定时器工具类
 ///
 ///
@@ -29,13 +25,13 @@ class Timers {
 
   ///开启自动存储的Timer
   static void startStoragePlayerDataTimer() {
-    Timer.periodic(
-        const Duration(seconds: 5),
-        (Timer t) => {
-              if (Global.player.playing == true)
-                {
-                  storagePlayedData(),
-                },
-            });
+    // Timer.periodic(
+    //     const Duration(seconds: 5),
+    //     (Timer t) => {
+    //           if (Global.player.playing == true)
+    //             {
+    //               storagePlayedData(),
+    //             },
+    //         });
   }
 }
