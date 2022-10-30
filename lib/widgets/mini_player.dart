@@ -48,8 +48,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
                             opaque: false,
                             pageBuilder: (_, __, ___) => PlayerPage(
                               fromMiniplayer: true,
-                              album: mediaItem.album ?? "",
-                              albumId: 0,
                             ),
                           ),
                         );

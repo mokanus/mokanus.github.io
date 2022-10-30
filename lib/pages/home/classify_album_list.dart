@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:tingfm/pages/album_info/album_info.dart';
 import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/list_by_classify.dart';
 import 'package:tingfm/widgets/body_builder.dart';
@@ -135,10 +136,11 @@ class _AlbumListPageState extends State<AlbumListPage>
                         Navigator.of(context).push(
                           PageRouteBuilder(
                             opaque: false,
-                            pageBuilder: (_, __, ___) => const PlayerPage(
-                              fromMiniplayer: false,
-                              album: "隋唐演义",
-                              albumId: 1,
+                            pageBuilder: (_, __, ___) => AlbumInfoPage(
+                              albumId:
+                                  listByClassifyProvider.albumList[index].id,
+                              album:
+                                  listByClassifyProvider.albumList[index].album,
                             ),
                           ),
                         );

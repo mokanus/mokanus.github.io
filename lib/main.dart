@@ -8,7 +8,7 @@ import 'package:tingfm/pages/broadcast/broadcast.dart';
 import 'package:tingfm/pages/home/home.dart';
 import 'package:tingfm/pages/my/my.dart';
 import 'package:tingfm/providers/classify.dart';
-import 'package:tingfm/providers/player.dart';
+import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/recommend.dart';
 import 'package:tingfm/providers/search.dart';
 import 'package:tingfm/services/audio_service.dart';
@@ -30,7 +30,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => AppProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProvider(create: (_) => RecommendProvider()),
-        ChangeNotifierProvider(create: (_) => PlayerProvider()),
+        ChangeNotifierProvider(create: (_) => AlbumInfoProvider()),
         ChangeNotifierProvider(create: (_) => ClassifyProvider()),
         ChangeNotifierProvider(create: (_) => ListByClassifyProvider()),
       ],

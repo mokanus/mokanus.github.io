@@ -26,16 +26,10 @@ class Global {
   static const String ossPre =
       'https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/tingfm/';
 
+  static String curAlbum = "";
+
   ///当前的主题颜色
   static bool isLightTheme = true;
 
   static bool isTurnOnVibration = true;
-
-  static bool isVip = true;
-
-  ///免费收听的个数
-  static int freeItemNum = 5;
-
-  ///插屏广告播放间隔
-  static int insertAdsPlayGap = 90;
 }

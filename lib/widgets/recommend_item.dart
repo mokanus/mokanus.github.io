@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tingfm/entities/album.dart';
+import 'package:tingfm/pages/album_info/album_info.dart';
 import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/widgets/image.dart';
 
@@ -77,8 +78,7 @@ class _RecommendItemState extends State<RecommendItem> {
             Navigator.of(context).push(
               PageRouteBuilder(
                 opaque: false,
-                pageBuilder: (_, __, ___) => PlayerPage(
-                  fromMiniplayer: false,
+                pageBuilder: (_, __, ___) => AlbumInfoPage(
                   album: widget.albumItem.album,
                   albumId: widget.albumItem.id,
                 ),

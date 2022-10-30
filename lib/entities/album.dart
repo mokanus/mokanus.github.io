@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_brace_in_string_interps
 
 import 'dart:convert';
+import 'dart:math';
 import 'package:audio_service/audio_service.dart';
 import 'package:tingfm/global/global.dart';
 
@@ -17,6 +18,20 @@ class AlbumItem {
     required this.listenTimes,
     required this.loveCount,
   });
+
+  factory AlbumItem.withAlbum() {
+    return AlbumItem(
+        id: 1,
+        classify: 1,
+        album: "",
+        artUri: '',
+        artist: '',
+        count: 1,
+        desc: '',
+        listenTimes: 1,
+        loveCount: 1,
+        mediaItems: []);
+  }
 
   factory AlbumItem.fromJson(String str) => AlbumItem.fromMap(json.decode(str));
 
@@ -70,7 +85,7 @@ class AlbumItem {
 
   MediaItem mediaItem(index) {
     return MediaItem(
-        id: index.toString(),
+        id: Random().nextInt(100000000).toString(),
         title: mediaItems[index]
             .title
             .substring(0, mediaItems[index].title.length - 4),

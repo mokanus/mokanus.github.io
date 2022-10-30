@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/entities/album.dart';
+import 'package:tingfm/pages/album_info/album_info.dart';
 import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/search.dart';
 import 'package:tingfm/utils/router.dart';
@@ -109,10 +110,9 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
         //定义点击函数
         AppRouter.pushPage(
             context,
-            PlayerPage(
-              fromMiniplayer: false,
-              album: album.album,
+            AlbumInfoPage(
               albumId: album.id,
+              album: album.album,
             )),
       },
       child: Card(

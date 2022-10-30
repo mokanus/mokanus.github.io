@@ -5,11 +5,10 @@ import 'package:tingfm/api/router.dart';
 import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/utils/functions.dart';
 
-class PlayerProvider with ChangeNotifier {
+class AlbumInfoProvider with ChangeNotifier {
   // 加载状态码
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
-  late AlbumItem item;
-  //获取当前专辑的数据
+  AlbumItem? item; //获取当前专辑的数据
   getAlbumInfo(BuildContext context, int id) async {
     setApiRequestStatus(APIRequestStatus.loading);
 

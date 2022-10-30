@@ -1,38 +1,30 @@
-import 'dart:io';
+import 'dart:math';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:tingfm/api/api_status.dart';
 import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/pages/player/widgets/player_btns.dart';
 import 'dart:ui' as ui;
 import 'package:tingfm/pages/player/widgets/seek_bar.dart';
-import 'package:tingfm/providers/player.dart';
+import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/services/audio_service.dart';
-import 'package:tingfm/widgets/body_builder.dart';
 import 'package:tingfm/widgets/image.dart';
 
 import 'widgets/player_contro.dart';
 import 'widgets/playing_stream.dart';
 
+// ignore: must_be_immutable
 class PlayerPage extends StatefulWidget {
   final bool fromMiniplayer;
-  final String album;
-  final int albumId;
+  AlbumItem? albumItem;
 
-  const PlayerPage({
-    super.key,
-    required this.fromMiniplayer,
-    required this.album,
-    required this.albumId,
-  });
+  PlayerPage({super.key, required this.fromMiniplayer, this.albumItem}) {}
 
   @override
   PlayerPageState createState() => PlayerPageState();
@@ -47,41 +39,36 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    ambiguate(WidgetsBinding.instance)!.addObserver(this);
-
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.black,
     ));
 
     if (widget.fromMiniplayer) {
+      widget.albumItem =
+          Provider.of<AlbumInfoProvider>(context, listen: false).item;
     } else {
-      if (!Platform.isAndroid) {
-        audioHandler.stop();
-      }
-      SchedulerBinding.instance.addPostFrameCallback(
-        (_) => Provider.of<PlayerProvider>(context, listen: false)
-            .getAlbumInfo(context, widget.albumId),
-      );
+      audioHandler.stop();
+      updateNplay();
     }
 
     WidgetsBinding.instance.addObserver(this);
   }
 
-  Future<void> updateNplay(PlayerProvider playerProvider) async {
-    if (!widget.fromMiniplayer &&
-        playerProvider.apiRequestStatus == APIRequestStatus.loaded) {
-      var globalQueue = await mockItems(playerProvider.item);
-      await audioHandler.setShuffleMode(AudioServiceShuffleMode.none);
+  Future<void> updateNplay() async {
+    if (!widget.fromMiniplayer) {
+      var globalQueue = mockItems(widget.albumItem);
       await audioHandler.updateQueue(globalQueue);
       await audioHandler.skipToQueueItem(0);
-      audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
       await audioHandler.play();
     }
   }
 
-  Future<List<MediaItem>> mockItems(AlbumItem album) async {
+  List<MediaItem> mockItems(AlbumItem? album) {
     List<MediaItem> globalQueue = <MediaItem>[];
-    globalQueue.add(album.mediaItem(0));
+    if (album != null) {
+      globalQueue.add(album.mediaItem(0));
+      print(globalQueue[0].id);
+    }
     return globalQueue;
   }
 
@@ -93,29 +80,22 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PlayerProvider>(builder:
-        (BuildContext context, PlayerProvider playerProvider, Widget? child) {
-      updateNplay(playerProvider);
-      return BodyBuilder(
-          apiRequestStatus: playerProvider.apiRequestStatus,
-          reload: () => playerProvider.getAlbumInfo(context, widget.albumId),
-          child: Dismissible(
-              direction: DismissDirection.down,
-              background: const ColoredBox(color: Colors.transparent),
-              key: const Key('PlayerPage'),
-              onDismissed: (direction) {
-                Navigator.pop(context);
-              },
-              child: buildBody()));
-    });
+    return Dismissible(
+        direction: DismissDirection.down,
+        background: const ColoredBox(color: Colors.transparent),
+        key: const Key('PlayerPage'),
+        onDismissed: (direction) {
+          Navigator.pop(context);
+        },
+        child: buildBody());
   }
 
   Widget buildBody() {
     return StreamBuilder<MediaItem?>(
         stream: audioHandler.mediaItem,
         builder: (context, snapshot) {
-          final MediaItem? metadata = snapshot.data;
-          if (metadata == null) {
+          MediaItem? mediaItem = snapshot.data;
+          if (mediaItem == null) {
             return const SizedBox();
           }
           return Scaffold(
@@ -132,7 +112,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                   },
                 ),
                 title: Text(
-                  widget.album,
+                  widget.albumItem!.album,
                   style: const TextStyle(
                     fontFamily: "Avenir",
                     fontWeight: FontWeight.bold,
@@ -160,8 +140,9 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                               clipBehavior: Clip.antiAlias,
                               child: SizedBox.square(
                                   dimension: constraints.maxWidth * 0.7,
-                                  child: imageCached(metadata.artUri.toString(),
-                                      '${metadata.album}·${metadata.artist}')),
+                                  child: imageCached(
+                                      mediaItem.artUri.toString(),
+                                      '${mediaItem.album}·${mediaItem.artist}')),
                             ),
                             Padding(
                               padding: EdgeInsets.fromLTRB(
@@ -169,7 +150,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                                   ScreenUtil().setHeight(5),
                                   ScreenUtil().setWidth(200),
                                   ScreenUtil().setHeight(10)),
-                              child: Text(metadata.title),
+                              child: Text(mediaItem.title),
                             ),
                           ],
                         ),
@@ -178,7 +159,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                         PlayerBtns(audioHandler: audioHandler),
 
                         // 进度条控件
-                        buildSeekBar(metadata),
+                        buildSeekBar(mediaItem),
 
                         // 播放控件
                         PlayerContros(audioHandler),
