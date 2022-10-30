@@ -24,15 +24,14 @@ class SearchProvider with ChangeNotifier {
         "album": searchParams,
       };
 
-      var searchAlbumnResponseEntity = await SearchAPI.searchAlbums(
-        url: APIRouter.searchAPI,
+      var searchRsp = await SearchAPI.searchAlbums(
+        url: APIRouter.router(APIRouter.searchAPI),
         params: params,
         context: context,
       );
-      print(searchAlbumnResponseEntity);
-      if (searchAlbumnResponseEntity != null &&
-          searchAlbumnResponseEntity.data.isNotEmpty) {
-        searchedAlbumnList.addAll(searchAlbumnResponseEntity.data);
+
+      if (searchRsp != null && searchRsp.data.isNotEmpty) {
+        searchedAlbumnList.addAll(searchRsp.data);
       }
     } catch (e) {
       checkError(e);
