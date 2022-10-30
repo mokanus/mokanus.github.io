@@ -66,8 +66,9 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   List<MediaItem> mockItems(AlbumItem? album) {
     List<MediaItem> globalQueue = <MediaItem>[];
     if (album != null) {
-      globalQueue.add(album.mediaItem(0));
-      print(globalQueue[0].id);
+      for (var i = 0; i < album.mediaItems.length; i++) {
+        globalQueue.add(album.mediaItem(i));
+      }
     }
     return globalQueue;
   }

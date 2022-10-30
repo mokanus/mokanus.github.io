@@ -135,8 +135,8 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(6.0),
                       child: imageCached(
-                        album.artUri,
-                        album.album,
+                        album.imageUrl(),
+                        album.cachedKey(),
                         width: 80,
                         height: 80,
                       ),
