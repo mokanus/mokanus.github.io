@@ -73,7 +73,7 @@ class _RecommendItemState extends State<RecommendItem> {
               ),
             ],
           ),
-          onTap: () async {
+          onTap: () {
             Navigator.of(context).push(
               PageRouteBuilder(
                 opaque: false,

@@ -1,0 +1,126 @@
+import 'package:audio_service/audio_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tingfm/pages/player/widgets/seek_bar.dart';
+import 'package:tingfm/services/audio_service.dart';
+
+class PlayerBtns extends StatelessWidget {
+  final AudioPlayerHandler audioHandler;
+
+  const PlayerBtns({Key? key, required this.audioHandler}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+          ScreenUtil().setWidth(20),
+          ScreenUtil().setHeight(5),
+          ScreenUtil().setWidth(20),
+          ScreenUtil().setHeight(10)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          StreamBuilder<AudioServiceRepeatMode>(
+            stream: audioHandler.playbackState
+                .map((state) => state.repeatMode)
+                .distinct(),
+            builder: (context, snapshot) {
+              final repeatMode = snapshot.data ?? AudioServiceRepeatMode.none;
+              const icons = [
+                Icon(Icons.repeat, color: Colors.grey),
+                Icon(Icons.repeat, color: Colors.orange),
+                Icon(Icons.repeat_one, color: Colors.orange),
+              ];
+              const cycleModes = [
+                AudioServiceRepeatMode.none,
+                AudioServiceRepeatMode.all,
+                AudioServiceRepeatMode.one,
+              ];
+              final index = cycleModes.indexOf(repeatMode);
+              return IconButton(
+                icon: icons[index],
+                onPressed: () async {
+                  await audioHandler.setRepeatMode(
+                    cycleModes[(cycleModes.indexOf(repeatMode) + 1) %
+                        cycleModes.length],
+                  );
+                },
+              );
+            },
+          ),
+          StreamBuilder<bool>(
+            stream: audioHandler.playbackState
+                .map(
+                  (state) => state.shuffleMode == AudioServiceShuffleMode.all,
+                )
+                .distinct(),
+            builder: (context, snapshot) {
+              final shuffleModeEnabled = snapshot.data ?? false;
+              return IconButton(
+                icon: shuffleModeEnabled
+                    ? const Icon(Icons.shuffle, color: Colors.orange)
+                    : const Icon(Icons.shuffle, color: Colors.grey),
+                onPressed: () async {
+                  final enable = !shuffleModeEnabled;
+                  await audioHandler.setShuffleMode(
+                    enable
+                        ? AudioServiceShuffleMode.all
+                        : AudioServiceShuffleMode.none,
+                  );
+                },
+              );
+            },
+          ),
+          StreamBuilder<double>(
+            stream: audioHandler.speed,
+            builder: (context, snapshot) => IconButton(
+              icon: Stack(clipBehavior: Clip.none, children: [
+                Positioned(
+                  top: -8.0,
+                  right: -8.0,
+                  child: Text(
+                    "${snapshot.data?.toStringAsFixed(1)}x",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 8,
+                    ),
+                  ),
+                ),
+                const Positioned(
+                  child: Icon(Icons.speed_rounded),
+                ),
+              ]),
+              onPressed: () {
+                showSliderDialog(
+                  context: context,
+                  title: "播放速度",
+                  divisions: 15,
+                  min: 0.5,
+                  max: 2.0,
+                  value: audioHandler.speed.value,
+                  stream: audioHandler.speed,
+                  onChanged: audioHandler.setSpeed,
+                );
+              },
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.timer),
+            onPressed: () {
+              showSliderDialog(
+                context: context,
+                title: "定时关闭",
+                divisions: 10,
+                min: 0.0,
+                max: 1.0,
+                value: audioHandler.volume.value,
+                stream: audioHandler.volume,
+                onChanged: audioHandler.setVolume,
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
