@@ -54,7 +54,7 @@ class _AlbumListPageState extends State<AlbumListPage>
               scrollDirection: Axis.vertical,
               controller: _scrollController,
               padding: const EdgeInsets.symmetric(vertical: 20.0),
-              itemCount: 10,
+              itemCount: listByClassifyProvider.albumList.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return Container(

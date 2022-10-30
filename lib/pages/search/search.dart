@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/entities/album.dart';
@@ -12,10 +13,17 @@ class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  SearchPageState createState() => SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addObserver(this);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,61 +147,39 @@ class _SearchPageState extends State<SearchPage> {
               Expanded(
                 flex: 3,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      album.album,
-                      style: const TextStyle(
-                        fontFamily: "Avenir",
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                          ScreenUtil().setWidth(40),
+                          ScreenUtil().setHeight(50),
+                          ScreenUtil().setWidth(55),
+                          ScreenUtil().setHeight(10)),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        album.album,
+                        style: TextStyle(
+                          color: const Color.fromARGB(255, 51, 51, 51),
+                          fontSize: ScreenUtil().setSp(43),
+                        ),
+                        textAlign: TextAlign.start,
                       ),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      album.artist,
-                      maxLines: 1,
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.none,
-                          color: Colors.orange),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Row(
-                      children: const <Widget>[
-                        Icon(Icons.multitrack_audio,
-                            size: 16, color: Colors.red),
-                        SizedBox(
-                          width: 10,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.fromLTRB(
+                          ScreenUtil().setWidth(40),
+                          ScreenUtil().setHeight(10),
+                          ScreenUtil().setWidth(55),
+                          ScreenUtil().setHeight(70)),
+                      child: Text(
+                        album.listenTime(),
+                        style: TextStyle(
+                          color: const Color.fromARGB(255, 136, 136, 136),
+                          fontSize: ScreenUtil().setSp(33),
                         ),
-                        Text(
-                          "200 集",
-                          style: TextStyle(
-                              fontFamily: "Montserrat",
-                              color: Colors.red,
-                              fontSize: 10),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Icon(
-                          Icons.headset_rounded,
-                          size: 16,
-                          color: Colors.orange,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "200",
-                          style: (TextStyle(color: Colors.orange)),
-                        ),
-                      ],
+                        textAlign: TextAlign.start,
+                      ),
                     ),
                   ],
                 ),

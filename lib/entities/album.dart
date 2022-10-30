@@ -65,7 +65,7 @@ class AlbumItem {
   }
 
   String listenTime() {
-    return "${artist}·${listenTimes}次收听";
+    return "${artist} · ${listenTimes}次收听";
   }
 
   MediaItem mediaItem(index) {
