@@ -9,6 +9,8 @@ class APIRouter {
   static const String searchAPI = '/api/v1/album/search';
   static const String recommendAPI = '/api/v1/album/recommend';
   static const String albumInfoAPI = '/api/v1/album/album_info';
+  static const String classifiesAPI = '/api/v1/album/classify';
+  static const String lisByClassifyAPI = '/api/v1/album/list_by_classify';
 
   static String router(String api) {
     if (Global.isRelease) {

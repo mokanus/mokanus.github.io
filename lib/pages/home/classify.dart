@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tingfm/pages/home/album_list.dart';
+import 'package:provider/provider.dart';
+import 'package:tingfm/pages/home/classify_album_list.dart';
+import 'package:tingfm/providers/classify.dart';
+import 'package:tingfm/widgets/body_builder.dart';
+import 'package:tingfm/widgets/image.dart';
 
 class ClassifyView extends StatefulWidget {
   const ClassifyView({super.key});
@@ -9,150 +14,120 @@ class ClassifyView extends StatefulWidget {
   State<ClassifyView> createState() => _ClassifyViewState();
 }
 
-class _ClassifyViewState extends State<ClassifyView> {
+class _ClassifyViewState extends State<ClassifyView>
+    with WidgetsBindingObserver {
   final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) => Provider.of<ClassifyProvider>(context, listen: false)
+          .getClassifies(context),
+    );
+    WidgetsBinding.instance.addObserver(this);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      controller: _scrollController,
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      itemCount: 10,
-      shrinkWrap: true,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          margin: EdgeInsets.fromLTRB(
-              ScreenUtil().setWidth(55),
-              ScreenUtil().setHeight(8),
-              ScreenUtil().setWidth(55),
-              ScreenUtil().setHeight(8)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 1,
-                child: GestureDetector(
-                  child: Card(
-                    elevation: 0.2,
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: ShapeDecoration(
-                            image: const DecorationImage(
-                              //设置背景图片
-                              image: AssetImage(
-                                "assets/images/milk.png",
+    return Consumer<ClassifyProvider>(builder: (BuildContext context,
+        ClassifyProvider classifyProvider, Widget? child) {
+      return BodyBuilder(
+          apiRequestStatus: classifyProvider.apiRequestStatus,
+          reload: () => classifyProvider.getClassifies(context),
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            controller: _scrollController,
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            itemCount: classifyProvider.classifies.length,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                margin: EdgeInsets.fromLTRB(
+                    ScreenUtil().setWidth(55),
+                    ScreenUtil().setHeight(8),
+                    ScreenUtil().setWidth(55),
+                    ScreenUtil().setHeight(8)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        child: Card(
+                          elevation: 0.2,
+                          child: Row(
+                            children: [
+                              Card(
+                                margin: EdgeInsets.fromLTRB(
+                                    ScreenUtil().setWidth(30),
+                                    ScreenUtil().setHeight(30),
+                                    ScreenUtil().setWidth(60),
+                                    ScreenUtil().setHeight(30)),
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(7.0),
+                                ),
+                                clipBehavior: Clip.antiAlias,
+                                child: SizedBox.square(
+                                  dimension: ScreenUtil().setWidth(270),
+                                  child: imageCached(
+                                    classifyProvider.classifies[index]
+                                        .imageUrl(),
+                                    classifyProvider.classifies[index]
+                                        .cachedKey(),
+                                  ),
+                                ),
                               ),
-                            ),
-                            //设置圆角
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(5)),
-                          ),
-                          //设置边距
-                          margin: EdgeInsets.fromLTRB(
-                              ScreenUtil().setWidth(20),
-                              ScreenUtil().setHeight(20),
-                              ScreenUtil().setWidth(30),
-                              ScreenUtil().setHeight(20)),
-                          height: ScreenUtil().setHeight(160),
-                          width: ScreenUtil().setWidth(160),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                              child: Text(
-                                "相声评书",
-                                style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(40),
-                                    fontWeight: FontWeight.bold),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                    child: Text(
+                                      classifyProvider
+                                          .classifies[index].classify,
+                                      style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(40),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Text(
+                                    "共300个专辑",
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(30),
+                                    ),
+                                  )
+                                ],
                               ),
-                            ),
-                            Text(
-                              "共300个专辑",
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(30),
+                            ],
+                          ),
+                        ),
+                        onTap: () => {
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (_, __, ___) => AlbumListPage(
+                                classify:
+                                    classifyProvider.classifies[index].classify,
+                                classifyId:
+                                    classifyProvider.classifies[index].id,
                               ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  onTap: () => {
-                    Navigator.of(context).push(
-                      PageRouteBuilder(
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => const AlbumListPage(
-                          title: "相声评书",
-                        ),
-                      ),
-                    )
-                  },
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Card(
-                  elevation: 0.2,
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: ShapeDecoration(
-                          image: const DecorationImage(
-                            //设置背景图片
-                            image: AssetImage(
-                              "assets/images/milk.png",
-                            ),
-                          ),
-                          //设置圆角
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadiusDirectional.circular(5)),
-                        ),
-                        //设置边距
-                        margin: EdgeInsets.fromLTRB(
-                            ScreenUtil().setWidth(20),
-                            ScreenUtil().setHeight(20),
-                            ScreenUtil().setWidth(30),
-                            ScreenUtil().setHeight(20)),
-                        height: ScreenUtil().setHeight(160),
-                        width: ScreenUtil().setWidth(160),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                            child: Text(
-                              "相声评书",
-                              style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(40),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Text(
-                            "共300个专辑",
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(30),
                             ),
                           )
-                        ],
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+              );
+            },
+          ));
+    });
   }
 
   @override

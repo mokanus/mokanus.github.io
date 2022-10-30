@@ -7,6 +7,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tingfm/pages/broadcast/broadcast.dart';
 import 'package:tingfm/pages/home/home.dart';
 import 'package:tingfm/pages/my/my.dart';
+import 'package:tingfm/providers/classify.dart';
 import 'package:tingfm/providers/player.dart';
 import 'package:tingfm/providers/recommend.dart';
 import 'package:tingfm/providers/search.dart';
@@ -16,6 +17,7 @@ import 'package:tingfm/widgets/mini_player.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/app.dart';
+import 'providers/list_by_classify.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +31,8 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProvider(create: (_) => RecommendProvider()),
         ChangeNotifierProvider(create: (_) => PlayerProvider()),
+        ChangeNotifierProvider(create: (_) => ClassifyProvider()),
+        ChangeNotifierProvider(create: (_) => ListByClassifyProvider()),
       ],
       child: const App(),
     ),

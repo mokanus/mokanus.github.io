@@ -65,20 +65,22 @@ class AlbumItem {
   }
 
   String listenTime() {
-    return "${artist}·${listenTimes}人收听";
+    return "${artist}·${listenTimes}次收听";
   }
 
   MediaItem mediaItem(index) {
     return MediaItem(
         id: index.toString(),
-        title: mediaItems[index].title,
+        title: mediaItems[index]
+            .title
+            .substring(0, mediaItems[index].title.length - 4),
         album: album,
         artist: artist,
         duration: Duration(seconds: mediaItems[index].duration),
         artUri: Uri.parse(imageUrl()),
         extras: {
           'url':
-              'https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/水浒传·田连元|田连元/水浒传001集.aac',
+              '${Global.ossPre}$album·$artist|$artist/${mediaItems[index].title}',
         });
   }
 

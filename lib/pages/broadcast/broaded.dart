@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tingfm/pages/home/album_list.dart';
+import 'package:tingfm/pages/home/classify_album_list.dart';
 
 class BroadedView extends StatefulWidget {
   const BroadedView({super.key});
@@ -88,7 +88,8 @@ class _BroadedViewState extends State<BroadedView> {
                       PageRouteBuilder(
                         opaque: false,
                         pageBuilder: (_, __, ___) => const AlbumListPage(
-                          title: "相声评书",
+                          classify: "相声评书",
+                          classifyId: 1,
                         ),
                       ),
                     )

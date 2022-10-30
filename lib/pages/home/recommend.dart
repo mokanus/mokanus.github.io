@@ -1,10 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:tingfm/global/global.dart';
-import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/recommend.dart';
 import 'package:tingfm/widgets/body_builder.dart';
 import 'package:tingfm/widgets/recommend_item.dart';
