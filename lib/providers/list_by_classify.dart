@@ -11,11 +11,38 @@ class ListByClassifyProvider with ChangeNotifier {
   List<AlbumItem> albumList = <AlbumItem>[];
 
   ///获取当前专辑的数据
-  getAlbumsByClassify(
+  refreshAlbumsByClassify(
       BuildContext context, int classify, int start, int len) async {
-    albumList.clear();
     setApiRequestStatus(APIRequestStatus.loading);
 
+    try {
+      Map<String, dynamic> params = {
+        "classify": classify,
+        "start": start,
+        "len": len,
+      };
+
+      var listByClassifyRsp = await ListByClassifyAPI.getAlbumsByClassify(
+        url: APIRouter.router(APIRouter.lisByClassifyAPI),
+        params: params,
+        context: context,
+      );
+      if (listByClassifyRsp != null && listByClassifyRsp.data.isNotEmpty) {
+        albumList.clear();
+        albumList.addAll(listByClassifyRsp.data);
+      }
+    } catch (e) {
+      checkError(e);
+    }
+
+    ///搜索完毕
+    setApiRequestStatus(APIRequestStatus.loaded);
+  }
+
+  ///获取当前专辑的数据
+  getAlbumsByClassify(
+      BuildContext context, int classify, int start, int len) async {
+    setApiRequestStatus(APIRequestStatus.loading);
     try {
       Map<String, dynamic> params = {
         "classify": classify,

@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:tingfm/entities/album.dart';
+import 'package:tingfm/global/global.dart';
 import 'package:tingfm/pages/player/widgets/player_btns.dart';
 import 'dart:ui' as ui;
 import 'package:tingfm/pages/player/widgets/seek_bar.dart';
@@ -65,11 +66,17 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
 
   List<MediaItem> mockItems(AlbumItem? album) {
     List<MediaItem> globalQueue = <MediaItem>[];
+
     if (album != null) {
-      for (var i = 0; i < album.mediaItems.length; i++) {
-        globalQueue.add(album.mediaItem(i));
+      if (Global.isRelease) {
+        for (var i = 0; i < album.mediaItems.length; i++) {
+          globalQueue.add(album.mediaItem(i));
+        }
+      } else {
+        globalQueue.add(album.mediaItem(0));
       }
     }
+
     return globalQueue;
   }
 
@@ -130,30 +137,21 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Card(
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(7.0),
-                              ),
-                              clipBehavior: Clip.antiAlias,
-                              child: SizedBox.square(
-                                  dimension: constraints.maxWidth * 0.7,
-                                  child: imageCached(
-                                      mediaItem.artUri.toString(),
-                                      '${mediaItem.album}·${mediaItem.artist}')),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                  ScreenUtil().setWidth(200),
-                                  ScreenUtil().setHeight(5),
-                                  ScreenUtil().setWidth(200),
-                                  ScreenUtil().setHeight(10)),
-                              child: Text(mediaItem.title),
-                            ),
-                          ],
+                        imageCached(mediaItem.artUri.toString(),
+                            '${mediaItem.album}·${mediaItem.artist}',
+                            width: ScreenUtil().setWidth(628),
+                            height: ScreenUtil().setHeight(628),
+                            margin: const EdgeInsets.all(15)),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              ScreenUtil().setWidth(200),
+                              ScreenUtil().setHeight(20),
+                              ScreenUtil().setWidth(200),
+                              ScreenUtil().setHeight(120)),
+                          child: Text(
+                              "${mediaItem.artist} - ${mediaItem.title}",
+                              style:
+                                  TextStyle(fontSize: ScreenUtil().setSp(45))),
                         ),
 
                         // 播放器控制控件
@@ -177,7 +175,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
     return Padding(
       padding: EdgeInsets.fromLTRB(
           ScreenUtil().setWidth(20),
-          ScreenUtil().setHeight(5),
+          ScreenUtil().setHeight(64),
           ScreenUtil().setWidth(20),
           ScreenUtil().setHeight(10)),
       child: StreamBuilder<PositionData>(

@@ -11,12 +11,38 @@ class RecommendProvider with ChangeNotifier {
 
   List<AlbumItem> recommendAlbumnList = <AlbumItem>[];
 
+  ///获取当前专辑的数据
+  refreshRecommendData(BuildContext context, int start, int len) async {
+    ///开始搜索
+    setApiRequestStatus(APIRequestStatus.loading);
+
+    try {
+      Map<String, dynamic> params = {
+        "start": start,
+        "len": len,
+      };
+
+      var recommendRsp = await RecommendAPI.recommendAlbums(
+        url: APIRouter.router(APIRouter.recommendAPI),
+        params: params,
+        context: context,
+      );
+      if (recommendRsp != null && recommendRsp.data.isNotEmpty) {
+        recommendAlbumnList.clear();
+        recommendAlbumnList.addAll(recommendRsp.data);
+      }
+    } catch (e) {
+      checkError(e);
+    }
+
+    ///搜索完毕
+    setApiRequestStatus(APIRequestStatus.loaded);
+  }
+
   ///
   ///获取当前专辑的数据
   getRecommendData(BuildContext context, int start, int len) async {
     ///开始搜索
-    recommendAlbumnList.clear();
-
     setApiRequestStatus(APIRequestStatus.loading);
 
     try {

@@ -1,9 +1,9 @@
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/pages/album_info/album_info.dart';
-import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/list_by_classify.dart';
 import 'package:tingfm/widgets/body_builder.dart';
 import 'package:tingfm/widgets/image.dart';
@@ -19,22 +19,26 @@ class AlbumListPage extends StatefulWidget {
       {super.key, required this.classify, required this.classifyId});
 
   @override
-  State<AlbumListPage> createState() => _AlbumListPageState();
+  State<AlbumListPage> createState() => AlbumListPageState();
 }
 
-class _AlbumListPageState extends State<AlbumListPage>
-    with WidgetsBindingObserver {
+class AlbumListPageState extends State<AlbumListPage> {
   final ScrollController _scrollController = ScrollController();
+  final EasyRefreshController easyController = EasyRefreshController(
+    controlFinishRefresh: true,
+    controlFinishLoad: true,
+  );
 
+  int currentIndex = 10;
+  int freshOffset = 10;
   @override
   void initState() {
     super.initState();
 
     SchedulerBinding.instance.addPostFrameCallback(
       (_) => Provider.of<ListByClassifyProvider>(context, listen: false)
-          .getAlbumsByClassify(context, widget.classifyId, 0, 10),
+          .refreshAlbumsByClassify(context, widget.classifyId, 0, freshOffset),
     );
-    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -46,16 +50,32 @@ class _AlbumListPageState extends State<AlbumListPage>
           elevation: 0,
         ),
         body: Consumer<ListByClassifyProvider>(builder: (BuildContext context,
-            ListByClassifyProvider listByClassifyProvider, Widget? child) {
-          return BodyBuilder(
-            apiRequestStatus: listByClassifyProvider.apiRequestStatus,
-            reload: () => listByClassifyProvider.getAlbumsByClassify(
-                context, widget.classifyId, 0, 10),
+            ListByClassifyProvider provider, Widget? child) {
+          return EasyRefresh(
+            controller: easyController,
+            header: const DeliveryHeader(),
+            footer: BezierFooter(
+                backgroundColor: Theme.of(context).cardColor,
+                triggerOffset: 15),
+            onRefresh: () async {
+              await provider.refreshAlbumsByClassify(
+                  context, widget.classifyId, 0, freshOffset);
+              easyController.finishRefresh();
+              easyController.resetFooter();
+              currentIndex = 10;
+            },
+            //底部加载
+            onLoad: () async {
+              await provider.getAlbumsByClassify(
+                  context, widget.classifyId, currentIndex, freshOffset);
+              currentIndex += freshOffset;
+              easyController.finishLoad(IndicatorResult.success);
+            },
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               controller: _scrollController,
               padding: const EdgeInsets.symmetric(vertical: 20.0),
-              itemCount: listByClassifyProvider.albumList.length,
+              itemCount: provider.albumList.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
@@ -83,10 +103,8 @@ class _AlbumListPageState extends State<AlbumListPage>
                             child: SizedBox.square(
                               dimension: ScreenUtil().setWidth(270),
                               child: imageCached(
-                                listByClassifyProvider.albumList[index]
-                                    .imageUrl(),
-                                listByClassifyProvider.albumList[index]
-                                    .cachedKey(),
+                                provider.albumList[index].imageUrl(),
+                                provider.albumList[index].cachedKey(),
                               ),
                             ),
                           ),
@@ -101,7 +119,7 @@ class _AlbumListPageState extends State<AlbumListPage>
                                     ScreenUtil().setHeight(10)),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  listByClassifyProvider.albumList[index].album,
+                                  provider.albumList[index].album,
                                   style: TextStyle(
                                     color:
                                         const Color.fromARGB(255, 51, 51, 51),
@@ -118,8 +136,7 @@ class _AlbumListPageState extends State<AlbumListPage>
                                     ScreenUtil().setWidth(55),
                                     ScreenUtil().setHeight(70)),
                                 child: Text(
-                                  listByClassifyProvider.albumList[index]
-                                      .listenTime(),
+                                  provider.albumList[index].listenTime(),
                                   style: TextStyle(
                                     color: const Color.fromARGB(
                                         255, 136, 136, 136),
@@ -137,10 +154,8 @@ class _AlbumListPageState extends State<AlbumListPage>
                           PageRouteBuilder(
                             opaque: false,
                             pageBuilder: (_, __, ___) => AlbumInfoPage(
-                              albumId:
-                                  listByClassifyProvider.albumList[index].id,
-                              album:
-                                  listByClassifyProvider.albumList[index].album,
+                              albumId: provider.albumList[index].id,
+                              album: provider.albumList[index].album,
                             ),
                           ),
                         );

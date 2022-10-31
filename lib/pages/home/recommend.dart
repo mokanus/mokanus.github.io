@@ -1,45 +1,66 @@
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/providers/recommend.dart';
-import 'package:tingfm/widgets/body_builder.dart';
 import 'package:tingfm/widgets/recommend_item.dart';
 
 class RecommendView extends StatefulWidget {
   const RecommendView({super.key});
 
   @override
-  State<RecommendView> createState() => _RecommendViewState();
+  State<RecommendView> createState() => RecommendViewState();
 }
 
-class _RecommendViewState extends State<RecommendView>
-    with WidgetsBindingObserver {
+class RecommendViewState extends State<RecommendView>
+    with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
+  final EasyRefreshController easyController = EasyRefreshController(
+    controlFinishRefresh: true,
+    controlFinishLoad: true,
+  );
 
+  int currentIndex = 10;
+  int freshOffset = 10;
   @override
   void initState() {
     super.initState();
 
     SchedulerBinding.instance.addPostFrameCallback(
       (_) => Provider.of<RecommendProvider>(context, listen: false)
-          .getRecommendData(context, 0, 10),
+          .refreshRecommendData(context, 0, freshOffset),
     );
-    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<RecommendProvider>(builder: (BuildContext context,
-        RecommendProvider recommendProvider, Widget? child) {
-      return BodyBuilder(
-        apiRequestStatus: recommendProvider.apiRequestStatus,
-        reload: () => recommendProvider.getRecommendData(context, 0, 10),
+    super.build(context);
+    return Consumer<RecommendProvider>(builder:
+        (BuildContext context, RecommendProvider provider, Widget? child) {
+      return EasyRefresh(
+        controller: easyController,
+        refreshOnStart: true,
+        header: const DeliveryHeader(),
+        footer: BezierFooter(
+            backgroundColor: Theme.of(context).cardColor, triggerOffset: 15),
+        onRefresh: () async {
+          await provider.refreshRecommendData(context, 0, freshOffset);
+          easyController.finishRefresh();
+          easyController.resetFooter();
+          currentIndex = 10;
+        },
+        //底部加载
+        onLoad: () async {
+          await provider.getRecommendData(context, currentIndex, freshOffset);
+          currentIndex += freshOffset;
+          easyController.finishLoad(IndicatorResult.success);
+        },
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           controller: _scrollController,
           padding: const EdgeInsets.symmetric(vertical: 10.0),
-          itemCount: recommendProvider.recommendAlbumnList.length ~/ 2,
+          itemCount: provider.recommendAlbumnList.length ~/ 2,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             return Container(
@@ -53,11 +74,10 @@ class _RecommendViewState extends State<RecommendView>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   RecommendItem(
-                    albumItem: recommendProvider.recommendAlbumnList[index * 2],
+                    albumItem: provider.recommendAlbumnList[index * 2],
                   ),
                   RecommendItem(
-                    albumItem:
-                        recommendProvider.recommendAlbumnList[index * 2 + 1],
+                    albumItem: provider.recommendAlbumnList[index * 2 + 1],
                   ),
                 ],
               ),
@@ -69,8 +89,12 @@ class _RecommendViewState extends State<RecommendView>
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void dispose() {
     _scrollController.dispose();
+    easyController.dispose();
     super.dispose();
   }
 }
