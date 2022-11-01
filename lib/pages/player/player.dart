@@ -149,9 +149,12 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                               ScreenUtil().setWidth(200),
                               ScreenUtil().setHeight(120)),
                           child: Text(
-                              "${mediaItem.artist} - ${mediaItem.title}",
-                              style:
-                                  TextStyle(fontSize: ScreenUtil().setSp(45))),
+                            "${mediaItem.artist} - ${mediaItem.title}",
+                            style: TextStyle(
+                                fontFamily: "Avenir",
+                                fontSize: ScreenUtil().setSp(45)),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
 
                         // 播放器控制控件

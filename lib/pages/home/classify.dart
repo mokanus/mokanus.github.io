@@ -43,10 +43,7 @@ class ClassifyViewState extends State<ClassifyView>
       return EasyRefresh(
         controller: easyController,
         header: const DeliveryHeader(),
-        footer: BezierFooter(
-            backgroundColor: Theme.of(context).cardColor,
-            triggerOffset: 15,
-            clamping: false),
+        footer: BezierFooter(backgroundColor: Theme.of(context).cardColor),
         onRefresh: () async {
           await provider.getClassifies(context);
           easyController.finishRefresh();

@@ -56,7 +56,7 @@ class AlbumListPageState extends State<AlbumListPage> {
             header: const DeliveryHeader(),
             footer: BezierFooter(
                 backgroundColor: Theme.of(context).cardColor,
-                triggerOffset: 15),
+                triggerOffset: 50),
             onRefresh: () async {
               await provider.refreshAlbumsByClassify(
                   context, widget.classifyId, 0, freshOffset);

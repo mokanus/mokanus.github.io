@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tingfm/services/audio_service.dart';
+import 'package:tingfm/widgets/image.dart';
 
 class NowPlayingStream extends StatelessWidget {
   final AudioPlayerHandler audioHandler;
@@ -49,7 +50,7 @@ class NowPlayingStream extends StatelessWidget {
                 audioHandler.removeQueueItemAt(index);
               },
               child: ListTileTheme(
-                selectedColor: Theme.of(context).colorScheme.secondary,
+                selectedColor: const Color.fromARGB(255, 234, 78, 94),
                 child: ListTile(
                   contentPadding:
                       const EdgeInsets.only(left: 16.0, right: 10.0),
@@ -82,23 +83,9 @@ class NowPlayingStream extends StatelessWidget {
                               )
                             : SizedBox.square(
                                 dimension: 50,
-                                child: CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  errorWidget: (BuildContext context, _, __) =>
-                                      const Image(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage(
-                                      'assets/images/cover.jpg',
-                                    ),
-                                  ),
-                                  placeholder: (BuildContext context, _) =>
-                                      const Image(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage(
-                                      'assets/images/cover.jpg',
-                                    ),
-                                  ),
-                                  imageUrl: queue[index].artUri.toString(),
+                                child: imageCached(
+                                  queue[index].artUri.toString(),
+                                  '${queue[index].album}·${queue[index].artUri}',
                                 ),
                               ),
                       ),
@@ -112,10 +99,6 @@ class NowPlayingStream extends StatelessWidget {
                           ? FontWeight.w600
                           : FontWeight.normal,
                     ),
-                  ),
-                  subtitle: Text(
-                    queue[index].artist!,
-                    overflow: TextOverflow.ellipsis,
                   ),
                   onTap: () {
                     audioHandler.skipToQueueItem(index);

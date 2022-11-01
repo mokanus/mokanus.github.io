@@ -43,7 +43,7 @@ class RecommendViewState extends State<RecommendView>
         refreshOnStart: true,
         header: const DeliveryHeader(),
         footer: BezierFooter(
-            backgroundColor: Theme.of(context).cardColor, triggerOffset: 15),
+            backgroundColor: Theme.of(context).cardColor, triggerOffset: 50),
         onRefresh: () async {
           await provider.refreshRecommendData(context, 0, freshOffset);
           easyController.finishRefresh();
