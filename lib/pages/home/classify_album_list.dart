@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/pages/album_info/album_info.dart';
 import 'package:tingfm/providers/list_by_classify.dart';
-import 'package:tingfm/widgets/body_builder.dart';
 import 'package:tingfm/widgets/image.dart';
 
 // 列表页面-可用来展示分类后的专辑列表信息
@@ -84,9 +83,9 @@ class AlbumListPageState extends State<AlbumListPage> {
                       ScreenUtil().setHeight(5),
                       ScreenUtil().setWidth(50),
                       ScreenUtil().setHeight(5)),
-                  child: Card(
-                    elevation: 0.2,
-                    child: GestureDetector(
+                  child: GestureDetector(
+                    child: Card(
+                      elevation: 0.2,
                       child: Row(
                         children: [
                           Card(
@@ -149,18 +148,18 @@ class AlbumListPageState extends State<AlbumListPage> {
                           )
                         ],
                       ),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (_, __, ___) => AlbumInfoPage(
-                              albumId: provider.albumList[index].id,
-                              album: provider.albumList[index].album,
-                            ),
-                          ),
-                        );
-                      },
                     ),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder: (_, __, ___) => AlbumInfoPage(
+                            albumId: provider.albumList[index].id,
+                            album: provider.albumList[index].album,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 );
               },

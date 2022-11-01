@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/pages/home/classify_album_list.dart';
 import 'package:tingfm/providers/classify.dart';
-import 'package:tingfm/widgets/body_builder.dart';
 import 'package:tingfm/widgets/image.dart';
 
 class ClassifyView extends StatefulWidget {
