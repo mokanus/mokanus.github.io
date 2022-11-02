@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:tingfm/pages/home/classify_album_list.dart';
+import 'package:tingfm/pages/album_info/album_info.dart';
 import 'package:tingfm/providers/history.dart';
+import 'package:tingfm/widgets/image.dart';
 
 class BroadedView extends StatefulWidget {
   const BroadedView({super.key});
@@ -20,7 +21,7 @@ class _BroadedViewState extends State<BroadedView> with WidgetsBindingObserver {
 
     SchedulerBinding.instance.addPostFrameCallback(
       (_) => Provider.of<HishoryProvider>(context, listen: false)
-          .getHistoryItems(),
+          .flushHistoryItems(),
     );
 
     WidgetsBinding.instance.addObserver(this);
@@ -33,8 +34,8 @@ class _BroadedViewState extends State<BroadedView> with WidgetsBindingObserver {
       return ListView.builder(
         scrollDirection: Axis.vertical,
         controller: _scrollController,
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        itemCount: 10,
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
+        itemCount: provider.historyItems.length,
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return Container(
@@ -55,18 +56,6 @@ class _BroadedViewState extends State<BroadedView> with WidgetsBindingObserver {
                       child: Row(
                         children: [
                           Container(
-                            decoration: ShapeDecoration(
-                              image: const DecorationImage(
-                                //设置背景图片
-                                image: AssetImage(
-                                  "assets/images/milk.png",
-                                ),
-                              ),
-                              //设置圆角
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadiusDirectional.circular(5)),
-                            ),
                             //设置边距
                             margin: EdgeInsets.fromLTRB(
                                 ScreenUtil().setWidth(30),
@@ -75,6 +64,9 @@ class _BroadedViewState extends State<BroadedView> with WidgetsBindingObserver {
                                 ScreenUtil().setHeight(30)),
                             height: ScreenUtil().setHeight(270),
                             width: ScreenUtil().setWidth(270),
+                            child: imageCached(
+                                provider.historyItems[index].imageUrl(),
+                                provider.historyItems[index].cachedKey()),
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -83,14 +75,14 @@ class _BroadedViewState extends State<BroadedView> with WidgetsBindingObserver {
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                                 child: Text(
-                                  "相声评书",
+                                  provider.historyItems[index].album,
                                   style: TextStyle(
                                       fontSize: ScreenUtil().setSp(40),
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
                               Text(
-                                "共300个专辑",
+                                provider.historyItems[index].artist,
                                 style: TextStyle(
                                   fontSize: ScreenUtil().setSp(30),
                                 ),
@@ -104,9 +96,9 @@ class _BroadedViewState extends State<BroadedView> with WidgetsBindingObserver {
                       Navigator.of(context).push(
                         PageRouteBuilder(
                           opaque: false,
-                          pageBuilder: (_, __, ___) => const AlbumListPage(
-                            classify: "相声评书",
-                            classifyId: 1,
+                          pageBuilder: (_, __, ___) => AlbumInfoPage(
+                            album: provider.historyItems[index].album,
+                            albumId: provider.historyItems[index].id,
                           ),
                         ),
                       )
