@@ -49,6 +49,10 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
     if (widget.fromMiniplayer) {
       widget.albumItem =
           Provider.of<AlbumInfoProvider>(context, listen: false).item;
+
+      if (audioHandler.mediaItem.hasValue) {
+        audioHandler.play();
+      }
     } else {
       audioHandler.stop();
       updateNplay();
@@ -131,6 +135,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                       leading: IconButton(
                         icon: const Icon(Icons.expand_more_rounded),
                         tooltip: "返回",
+                        color: Colors.white,
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -140,6 +145,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                         style: const TextStyle(
                           fontFamily: "Avenir",
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -162,8 +168,10 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                             child: Text(
                               "${mediaItem.artist} - ${mediaItem.title}",
                               style: TextStyle(
-                                  fontFamily: "Avenir",
-                                  fontSize: ScreenUtil().setSp(45)),
+                                fontFamily: "Avenir",
+                                fontSize: ScreenUtil().setSp(45),
+                                color: Colors.white,
+                              ),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -245,7 +253,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
         backdropEnabled: true,
         boxShadow: const [],
         backdropOpacity: 0.01,
-        color: Colors.black.withOpacity(0.02),
+        color: Colors.transparent,
         controller: panelController,
         panelBuilder: (ScrollController scrollController) {
           return ClipRRect(
@@ -321,7 +329,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                     width: 50,
                     height: 5,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
@@ -334,7 +342,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
-                        color: Color.fromARGB(100, 0, 0, 0),
+                        color: Colors.white,
                       ),
                     ),
                   ),

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/widgets/image.dart';
@@ -68,27 +67,20 @@ class NowPlayingStream extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Card(
-                        elevation: 0.1,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7.0),
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        child: (queue[index].artUri == null)
-                            ? const SizedBox.square(
-                                dimension: 50,
-                                child: Image(
-                                  image: AssetImage('assets/images/cover.jpg'),
-                                ),
-                              )
-                            : SizedBox.square(
-                                dimension: 50,
-                                child: imageCached(
-                                  queue[index].artUri.toString(),
-                                  '${queue[index].album}·${queue[index].artUri}',
-                                ),
+                      (queue[index].artUri == null)
+                          ? const SizedBox.square(
+                              dimension: 50,
+                              child: Image(
+                                image: AssetImage('assets/images/cover.jpg'),
                               ),
-                      ),
+                            )
+                          : SizedBox.square(
+                              dimension: 50,
+                              child: imageCached(
+                                queue[index].artUri.toString(),
+                                '${queue[index].album}·${queue[index].artUri}',
+                              ),
+                            ),
                     ],
                   ),
                   title: Text(

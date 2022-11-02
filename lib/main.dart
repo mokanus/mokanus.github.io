@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tingfm/pages/broadcast/broadcast.dart';
 import 'package:tingfm/pages/home/home.dart';
@@ -22,6 +25,10 @@ import 'providers/list_by_classify.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Paint.enableDithering = true;
+
+  // await openHiveBox('history');
+  // await openHiveBox('favorate');
+
   await startService();
   runApp(
     //做灰度处理
@@ -57,6 +64,27 @@ Future<void> startService() async {
 }
 
 getApplicationDocumentsDirectory() {}
+
+Future<void> openHiveBox(String boxName, {bool limit = false}) async {
+  final box = await Hive.openBox(boxName).onError((error, stackTrace) async {
+    final Directory dir = await getApplicationDocumentsDirectory();
+    final String dirPath = dir.path;
+    File dbFile = File('$dirPath/$boxName.hive');
+    File lockFile = File('$dirPath/$boxName.lock');
+    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      dbFile = File('$dirPath/tingfm/$boxName.hive');
+      lockFile = File('$dirPath/tingfm/$boxName.lock');
+    }
+    await dbFile.delete();
+    await lockFile.delete();
+    await Hive.openBox(boxName);
+    throw 'Failed to open $boxName Box\nError: $error';
+  });
+  // clear box if it grows large
+  if (limit && box.length > 500) {
+    box.clear();
+  }
+}
 
 class App extends StatefulWidget {
   const App({super.key});

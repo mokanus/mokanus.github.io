@@ -23,6 +23,7 @@ class PlayerContros extends StatelessWidget {
                   splashRadius: 1,
                   icon: const Icon(
                     Icons.skip_previous_rounded,
+                    color: Colors.white,
                     size: 32,
                   ),
                   onPressed: queueState?.hasPrevious ?? true
@@ -51,21 +52,30 @@ class PlayerContros extends StatelessWidget {
               } else if (playing != true) {
                 return IconButton(
                   splashRadius: 1,
-                  icon: const Icon(Icons.play_circle_fill_rounded),
+                  icon: const Icon(
+                    Icons.play_circle_fill_rounded,
+                    color: Colors.white,
+                  ),
                   iconSize: 90.0,
                   onPressed: audioHandler.play,
                 );
               } else if (processingState != ProcessingState.completed) {
                 return IconButton(
                   splashRadius: 1,
-                  icon: const Icon(Icons.pause_circle_rounded),
+                  icon: const Icon(
+                    Icons.pause_circle_rounded,
+                    color: Colors.white,
+                  ),
                   iconSize: 90.0,
                   onPressed: audioHandler.pause,
                 );
               } else {
                 return IconButton(
                   splashRadius: 1,
-                  icon: const Icon(Icons.replay),
+                  icon: const Icon(
+                    Icons.replay,
+                    color: Colors.white,
+                  ),
                   iconSize: 90.0,
                   onPressed: () => audioHandler.pause,
                 );
@@ -80,6 +90,7 @@ class PlayerContros extends StatelessWidget {
                   splashRadius: 1,
                   icon: const Icon(
                     Icons.skip_next_rounded,
+                    color: Colors.white,
                     size: 32,
                   ),
                   onPressed: queueState?.hasNext ?? true

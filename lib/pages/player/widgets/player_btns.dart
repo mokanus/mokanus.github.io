@@ -27,7 +27,7 @@ class PlayerBtns extends StatelessWidget {
             builder: (context, snapshot) {
               final repeatMode = snapshot.data ?? AudioServiceRepeatMode.none;
               const icons = [
-                Icon(Icons.repeat, color: Colors.grey),
+                Icon(Icons.repeat, color: Colors.white),
                 Icon(Icons.repeat, color: Colors.orange),
                 Icon(Icons.repeat_one, color: Colors.orange),
               ];
@@ -59,7 +59,7 @@ class PlayerBtns extends StatelessWidget {
               return IconButton(
                 icon: shuffleModeEnabled
                     ? const Icon(Icons.shuffle, color: Colors.orange)
-                    : const Icon(Icons.shuffle, color: Colors.grey),
+                    : const Icon(Icons.shuffle, color: Colors.white),
                 onPressed: () async {
                   final enable = !shuffleModeEnabled;
                   await audioHandler.setShuffleMode(
@@ -83,11 +83,15 @@ class PlayerBtns extends StatelessWidget {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 8,
+                      color: Colors.white,
                     ),
                   ),
                 ),
                 const Positioned(
-                  child: Icon(Icons.speed_rounded),
+                  child: Icon(
+                    Icons.speed_rounded,
+                    color: Colors.white,
+                  ),
                 ),
               ]),
               onPressed: () {
@@ -105,7 +109,10 @@ class PlayerBtns extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.timer),
+            icon: const Icon(
+              Icons.timer,
+              color: Colors.white,
+            ),
             onPressed: () {
               showSliderDialog(
                 context: context,

@@ -36,7 +36,13 @@ void showSliderDialog({
   showDialog<void>(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text(title, textAlign: TextAlign.center),
+      title: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: Colors.white,
+        ),
+      ),
       content: StreamBuilder<double>(
         stream: stream,
         builder: (context, snapshot) => SizedBox(
@@ -45,8 +51,9 @@ void showSliderDialog({
             children: [
               Text('${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
                   style: const TextStyle(
-                      fontFamily: 'Fixed',
+                      fontFamily: 'Avenir',
                       fontWeight: FontWeight.bold,
+                      color: Colors.white,
                       fontSize: 24.0)),
               Slider(
                 divisions: divisions,
@@ -84,7 +91,7 @@ class SeekBarState extends State<SeekBar> {
           data: _sliderThemeData.copyWith(
             thumbShape: HiddenThumbComponentShape(),
             activeTrackColor: Colors.blue.shade100,
-            inactiveTrackColor: Colors.grey.shade300,
+            inactiveTrackColor: Colors.red.shade300,
           ),
           child: ExcludeSemantics(
             child: Slider(
@@ -135,15 +142,16 @@ class SeekBarState extends State<SeekBar> {
           ),
         ),
         Positioned(
-          right: 22.0,
-          bottom: 0.0,
-          child: Text(
-              RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
-                      .firstMatch("$_remaining")
-                      ?.group(1) ??
-                  '$_remaining',
-              style: Theme.of(context).textTheme.caption),
-        ),
+            right: 22.0,
+            bottom: 0.0,
+            child: Text(
+                RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
+                        .firstMatch("$_remaining")
+                        ?.group(1) ??
+                    '$_remaining',
+                style: const TextStyle(
+                  color: Colors.white,
+                ))),
       ],
     );
   }
