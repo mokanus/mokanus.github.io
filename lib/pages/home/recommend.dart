@@ -40,7 +40,6 @@ class RecommendViewState extends State<RecommendView>
         (BuildContext context, RecommendProvider provider, Widget? child) {
       return EasyRefresh(
         controller: easyController,
-        refreshOnStart: true,
         header: const DeliveryHeader(),
         footer: BezierFooter(
             backgroundColor: Theme.of(context).cardColor, triggerOffset: 50),

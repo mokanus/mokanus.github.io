@@ -5,16 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tingfm/pages/broadcast/broadcast.dart';
 import 'package:tingfm/pages/home/home.dart';
 import 'package:tingfm/pages/my/my.dart';
 import 'package:tingfm/providers/classify.dart';
 import 'package:tingfm/providers/album_info.dart';
+import 'package:tingfm/providers/history.dart';
 import 'package:tingfm/providers/recommend.dart';
 import 'package:tingfm/providers/search.dart';
 import 'package:tingfm/services/audio_service.dart';
+import 'package:tingfm/values/hive_boxs/album_db.dart';
 import 'package:tingfm/widgets/custom_physics.dart';
 import 'package:tingfm/widgets/mini_player.dart';
 import 'package:provider/provider.dart';
@@ -26,10 +29,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Paint.enableDithering = true;
 
-  // await openHiveBox('history');
-  // await openHiveBox('favorate');
-
+  await setupLocator();
   await startService();
+
   runApp(
     //做灰度处理
     MultiProvider(
@@ -40,6 +42,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => AlbumInfoProvider()),
         ChangeNotifierProvider(create: (_) => ClassifyProvider()),
         ChangeNotifierProvider(create: (_) => ListByClassifyProvider()),
+        ChangeNotifierProvider(create: (_) => HishoryProvider()),
       ],
       child: const App(),
     ),
@@ -63,7 +66,10 @@ Future<void> startService() async {
   GetIt.I.registerSingleton<AudioPlayerHandler>(audioHandler);
 }
 
-getApplicationDocumentsDirectory() {}
+Future setupLocator() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(AlbumItemDBAdapter());
+}
 
 Future<void> openHiveBox(String boxName, {bool limit = false}) async {
   final box = await Hive.openBox(boxName).onError((error, stackTrace) async {

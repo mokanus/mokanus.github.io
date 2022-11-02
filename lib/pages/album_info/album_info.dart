@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/album_info.dart';
+import 'package:tingfm/providers/history.dart';
 import 'package:tingfm/widgets/body_builder.dart';
 import 'package:tingfm/widgets/image.dart';
 import 'package:tingfm/widgets/mini_player.dart';
@@ -161,6 +162,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                                 ),
                               ),
                               onTap: () {
+                                addItemToHistory();
                                 Navigator.of(context).push(
                                   PageRouteBuilder(
                                     opaque: false,
@@ -183,5 +185,13 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
             ),
           );
         }));
+  }
+
+  addItemToHistory() {
+    var item = Provider.of<AlbumInfoProvider>(context, listen: false).item;
+    if (item != null) {
+      Provider.of<HishoryProvider>(context, listen: false)
+          .addItemFromAlbum(item);
+    }
   }
 }
