@@ -4,9 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/album_info.dart';
+import 'package:tingfm/providers/favorate.dart';
 import 'package:tingfm/providers/history.dart';
 import 'package:tingfm/widgets/image.dart';
 import 'package:tingfm/widgets/mini_player.dart';
+import 'package:tingfm/widgets/snackbar.dart';
 
 class AlbumInfoPage extends StatefulWidget {
   final String album;
@@ -130,22 +132,28 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                                   ],
                                 ),
                               ),
-                              Container(
-                                height: ScreenUtil().setHeight(134),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.favorite_sharp,
-                                      color: Color.fromARGB(255, 234, 78, 94),
-                                    ),
-                                    Text(" 喜欢",
-                                        style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(40),
-                                            fontFamily: "Avenir"))
-                                  ],
+                              GestureDetector(
+                                child: Container(
+                                  height: ScreenUtil().setHeight(134),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.favorite_sharp,
+                                        color: Color.fromARGB(255, 234, 78, 94),
+                                      ),
+                                      Text("加入喜欢",
+                                          style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(40),
+                                              fontFamily: "Avenir"))
+                                    ],
+                                  ),
                                 ),
+                                onTap: () {
+                                  addItemToFavorate();
+                                },
                               ),
                               GestureDetector(
                                 child: Container(
@@ -156,7 +164,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                                         CrossAxisAlignment.center,
                                     children: [
                                       const Icon(Icons.play_arrow_rounded),
-                                      Text(" 播放",
+                                      Text("开始播放",
                                           style: TextStyle(
                                               fontSize: ScreenUtil().setSp(40)))
                                     ],
@@ -193,6 +201,18 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
     if (item != null) {
       Provider.of<HishoryProvider>(context, listen: false)
           .addItemFromAlbum(item);
+    }
+  }
+
+  addItemToFavorate() {
+    var item = Provider.of<AlbumInfoProvider>(context, listen: false).item;
+    if (item != null) {
+      Provider.of<FavorateProvider>(context, listen: false)
+          .addItemFromAlbum(item);
+      ShowSnackBar().showSnackBar(
+        context,
+        "${item.album} 已经加入喜欢列表啦",
+      );
     }
   }
 }

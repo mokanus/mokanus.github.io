@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tingfm/pages/broadcast/broaded.dart';
+import 'package:tingfm/pages/broadcast/history.dart';
 import 'package:tingfm/pages/broadcast/favorate.dart';
 
 class BroadcastPage extends StatefulWidget {
@@ -91,14 +91,14 @@ class _BroadcastPageState extends State<BroadcastPage>
             ),
             Tab(
               child: Text(
-                "订阅",
+                "喜欢",
               ),
             ),
           ],
         ),
       ),
       body: TabBarView(controller: _tabController, children: const [
-        BroadedView(),
+        HistoryView(),
         FavorateView(),
       ]),
     );

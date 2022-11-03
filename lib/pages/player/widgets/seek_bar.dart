@@ -40,7 +40,7 @@ void showSliderDialog({
         title,
         textAlign: TextAlign.center,
         style: const TextStyle(
-          color: Colors.white,
+          color: Colors.black,
         ),
       ),
       content: StreamBuilder<double>(

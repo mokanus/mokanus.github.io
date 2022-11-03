@@ -13,6 +13,7 @@ import 'package:tingfm/pages/home/home.dart';
 import 'package:tingfm/pages/my/my.dart';
 import 'package:tingfm/providers/classify.dart';
 import 'package:tingfm/providers/album_info.dart';
+import 'package:tingfm/providers/favorate.dart';
 import 'package:tingfm/providers/history.dart';
 import 'package:tingfm/providers/recommend.dart';
 import 'package:tingfm/providers/search.dart';
@@ -43,6 +44,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => ClassifyProvider()),
         ChangeNotifierProvider(create: (_) => ListByClassifyProvider()),
         ChangeNotifierProvider(create: (_) => HishoryProvider()),
+        ChangeNotifierProvider(create: (_) => FavorateProvider()),
       ],
       child: const App(),
     ),

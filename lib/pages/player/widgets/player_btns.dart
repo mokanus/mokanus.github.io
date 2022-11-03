@@ -1,8 +1,12 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:tingfm/pages/player/widgets/seek_bar.dart';
+import 'package:tingfm/providers/album_info.dart';
+import 'package:tingfm/providers/favorate.dart';
 import 'package:tingfm/services/audio_service.dart';
+import 'package:tingfm/widgets/snackbar.dart';
 
 class PlayerBtns extends StatelessWidget {
   final AudioPlayerHandler audioHandler;
@@ -48,29 +52,30 @@ class PlayerBtns extends StatelessWidget {
               );
             },
           ),
-          StreamBuilder<bool>(
-            stream: audioHandler.playbackState
-                .map(
-                  (state) => state.shuffleMode == AudioServiceShuffleMode.all,
-                )
-                .distinct(),
-            builder: (context, snapshot) {
-              final shuffleModeEnabled = snapshot.data ?? false;
-              return IconButton(
-                icon: shuffleModeEnabled
-                    ? const Icon(Icons.shuffle, color: Colors.orange)
-                    : const Icon(Icons.shuffle, color: Colors.white),
-                onPressed: () async {
-                  final enable = !shuffleModeEnabled;
-                  await audioHandler.setShuffleMode(
-                    enable
-                        ? AudioServiceShuffleMode.all
-                        : AudioServiceShuffleMode.none,
-                  );
-                },
-              );
-            },
-          ),
+          // StreamBuilder<bool>(
+          //   stream: audioHandler.playbackState
+          //       .map(
+          //         (state) => state.shuffleMode == AudioServiceShuffleMode.all,
+          //       )
+          //       .distinct(),
+          //   builder: (context, snapshot) {
+          //     final shuffleModeEnabled = snapshot.data ?? false;
+          //     return IconButton(
+          //       icon: shuffleModeEnabled
+          //           ? const Icon(Icons.shuffle, color: Colors.orange)
+          //           : const Icon(Icons.shuffle, color: Colors.white),
+          //       onPressed: () async {
+          //         final enable = !shuffleModeEnabled;
+          //         await audioHandler.setShuffleMode(
+          //           enable
+          //               ? AudioServiceShuffleMode.all
+          //               : AudioServiceShuffleMode.none,
+          //         );
+          //       },
+          //     );
+          //   },
+          // ),
+
           StreamBuilder<double>(
             stream: audioHandler.speed,
             builder: (context, snapshot) => IconButton(
@@ -109,6 +114,15 @@ class PlayerBtns extends StatelessWidget {
             ),
           ),
           IconButton(
+            icon: Icon(
+              Icons.favorite,
+              color: Colors.red.shade400,
+            ),
+            onPressed: () {
+              addItemToFavorate(context);
+            },
+          ),
+          IconButton(
             icon: const Icon(
               Icons.timer,
               color: Colors.white,
@@ -129,5 +143,16 @@ class PlayerBtns extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  addItemToFavorate(BuildContext ctx) {
+    var item = Provider.of<AlbumInfoProvider>(ctx, listen: false).item;
+    if (item != null) {
+      Provider.of<FavorateProvider>(ctx, listen: false).addItemFromAlbum(item);
+      ShowSnackBar().showSnackBar(
+        ctx,
+        "${item.album} 已经加入喜欢列表啦",
+      );
+    }
   }
 }

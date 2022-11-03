@@ -3,18 +3,16 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/pages/album_info/album_info.dart';
-import 'package:tingfm/providers/favorate.dart';
+import 'package:tingfm/providers/history.dart';
 import 'package:tingfm/widgets/image.dart';
 
-class FavorateView extends StatefulWidget {
-  const FavorateView({super.key});
-
+class HistoryView extends StatefulWidget {
+  const HistoryView({super.key});
   @override
-  State<FavorateView> createState() => FavorateViewState();
+  State<HistoryView> createState() => HistoryViewState();
 }
 
-class FavorateViewState extends State<FavorateView>
-    with WidgetsBindingObserver {
+class HistoryViewState extends State<HistoryView> with WidgetsBindingObserver {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -22,8 +20,8 @@ class FavorateViewState extends State<FavorateView>
     super.initState();
 
     SchedulerBinding.instance.addPostFrameCallback(
-      (_) => Provider.of<FavorateProvider>(context, listen: false)
-          .flushFavorateItems(),
+      (_) => Provider.of<HishoryProvider>(context, listen: false)
+          .flushHistoryItems(),
     );
 
     WidgetsBinding.instance.addObserver(this);
@@ -31,19 +29,19 @@ class FavorateViewState extends State<FavorateView>
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<FavorateProvider>(builder:
-        (BuildContext context, FavorateProvider provider, Widget? child) {
-      return provider.favorateItems.isEmpty
+    return Consumer<HishoryProvider>(builder:
+        (BuildContext context, HishoryProvider provider, Widget? child) {
+      return provider.historyItems.isEmpty
           ? Center(
               child: Text(
               "空空如也，快去收听吧",
-              style: TextStyle(fontSize: ScreenUtil().setSp(36)),
+              style: TextStyle(fontSize: ScreenUtil().setSp(16)),
             ))
           : ListView.builder(
               scrollDirection: Axis.vertical,
               controller: _scrollController,
               padding: const EdgeInsets.symmetric(vertical: 5.0),
-              itemCount: provider.favorateItems.length,
+              itemCount: provider.historyItems.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
@@ -73,9 +71,8 @@ class FavorateViewState extends State<FavorateView>
                                   height: ScreenUtil().setHeight(270),
                                   width: ScreenUtil().setWidth(270),
                                   child: imageCached(
-                                      provider.favorateItems[index].imageUrl(),
-                                      provider.favorateItems[index]
-                                          .cachedKey()),
+                                      provider.historyItems[index].imageUrl(),
+                                      provider.historyItems[index].cachedKey()),
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -85,14 +82,14 @@ class FavorateViewState extends State<FavorateView>
                                       padding:
                                           const EdgeInsets.fromLTRB(0, 0, 0, 5),
                                       child: Text(
-                                        provider.favorateItems[index].album,
+                                        provider.historyItems[index].album,
                                         style: TextStyle(
                                             fontSize: ScreenUtil().setSp(40),
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Text(
-                                      provider.favorateItems[index].artist,
+                                      provider.historyItems[index].artist,
                                       style: TextStyle(
                                         fontSize: ScreenUtil().setSp(30),
                                       ),
@@ -107,8 +104,8 @@ class FavorateViewState extends State<FavorateView>
                               PageRouteBuilder(
                                 opaque: true,
                                 pageBuilder: (_, __, ___) => AlbumInfoPage(
-                                  albumId: provider.favorateItems[index].id,
-                                  album: provider.favorateItems[index].album,
+                                  albumId: provider.historyItems[index].id,
+                                  album: provider.historyItems[index].album,
                                 ),
                               ),
                             )
