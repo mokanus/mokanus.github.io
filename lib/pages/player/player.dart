@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:tingfm/entities/album.dart';
-import 'package:tingfm/global/global.dart';
+import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/helper/dominant_color.dart';
 import 'package:tingfm/pages/player/widgets/player_btns.dart';
 import 'dart:ui' as ui;

@@ -1,4 +1,4 @@
-import 'package:tingfm/global/global.dart';
+import 'package:tingfm/utils/global.dart';
 
 class APIRouter {
   static const String baseAPI =

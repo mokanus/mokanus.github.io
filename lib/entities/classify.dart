@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:tingfm/global/global.dart';
+import 'package:tingfm/utils/global.dart';
 
 class ClassifyRsp {
   ClassifyRsp({

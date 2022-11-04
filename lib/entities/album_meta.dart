@@ -1,26 +1,30 @@
 import 'dart:convert';
 
-class AudioSavedData {
-  AudioSavedData({
+// 用来保存专辑当前历史播放位置的数据结构
+class AlbumMeta {
+  AlbumMeta({
+    required this.album,
+    required this.title,
+    required this.index,
     required this.hour,
     required this.minu,
     required this.second,
-    required this.index,
-    required this.album,
   });
 
   int index;
   String album;
+  String title;
   int hour;
   int minu;
   int second;
 
-  factory AudioSavedData.fromJson(Map<String, dynamic> json) => AudioSavedData(
+  factory AlbumMeta.fromJson(Map<String, dynamic> json) => AlbumMeta(
         hour: json["hour"],
         minu: json["minu"],
         second: json["second"],
         index: json["index"],
         album: json["album"],
+        title: json["title"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -29,10 +33,10 @@ class AudioSavedData {
         "second": second,
         "index": index,
         "album": album,
+        "title": title,
       };
 }
 
-AudioSavedData fromJson(String str) =>
-    AudioSavedData.fromJson(json.decode(str));
+AlbumMeta fromJson(String str) => AlbumMeta.fromJson(json.decode(str));
 
-String toJson(AudioSavedData data) => json.encode(data.toJson());
+String toJson(AlbumMeta data) => json.encode(data.toJson());

@@ -6,6 +6,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:hive/hive.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tingfm/entities/album_meta.dart';
 import 'package:tingfm/helper/mediaitem_converter.dart';
 
 class AudioPlayerHandlerImpl extends BaseAudioHandler
@@ -482,6 +483,23 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       ),
     );
   }
+
+  @override
+  AlbumMeta get albumMeta {
+    var album = mediaItem.value?.album as String;
+    var position = playbackState.value.position;
+    var index = playbackState.value.queueIndex as int;
+    var title = mediaItem.value?.title as String;
+
+    return AlbumMeta(
+      album: album,
+      index: index,
+      title: title,
+      hour: position.inHours,
+      minu: position.inMinutes,
+      second: position.inSeconds,
+    );
+  }
 }
 
 abstract class AudioPlayerHandler implements AudioHandler {
@@ -490,6 +508,7 @@ abstract class AudioPlayerHandler implements AudioHandler {
   ValueStream<double> get volume;
   Future<void> setVolume(double volume);
   ValueStream<double> get speed;
+  AlbumMeta get albumMeta;
 }
 
 class QueueState {

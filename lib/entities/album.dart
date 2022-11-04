@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:audio_service/audio_service.dart';
-import 'package:tingfm/global/global.dart';
+import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/values/hive_boxs/album_db.dart';
 
 class AlbumItem {

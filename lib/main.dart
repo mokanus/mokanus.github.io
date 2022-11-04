@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tingfm/pages/broadcast/broadcast.dart';
@@ -20,6 +19,7 @@ import 'package:tingfm/providers/history.dart';
 import 'package:tingfm/providers/recommend.dart';
 import 'package:tingfm/providers/search.dart';
 import 'package:tingfm/services/audio_service.dart';
+import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/values/hive_boxs/album_db.dart';
 import 'package:tingfm/widgets/custom_physics.dart';
 import 'package:tingfm/widgets/mini_player.dart';
@@ -34,6 +34,7 @@ Future<void> main() async {
 
   await setupLocator();
   await startService();
+  await Global.init();
 
   runApp(
     //做灰度处理
@@ -57,26 +58,15 @@ Future<void> startService() async {
   final AudioPlayerHandler audioHandler = await AudioService.init(
     builder: () => AudioPlayerHandlerImpl(),
     config: AudioServiceConfig(
-      androidNotificationChannelId: 'com.red.feather.ting.fm',
+      androidNotificationChannelId: 'com.red.feather.puzi.fm',
       androidNotificationChannelName: '听书铺子',
       androidNotificationOngoing: true,
       androidNotificationIcon: 'drawable/ic_stat_music_note',
       androidShowNotificationBadge: true,
-      // androidStopForegroundOnPause: Hive.box('settings')
-      // .get('stopServiceOnPause', defaultValue: true) as bool,
       notificationColor: Colors.grey[900],
     ),
   );
   GetIt.I.registerSingleton<AudioPlayerHandler>(audioHandler);
-
-  startStoragePlayerDataTimer(audioHandler);
-}
-
-void startStoragePlayerDataTimer(AudioPlayerHandler handler) {
-  Timer.periodic(const Duration(seconds: 5),
-      (Timer t) => {if (handler.playbackState.value.playing) {
-         var audio = handler.SequenceState.getCurrentTag()  as AudioMetadata,
-      }});
 }
 
 Future setupLocator() async {

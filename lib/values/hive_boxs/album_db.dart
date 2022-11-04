@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
-import 'package:tingfm/global/global.dart';
+import 'package:tingfm/utils/global.dart';
 part 'album_db.g.dart';
 
 @HiveType(typeId: 0)

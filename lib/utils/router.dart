@@ -45,7 +45,7 @@ class AppRouter {
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation1, animation2) => page,
-        transitionDuration: Duration(seconds: 0),
+        transitionDuration: const Duration(seconds: 0),
       ),
     );
   }
@@ -56,7 +56,7 @@ class AppRouter {
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation1, animation2) => page,
-        transitionDuration: Duration(seconds: 0),
+        transitionDuration: const Duration(seconds: 0),
       ),
     );
   }
