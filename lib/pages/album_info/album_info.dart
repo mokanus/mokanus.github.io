@@ -46,150 +46,195 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
         body: SafeArea(
           child: provider.item == null
               ? const SizedBox()
-              : Column(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                ScreenUtil().setWidth(200),
-                                ScreenUtil().setHeight(70),
-                                ScreenUtil().setWidth(200),
-                                ScreenUtil().setHeight(0)),
-                            child: imageCached(
-                              provider.item!.imageUrl(),
-                              provider.item!.cachedKey(),
-                              width: ScreenUtil().setWidth(574),
-                              height: ScreenUtil().setWidth(574),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                ScreenUtil().setWidth(200),
-                                ScreenUtil().setHeight(60),
-                                ScreenUtil().setWidth(200),
-                                ScreenUtil().setHeight(0)),
-                            child: Text(
-                              provider.item!.album,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: ScreenUtil().setSp(60)),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                ScreenUtil().setWidth(200),
-                                ScreenUtil().setHeight(40),
-                                ScreenUtil().setWidth(200),
-                                ScreenUtil().setHeight(0)),
-                            child: Text(
-                              "艺术家 : ${provider.item!.artist}",
-                              style:
-                                  TextStyle(fontSize: ScreenUtil().setSp(44)),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                ScreenUtil().setWidth(200),
-                                ScreenUtil().setHeight(44),
-                                ScreenUtil().setWidth(200),
-                                ScreenUtil().setHeight(10)),
-                            child: Text(
-                              "${provider.item!.listenTimes} 次收听 · ${provider.item!.loveCount} 次喜欢",
-                              style:
-                                  TextStyle(fontSize: ScreenUtil().setSp(36)),
-                            ),
-                          ),
-                          provider.item!.desc == ""
-                              ? const SizedBox()
-                              : Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      ScreenUtil().setWidth(200),
-                                      ScreenUtil().setHeight(70),
-                                      ScreenUtil().setWidth(200),
-                                      ScreenUtil().setHeight(0)),
-                                  child: Text(
-                                    "简要概述:${provider.item!.desc}",
-                                    style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(40)),
-                                  ),
-                                ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                height: ScreenUtil().setHeight(134),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.menu),
-                                    Text(" ${provider.item!.count}集",
-                                        style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(40)))
-                                  ],
-                                ),
+              : Container(
+                  padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  ScreenUtil().setWidth(200),
+                                  ScreenUtil().setHeight(70),
+                                  ScreenUtil().setWidth(200),
+                                  ScreenUtil().setHeight(0)),
+                              child: imageCached(
+                                provider.item!.imageUrl(),
+                                provider.item!.cachedKey(),
+                                width: ScreenUtil().setWidth(574),
+                                height: ScreenUtil().setWidth(574),
                               ),
-                              GestureDetector(
-                                child: Container(
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  ScreenUtil().setWidth(200),
+                                  ScreenUtil().setHeight(60),
+                                  ScreenUtil().setWidth(200),
+                                  ScreenUtil().setHeight(0)),
+                              child: Text(
+                                provider.item!.album,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenUtil().setSp(60),
+                                    fontFamily: "Avenir"),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  ScreenUtil().setWidth(200),
+                                  ScreenUtil().setHeight(40),
+                                  ScreenUtil().setWidth(200),
+                                  ScreenUtil().setHeight(0)),
+                              child: Text(
+                                "艺术家 : ${provider.item!.artist}",
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(44),
+                                    fontFamily: "Avenir"),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  ScreenUtil().setWidth(200),
+                                  ScreenUtil().setHeight(44),
+                                  ScreenUtil().setWidth(200),
+                                  ScreenUtil().setHeight(10)),
+                              child: Text(
+                                "${provider.item!.listenTimes} 次收听 · ${provider.item!.loveCount} 次喜欢",
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(36),
+                                    fontFamily: "Avenir"),
+                              ),
+                            ),
+                            provider.item!.desc == ""
+                                ? const SizedBox()
+                                : Padding(
+                                    padding: EdgeInsets.fromLTRB(
+                                        ScreenUtil().setWidth(200),
+                                        ScreenUtil().setHeight(70),
+                                        ScreenUtil().setWidth(200),
+                                        ScreenUtil().setHeight(0)),
+                                    child: Text(
+                                      "简要概述:${provider.item!.desc}",
+                                      style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(30),
+                                          fontFamily: "Avenir"),
+                                    ),
+                                  ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
                                   height: ScreenUtil().setHeight(134),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(
-                                        Icons.favorite_sharp,
-                                        color: Color.fromARGB(255, 234, 78, 94),
-                                      ),
-                                      Text("加入喜欢",
+                                      const Icon(Icons.menu),
+                                      Text(" ${provider.item!.count}集",
                                           style: TextStyle(
                                               fontSize: ScreenUtil().setSp(40),
                                               fontFamily: "Avenir"))
                                     ],
                                   ),
                                 ),
-                                onTap: () {
-                                  addItemToFavorate();
-                                },
-                              ),
-                              GestureDetector(
-                                child: Container(
-                                  height: ScreenUtil().setHeight(140),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const Icon(Icons.play_arrow_rounded),
-                                      Text("开始播放",
-                                          style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(40)))
-                                    ],
-                                  ),
-                                ),
-                                onTap: () {
-                                  addItemToHistory();
-                                  Navigator.of(context).push(
-                                    PageRouteBuilder(
-                                      opaque: false,
-                                      pageBuilder: (_, __, ___) => PlayerPage(
-                                        fromMiniplayer: false,
-                                        albumItem: provider.item,
-                                      ),
+                                GestureDetector(
+                                  child: Container(
+                                    height: ScreenUtil().setHeight(134),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          Icons.favorite_sharp,
+                                          color:
+                                              Color.fromARGB(255, 234, 78, 94),
+                                        ),
+                                        Text("加入喜欢",
+                                            style: TextStyle(
+                                                fontSize:
+                                                    ScreenUtil().setSp(40),
+                                                fontFamily: "Avenir"))
+                                      ],
                                     ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
+                                  ),
+                                  onTap: () {
+                                    addItemToFavorate();
+                                  },
+                                ),
+                                GestureDetector(
+                                  child: Container(
+                                    height: ScreenUtil().setHeight(140),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const Icon(Icons.play_arrow_rounded),
+                                        provider.isPlayed()
+                                            ? Text("继续播放",
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        ScreenUtil().setSp(40),
+                                                    fontFamily: "Avenir"))
+                                            : Text("开始播放",
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        ScreenUtil().setSp(40),
+                                                    fontFamily: "Avenir"))
+                                      ],
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    addItemToHistory();
+                                    Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                        opaque: false,
+                                        pageBuilder: (_, __, ___) => PlayerPage(
+                                          fromMiniplayer: false,
+                                          albumItem: provider.item,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            provider.isPlayed()
+                                ? Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          provider.getAlbumMetaInfo(),
+                                          style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(32),
+                                              fontFamily: "Avenir"),
+                                        ),
+                                        Text(
+                                          provider.getDuration(),
+                                          style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(32),
+                                              fontFamily: "Avenir"),
+                                        ),
+                                      ],
+                                    ))
+                                : const SizedBox(),
+                          ],
+                        ),
                       ),
-                    ),
-                    const MiniPlayer(),
-                  ],
+                      const MiniPlayer(),
+                    ],
+                  ),
                 ),
         ),
       );

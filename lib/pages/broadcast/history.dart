@@ -81,18 +81,18 @@ class HistoryViewState extends State<HistoryView> with WidgetsBindingObserver {
                                   children: [
                                     Padding(
                                       padding:
-                                          const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                          const EdgeInsets.fromLTRB(0, 0, 0, 8),
                                       child: Text(
-                                        provider.historyItems[index].album,
+                                        "${provider.historyItems[index].album} · ${provider.historyItems[index].artist}",
                                         style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(40),
+                                            fontSize: ScreenUtil().setSp(44),
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Text(
-                                      provider.historyItems[index].artist,
+                                      provider.getAlbumMetaInfo(index),
                                       style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(30),
+                                        fontSize: ScreenUtil().setSp(35),
                                       ),
                                     )
                                   ],

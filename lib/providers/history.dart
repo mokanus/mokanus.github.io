@@ -44,15 +44,11 @@ class HishoryProvider extends ChangeNotifier {
     for (var item in historyItems) {
       var metaData = metaBox.get('album_${item.album}');
       if (metaData != null) {
-        metas[item.album] = fromJson(metaData.toString());
+        metas[item.album] = AlbumMeta.fromJson(metaData.toString());
       }
     }
 
     notifyListeners();
-  }
-
-  AlbumMeta? getAlbumMeta(String album) {
-    return metas[album];
   }
 
   Future<void> removeItem(AlbumItemDB item) async {
@@ -60,5 +56,17 @@ class HishoryProvider extends ChangeNotifier {
     await box.delete(item);
     historyItems = box.values.toList();
     notifyListeners();
+  }
+
+  AlbumMeta? getAlbumMeta(String album) {
+    return metas[album];
+  }
+
+  String getAlbumMetaInfo(int index) {
+    var album = historyItems[index].album;
+    if (album != "") {
+      return "播放到 : ${metas[album]?.title}";
+    }
+    return "";
   }
 }

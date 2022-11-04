@@ -1,24 +1,31 @@
+// To parse this JSON data, do
+//
+//     final albumMeta = albumMetaFromMap(jsonString);
+
 import 'dart:convert';
 
-// 用来保存专辑当前历史播放位置的数据结构
 class AlbumMeta {
   AlbumMeta({
-    required this.album,
-    required this.title,
-    required this.index,
     required this.hour,
     required this.minu,
     required this.second,
+    required this.index,
+    required this.album,
+    required this.title,
   });
 
-  int index;
-  String album;
-  String title;
   int hour;
   int minu;
   int second;
+  int index;
+  String album;
+  String title;
 
-  factory AlbumMeta.fromJson(Map<String, dynamic> json) => AlbumMeta(
+  factory AlbumMeta.fromJson(String str) => AlbumMeta.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory AlbumMeta.fromMap(Map<String, dynamic> json) => AlbumMeta(
         hour: json["hour"],
         minu: json["minu"],
         second: json["second"],
@@ -27,7 +34,7 @@ class AlbumMeta {
         title: json["title"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
         "hour": hour,
         "minu": minu,
         "second": second,
@@ -36,7 +43,3 @@ class AlbumMeta {
         "title": title,
       };
 }
-
-AlbumMeta fromJson(String str) => AlbumMeta.fromJson(json.decode(str));
-
-String toJson(AlbumMeta data) => json.encode(data.toJson());
