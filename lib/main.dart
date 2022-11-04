@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tingfm/pages/broadcast/broadcast.dart';
@@ -66,6 +68,15 @@ Future<void> startService() async {
     ),
   );
   GetIt.I.registerSingleton<AudioPlayerHandler>(audioHandler);
+
+  startStoragePlayerDataTimer(audioHandler);
+}
+
+void startStoragePlayerDataTimer(AudioPlayerHandler handler) {
+  Timer.periodic(const Duration(seconds: 5),
+      (Timer t) => {if (handler.playbackState.value.playing) {
+         var audio = handler.SequenceState.getCurrentTag()  as AudioMetadata,
+      }});
 }
 
 Future setupLocator() async {
