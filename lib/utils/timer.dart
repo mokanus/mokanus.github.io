@@ -30,7 +30,6 @@ class Timers {
       var box = await Hive.openBox(HiveBoxes.albumMetaDB);
       var meta = audioHandler.albumMeta;
       box.put('album_${meta.album}', meta.toJson());
-      print(meta.toJson());
     }
   }
 }

@@ -1,5 +1,4 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +8,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/utils/global.dart';
-import 'package:tingfm/helper/dominant_color.dart';
 import 'package:tingfm/pages/player/widgets/player_btns.dart';
 import 'dart:ui' as ui;
 import 'package:tingfm/pages/player/widgets/seek_bar.dart';
@@ -35,9 +33,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
   final PanelController panelController = PanelController();
   var isPanelOpened = false;
-  final ValueNotifier<List<Color?>?> gradientColor =
-      ValueNotifier<List<Color?>?>(
-          [const Color(0xfff5f9ff), const Color(0xfff5f9ff)]);
+
   @override
   void initState() {
     super.initState();
@@ -96,7 +92,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Dismissible(
         direction: DismissDirection.down,
-        background: const ColoredBox(color: Colors.transparent),
         key: const Key('PlayerPage'),
         onDismissed: (direction) {
           Navigator.pop(context);
@@ -112,101 +107,75 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
           if (mediaItem == null) {
             return const SizedBox();
           }
-          getColors(
-            imageProvider: CachedNetworkImageProvider(
-              mediaItem.artUri.toString(),
-            ),
-          ).then((value) => updateBackgroundColors(value));
-
-          return ValueListenableBuilder(
-              valueListenable: gradientColor,
-              child: SafeArea(
-                child: LayoutBuilder(builder: (
-                  BuildContext context,
-                  BoxConstraints constraints,
-                ) {
-                  return Scaffold(
-                    resizeToAvoidBottomInset: false,
-                    backgroundColor: Colors.transparent,
-                    appBar: AppBar(
-                      elevation: 0,
-                      backgroundColor: Colors.transparent,
-                      centerTitle: true,
-                      leading: IconButton(
-                        icon: const Icon(Icons.expand_more_rounded),
-                        tooltip: "返回",
-                        color: Colors.white,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      title: Text(
-                        widget.albumItem!.album,
-                        style: const TextStyle(
-                          fontFamily: "Avenir",
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+          return SafeArea(
+            child: LayoutBuilder(builder: (
+              BuildContext context,
+              BoxConstraints constraints,
+            ) {
+              return Scaffold(
+                resizeToAvoidBottomInset: false,
+                appBar: AppBar(
+                  elevation: 0,
+                  centerTitle: true,
+                  leading: IconButton(
+                    icon: const Icon(Icons.expand_more_rounded),
+                    tooltip: "返回",
+                    color: Colors.grey,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  title: Text(
+                    widget.albumItem!.album,
+                    style: const TextStyle(
+                      fontFamily: "Avenir",
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                body: Stack(children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      imageCached(mediaItem.artUri.toString(),
+                          '${mediaItem.album}·${mediaItem.artist}',
+                          width: ScreenUtil().setWidth(628),
+                          height: ScreenUtil().setHeight(628),
+                          margin: const EdgeInsets.all(15)),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            ScreenUtil().setWidth(200),
+                            ScreenUtil().setHeight(20),
+                            ScreenUtil().setWidth(200),
+                            ScreenUtil().setHeight(120)),
+                        child: Text(
+                          "${mediaItem.artist} - ${mediaItem.title}",
+                          style: TextStyle(
+                            fontFamily: "Avenir",
+                            fontSize: ScreenUtil().setSp(45),
+                            color: Colors.black.withOpacity(0.7),
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ),
-                    body: Stack(children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          imageCached(mediaItem.artUri.toString(),
-                              '${mediaItem.album}·${mediaItem.artist}',
-                              width: ScreenUtil().setWidth(628),
-                              height: ScreenUtil().setHeight(628),
-                              margin: const EdgeInsets.all(15)),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                ScreenUtil().setWidth(200),
-                                ScreenUtil().setHeight(20),
-                                ScreenUtil().setWidth(200),
-                                ScreenUtil().setHeight(120)),
-                            child: Text(
-                              "${mediaItem.artist} - ${mediaItem.title}",
-                              style: TextStyle(
-                                fontFamily: "Avenir",
-                                fontSize: ScreenUtil().setSp(45),
-                                color: Colors.white,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
 
-                          // 播放器控制控件
-                          PlayerBtns(audioHandler: audioHandler),
+                      // 播放器控制控件
+                      PlayerBtns(audioHandler: audioHandler),
 
-                          // 进度条控件
-                          buildSeekBar(mediaItem),
+                      // 进度条控件
+                      buildSeekBar(mediaItem),
 
-                          // 播放控件
-                          PlayerContros(audioHandler),
-                        ],
-                      ),
-                      buildSliderPanel(constraints)
-                    ]),
-                  );
-                }),
-              ),
-              builder:
-                  (BuildContext context, List<Color?>? value, Widget? child) {
-                return AnimatedContainer(
-                  duration: const Duration(milliseconds: 100),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          value?[0] ?? const Color(0xfff5f9ff),
-                          value?[1] ?? const Color(0xfff5f9ff),
-                        ]),
+                      // 播放控件
+                      PlayerContros(audioHandler),
+                    ],
                   ),
-                  child: child,
-                );
-              });
+                  buildSliderPanel(constraints)
+                ]),
+              );
+            }),
+          );
         });
   }
 
@@ -253,7 +222,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
         backdropEnabled: true,
         boxShadow: const [],
         backdropOpacity: 0.01,
-        color: Colors.transparent,
+        backdropColor: const Color.fromARGB(255, 245, 245, 245),
         controller: panelController,
         panelBuilder: (ScrollController scrollController) {
           return ClipRRect(
@@ -318,7 +287,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
           child: Container(
             height: 50,
             width: constraints.maxWidth,
-            color: Colors.transparent,
+            color: const Color.fromARGB(255, 245, 245, 245),
             child: Column(
               children: [
                 const SizedBox(
@@ -329,7 +298,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                     width: 50,
                     height: 5,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.black.withOpacity(0.6),
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
@@ -339,10 +308,10 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                     child: Text(
                       isPanelOpened ? "收缩列表" : "弹出列表",
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
-                        color: Colors.white,
+                        color: Colors.black.withOpacity(0.6),
                       ),
                     ),
                   ),
@@ -370,11 +339,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
         },
       ),
     );
-  }
-
-  void updateBackgroundColors(List<Color?> value) {
-    gradientColor.value = value;
-    return;
   }
 
   Stream<PositionData> get _positionDataStream =>

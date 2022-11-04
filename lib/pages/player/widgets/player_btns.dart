@@ -31,7 +31,7 @@ class PlayerBtns extends StatelessWidget {
             builder: (context, snapshot) {
               final repeatMode = snapshot.data ?? AudioServiceRepeatMode.none;
               const icons = [
-                Icon(Icons.repeat, color: Colors.white),
+                Icon(Icons.repeat, color: Colors.black),
                 Icon(Icons.repeat, color: Colors.orange),
                 Icon(Icons.repeat_one, color: Colors.orange),
               ];
@@ -88,14 +88,14 @@ class PlayerBtns extends StatelessWidget {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 8,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                 ),
                 const Positioned(
                   child: Icon(
                     Icons.speed_rounded,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
               ]),
@@ -125,7 +125,7 @@ class PlayerBtns extends StatelessWidget {
           IconButton(
             icon: const Icon(
               Icons.timer,
-              color: Colors.white,
+              color: Colors.black,
             ),
             onPressed: () {
               showSliderDialog(
