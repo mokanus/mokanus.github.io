@@ -14,13 +14,13 @@ import 'package:tingfm/pages/home/home.dart';
 import 'package:tingfm/pages/my/my.dart';
 import 'package:tingfm/providers/classify.dart';
 import 'package:tingfm/providers/album_info.dart';
-import 'package:tingfm/providers/favorate.dart';
+import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/providers/history.dart';
 import 'package:tingfm/providers/recommend.dart';
 import 'package:tingfm/providers/search.dart';
 import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/utils/global.dart';
-import 'package:tingfm/values/hive_boxs/album_db.dart';
+import 'package:tingfm/values/hive_boxes/album_db.dart';
 import 'package:tingfm/widgets/custom_physics.dart';
 import 'package:tingfm/widgets/mini_player.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +47,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => ClassifyProvider()),
         ChangeNotifierProvider(create: (_) => ListByClassifyProvider()),
         ChangeNotifierProvider(create: (_) => HishoryProvider()),
-        ChangeNotifierProvider(create: (_) => FavorateProvider()),
+        ChangeNotifierProvider(create: (_) => FavoriteProvider()),
       ],
       child: const App(),
     ),

@@ -3,7 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/pages/album_info/album_info.dart';
-import 'package:tingfm/providers/favorate.dart';
+import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/widgets/image.dart';
 
 class FavorateView extends StatefulWidget {
@@ -22,8 +22,8 @@ class FavorateViewState extends State<FavorateView>
     super.initState();
 
     SchedulerBinding.instance.addPostFrameCallback(
-      (_) => Provider.of<FavorateProvider>(context, listen: false)
-          .flushFavorateItems(),
+      (_) => Provider.of<FavoriteProvider>(context, listen: false)
+          .flushFavoriteItems(),
     );
 
     WidgetsBinding.instance.addObserver(this);
@@ -31,9 +31,9 @@ class FavorateViewState extends State<FavorateView>
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<FavorateProvider>(builder:
-        (BuildContext context, FavorateProvider provider, Widget? child) {
-      return provider.favorateItems.isEmpty
+    return Consumer<FavoriteProvider>(builder:
+        (BuildContext context, FavoriteProvider provider, Widget? child) {
+      return provider.favoriteItems.isEmpty
           ? Center(
               child: Text(
               "空空如也，快去收听吧",
@@ -43,7 +43,7 @@ class FavorateViewState extends State<FavorateView>
               scrollDirection: Axis.vertical,
               controller: _scrollController,
               padding: const EdgeInsets.symmetric(vertical: 5.0),
-              itemCount: provider.favorateItems.length,
+              itemCount: provider.favoriteItems.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
@@ -73,8 +73,8 @@ class FavorateViewState extends State<FavorateView>
                                   height: ScreenUtil().setHeight(270),
                                   width: ScreenUtil().setWidth(270),
                                   child: imageCached(
-                                      provider.favorateItems[index].imageUrl(),
-                                      provider.favorateItems[index]
+                                      provider.favoriteItems[index].imageUrl(),
+                                      provider.favoriteItems[index]
                                           .cachedKey()),
                                 ),
                                 Column(
@@ -85,14 +85,14 @@ class FavorateViewState extends State<FavorateView>
                                       padding:
                                           const EdgeInsets.fromLTRB(0, 0, 0, 5),
                                       child: Text(
-                                        provider.favorateItems[index].album,
+                                        provider.favoriteItems[index].album,
                                         style: TextStyle(
                                             fontSize: ScreenUtil().setSp(40),
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Text(
-                                      provider.favorateItems[index].artist,
+                                      provider.favoriteItems[index].artist,
                                       style: TextStyle(
                                         fontSize: ScreenUtil().setSp(30),
                                       ),
@@ -107,8 +107,8 @@ class FavorateViewState extends State<FavorateView>
                               PageRouteBuilder(
                                 opaque: true,
                                 pageBuilder: (_, __, ___) => AlbumInfoPage(
-                                  albumId: provider.favorateItems[index].id,
-                                  album: provider.favorateItems[index].album,
+                                  albumId: provider.favoriteItems[index].id,
+                                  album: provider.favoriteItems[index].album,
                                 ),
                               ),
                             )

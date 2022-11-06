@@ -3,7 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/entities/album_meta.dart';
 import 'package:tingfm/values/hive_box.dart';
-import 'package:tingfm/values/hive_boxs/album_db.dart';
+import 'package:tingfm/values/hive_boxes/album_db.dart';
 
 class HishoryProvider extends ChangeNotifier {
   List<AlbumItemDB> historyItems = <AlbumItemDB>[];
