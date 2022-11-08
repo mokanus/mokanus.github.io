@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/pages/player/widgets/seek_bar.dart';
 import 'package:tingfm/providers/album_info.dart';
-import 'package:tingfm/providers/favorate.dart';
+import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/widgets/snackbar.dart';
 
@@ -148,7 +148,7 @@ class PlayerBtns extends StatelessWidget {
   addItemToFavorate(BuildContext ctx) {
     var item = Provider.of<AlbumInfoProvider>(ctx, listen: false).item;
     if (item != null) {
-      Provider.of<FavorateProvider>(ctx, listen: false).addItemFromAlbum(item);
+      Provider.of<FavoriteProvider>(ctx, listen: false).addItemFromAlbum(item);
       ShowSnackBar().showSnackBar(
         ctx,
         "${item.album} 已经加入喜欢列表啦",

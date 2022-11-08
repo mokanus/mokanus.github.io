@@ -2,16 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/values/hive_box.dart';
-import 'package:tingfm/values/hive_boxs/album_db.dart';
+import 'package:tingfm/values/hive_boxes/album_db.dart';
 
-class FavorateProvider extends ChangeNotifier {
-  List<AlbumItemDB> favorateItems = <AlbumItemDB>[];
+class FavoriteProvider extends ChangeNotifier {
+  List<AlbumItemDB> favoriteItems = <AlbumItemDB>[];
 
   Future<void> addItem(AlbumItemDB album) async {
     Box<AlbumItemDB> box =
         await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
     await box.add(album);
-    favorateItems = box.values.toList();
+    favoriteItems = box.values.toList();
     notifyListeners();
   }
 
@@ -20,24 +20,24 @@ class FavorateProvider extends ChangeNotifier {
         await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
     var item = album.convertToAlbumItemDB();
     await box.add(item);
-    favorateItems = box.values.toList();
-    favorateItems = favorateItems.reversed.toList();
+    favoriteItems = box.values.toList();
+    favoriteItems = favoriteItems.reversed.toList();
     notifyListeners();
   }
 
-  Future<List<AlbumItemDB>> getFavorateItems() async {
+  Future<List<AlbumItemDB>> getFavoriteItems() async {
     Box<AlbumItemDB> box =
         await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
-    favorateItems = box.values.toList();
+    favoriteItems = box.values.toList();
     notifyListeners();
-    return favorateItems;
+    return favoriteItems;
   }
 
-  Future flushFavorateItems() async {
+  Future flushFavoriteItems() async {
     Box<AlbumItemDB> box =
         await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
-    favorateItems = box.values.toList();
-    favorateItems = favorateItems.reversed.toList();
+    favoriteItems = box.values.toList();
+    favoriteItems = favoriteItems.reversed.toList();
     notifyListeners();
   }
 
@@ -45,7 +45,7 @@ class FavorateProvider extends ChangeNotifier {
     Box<AlbumItemDB> box =
         await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
     await box.delete(item);
-    favorateItems = box.values.toList();
+    favoriteItems = box.values.toList();
     notifyListeners();
   }
 }

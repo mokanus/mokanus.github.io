@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:tingfm/entities/album.dart';
-import 'package:tingfm/entities/album_meta.dart';
 import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/pages/player/widgets/player_btns.dart';
 import 'dart:ui' as ui;
@@ -52,32 +51,17 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
       }
     } else {
       audioHandler.stop();
-      var meta = Provider.of<AlbumInfoProvider>(context, listen: false).meta;
-      updateNplay(meta);
+      updateNplay();
     }
 
     WidgetsBinding.instance.addObserver(this);
   }
 
-  Future<void> updateNplay(AlbumMeta? meta) async {
-    if (audioHandler.albumMeta.album == widget.albumItem?.album) {
-      // 当前播放中的对象就是即将想要播放的对象
-      await audioHandler.play();
-      return;
-    } else {
-      // 是一个不是当前缓存的专辑
-
+  Future<void> updateNplay() async {
+    if (!widget.fromMiniplayer) {
       var globalQueue = mockItems(widget.albumItem);
       await audioHandler.updateQueue(globalQueue);
-
-      if (meta != null) {
-        await audioHandler.skipToQueueItem(meta.index);
-        await audioHandler.seek(Duration(
-            hours: meta.hour, minutes: meta.minu, seconds: meta.second));
-      } else {
-        await audioHandler.skipToQueueItem(0);
-      }
-
+      await audioHandler.skipToQueueItem(0);
       await audioHandler.play();
     }
   }

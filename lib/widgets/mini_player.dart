@@ -56,11 +56,13 @@ class _MiniPlayerState extends State<MiniPlayer> {
                         mediaItem.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontFamily: "Avenir"),
                       ),
                       subtitle: Text(
                         mediaItem.artist.toString(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontFamily: "Avenir"),
                       ),
                       leading: Hero(
                         tag: 'currentArtwork',
