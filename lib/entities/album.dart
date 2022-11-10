@@ -77,7 +77,7 @@ class AlbumItem {
       };
 
   String imageUrl() {
-    return "${Global.ossPre}$album·${artist}|${artist}/${artUri}";
+    return "${Global.ossPre}$artist/$album/${artUri}";
   }
 
   String listenTime() {
@@ -95,8 +95,7 @@ class AlbumItem {
         duration: Duration(seconds: mediaItems[index].duration),
         artUri: Uri.parse(imageUrl()),
         extras: {
-          'url':
-              '${Global.ossPre}$album·$artist|$artist/${mediaItems[index].title}',
+          'url': '${Global.ossPre}$artist$album/${mediaItems[index].title}',
         });
   }
 

@@ -121,7 +121,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                                   ),
                                 ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Container(
                                 height: ScreenUtil().setHeight(134),
@@ -198,30 +198,6 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                               ),
                             ],
                           ),
-                          provider.isPlayed()
-                              ? Container(
-                                  alignment: Alignment.centerLeft,
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        provider.getAlbumMetaInfo(),
-                                        style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(32),
-                                            fontFamily: "Avenir"),
-                                      ),
-                                      Text(
-                                        provider.getDuration(),
-                                        style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(32),
-                                            fontFamily: "Avenir"),
-                                      ),
-                                    ],
-                                  ))
-                              : const SizedBox(),
                         ],
                       ),
                     ),
