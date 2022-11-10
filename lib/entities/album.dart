@@ -95,7 +95,7 @@ class AlbumItem {
         duration: Duration(seconds: mediaItems[index].duration),
         artUri: Uri.parse(imageUrl()),
         extras: {
-          'url': '${Global.ossPre}$artist$album/${mediaItems[index].title}',
+          'url': '${Global.ossPre}$artist/$album/${mediaItems[index].title}',
         });
   }
 
