@@ -61,7 +61,7 @@ Future<void> startService() async {
       androidNotificationChannelId: 'com.red.feather.puzi.ting',
       androidNotificationChannelName: '听书铺子',
       androidNotificationOngoing: true,
-      // androidNotificationIcon: 'drawable/ic_launcher',
+      androidNotificationIcon: 'mipmap/ic_launcher',
       androidShowNotificationBadge: true,
       notificationColor: Colors.grey[900],
     ),
@@ -128,7 +128,7 @@ class _AppState extends State<App> {
                 cardColor: const Color.fromARGB(255, 254, 254, 254),
                 appBarTheme: const AppBarTheme(
                   backgroundColor: Color.fromARGB(255, 245, 245, 245),
-                  systemOverlayStyle: SystemUiOverlayStyle.dark,
+                  systemOverlayStyle: SystemUiOverlayStyle.light,
                   foregroundColor: Colors.black,
                 ),
                 sliderTheme: const SliderThemeData(

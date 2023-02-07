@@ -225,40 +225,11 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
               topLeft: Radius.circular(10.0),
               topRight: Radius.circular(10.0),
             ),
-            child: BackdropFilter(
-              filter: ui.ImageFilter.blur(
-                sigmaX: 1.0,
-                sigmaY: 1.0,
-              ),
-              child: ShaderMask(
-                shaderCallback: (rect) {
-                  return const LinearGradient(
-                    end: Alignment.topCenter,
-                    begin: Alignment.center,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black,
-                      Colors.black,
-                      Colors.black,
-                      Colors.transparent,
-                    ],
-                  ).createShader(
-                    Rect.fromLTRB(
-                      0,
-                      0,
-                      rect.width,
-                      rect.height,
-                    ),
-                  );
-                },
-                blendMode: BlendMode.dstIn,
-                child: NowPlayingStream(
-                  head: true,
-                  headHeight: 50,
-                  audioHandler: audioHandler,
-                  scrollController: scrollController,
-                ),
-              ),
+            child: NowPlayingStream(
+              head: true,
+              headHeight: 50,
+              audioHandler: audioHandler,
+              scrollController: scrollController,
             ),
           );
         },
