@@ -369,12 +369,12 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   }
 
   @override
-  Future<void> setShuffleMode(AudioServiceShuffleMode mode) async {
-    final enabled = mode == AudioServiceShuffleMode.all;
+  Future<void> setShuffleMode(AudioServiceShuffleMode shuffleMode) async {
+    final enabled = shuffleMode == AudioServiceShuffleMode.all;
     if (enabled) {
       await _player!.shuffle();
     }
-    playbackState.add(playbackState.value.copyWith(shuffleMode: mode));
+    playbackState.add(playbackState.value.copyWith(shuffleMode: shuffleMode));
     await _player!.setShuffleModeEnabled(enabled);
   }
 

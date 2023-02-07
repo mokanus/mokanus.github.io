@@ -58,10 +58,10 @@ Future<void> startService() async {
   final AudioPlayerHandler audioHandler = await AudioService.init(
     builder: () => AudioPlayerHandlerImpl(),
     config: AudioServiceConfig(
-      androidNotificationChannelId: 'com.red.feather.puzi.fm',
+      androidNotificationChannelId: 'com.red.feather.puzi.ting',
       androidNotificationChannelName: '听书铺子',
       androidNotificationOngoing: true,
-      androidNotificationIcon: 'drawable/ic_stat_music_note',
+      // androidNotificationIcon: 'drawable/ic_launcher',
       androidShowNotificationBadge: true,
       notificationColor: Colors.grey[900],
     ),

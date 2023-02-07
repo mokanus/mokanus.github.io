@@ -11,7 +11,7 @@ class Global {
   }
 
   static const String ossPre =
-      'https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/tingfm/';
+      'http://www.chiyustudio.com/';
 
   static bool isLightTheme = true;
   static bool isTurnOnVibration = true;

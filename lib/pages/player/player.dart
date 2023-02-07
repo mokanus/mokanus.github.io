@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:tingfm/entities/album.dart';
-import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/pages/player/widgets/player_btns.dart';
 import 'dart:ui' as ui;
 import 'package:tingfm/pages/player/widgets/seek_bar.dart';
@@ -23,7 +22,7 @@ class PlayerPage extends StatefulWidget {
   final bool fromMiniplayer;
   AlbumItem? albumItem;
 
-  PlayerPage({super.key, required this.fromMiniplayer, this.albumItem}) {}
+  PlayerPage({super.key, required this.fromMiniplayer, this.albumItem});
 
   @override
   PlayerPageState createState() => PlayerPageState();
@@ -70,12 +69,8 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
     List<MediaItem> globalQueue = <MediaItem>[];
 
     if (album != null) {
-      if (Global.isRelease) {
-        for (var i = 0; i < album.mediaItems.length; i++) {
-          globalQueue.add(album.mediaItem(i));
-        }
-      } else {
-        globalQueue.add(album.mediaItem(0));
+      for (var i = 0; i < album.mediaItems.length; i++) {
+        globalQueue.add(album.mediaItem(i));
       }
     }
 
