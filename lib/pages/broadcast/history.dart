@@ -36,7 +36,7 @@ class HistoryViewState extends State<HistoryView> with WidgetsBindingObserver {
           ? Center(
               child: Text(
               "空空如也，快去收听吧",
-              style: TextStyle(fontSize: ScreenUtil().setSp(16)),
+              style: TextStyle(fontSize: ScreenUtil().setSp(32)),
             ))
           : ListView.builder(
               scrollDirection: Axis.vertical,

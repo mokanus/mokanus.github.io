@@ -46,8 +46,8 @@ class _BroadcastPageState extends State<BroadcastPage>
                 padding:
                     EdgeInsets.fromLTRB(10, 5, ScreenUtil().setWidth(16), 5),
                 child: Icon(
-                  Icons.search,
-                  color: const Color.fromARGB(255, 187, 187, 187),
+                  Icons.multitrack_audio_sharp,
+                  color: const Color.fromARGB(255, 234, 78, 94),
                   size: ScreenUtil().setSp(60),
                 ),
               ),
@@ -55,7 +55,7 @@ class _BroadcastPageState extends State<BroadcastPage>
                 padding:
                     EdgeInsets.fromLTRB(ScreenUtil().setWidth(16), 5, 20, 5),
                 child: Text(
-                  "隋唐演义",
+                  "听自己喜欢的故事",
                   style: TextStyle(
                       color: const Color.fromARGB(255, 187, 187, 187),
                       fontSize: ScreenUtil().setSp(45)),
@@ -86,12 +86,12 @@ class _BroadcastPageState extends State<BroadcastPage>
           tabs: const [
             Tab(
               child: Text(
-                "收听",
+                "足迹",
               ),
             ),
             Tab(
               child: Text(
-                "喜欢",
+                "收藏",
               ),
             ),
           ],

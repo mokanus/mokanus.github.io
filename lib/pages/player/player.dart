@@ -7,14 +7,14 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:tingfm/entities/album.dart';
-import 'package:tingfm/pages/player/widgets/player_btns.dart';
-import 'package:tingfm/pages/player/widgets/seek_bar.dart';
+import 'package:tingfm/pages/player/extras.dart';
+import 'package:tingfm/pages/player/seekbar.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/widgets/image.dart';
 
-import 'widgets/player_contro.dart';
-import 'widgets/playing_stream.dart';
+import 'contros.dart';
+import 'panel.dart';
 
 // ignore: must_be_immutable
 class PlayerPage extends StatefulWidget {
@@ -66,13 +66,11 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
 
   List<MediaItem> mockItems(AlbumItem? album) {
     List<MediaItem> globalQueue = <MediaItem>[];
-
     if (album != null) {
       for (var i = 0; i < album.mediaItems.length; i++) {
         globalQueue.add(album.mediaItem(i));
       }
     }
-
     return globalQueue;
   }
 
@@ -156,7 +154,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                       ),
 
                       // 播放器控制控件
-                      PlayerBtns(audioHandler: audioHandler),
+                      ExtraBtns(audioHandler: audioHandler),
 
                       // 进度条控件
                       buildSeekBar(mediaItem),

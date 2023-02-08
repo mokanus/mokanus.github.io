@@ -4,7 +4,7 @@ class APIRouter {
   static const String baseAPI =
       'https://ting-fm-9991-5-1314189171.sh.run.tcloudbase.com';
 
-  static const String debugBaseAPI = 'http://192.168.1.14:80';
+  static const String debugBaseAPI = 'http://127.0.0.1:80';
 
   static const String searchAPI = '/api/v1/album/search';
   static const String recommendAPI = '/api/v1/album/recommend';
@@ -16,6 +16,6 @@ class APIRouter {
     if (Global.isRelease) {
       return baseAPI + api;
     }
-    return baseAPI + api;
+    return debugBaseAPI + api;
   }
 }

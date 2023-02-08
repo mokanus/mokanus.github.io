@@ -2,16 +2,16 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:tingfm/pages/player/widgets/seek_bar.dart';
+import 'package:tingfm/pages/player/seekbar.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/widgets/snackbar.dart';
 
-class PlayerBtns extends StatelessWidget {
+class ExtraBtns extends StatelessWidget {
   final AudioPlayerHandler audioHandler;
 
-  const PlayerBtns({Key? key, required this.audioHandler}) : super(key: key);
+  const ExtraBtns({Key? key, required this.audioHandler}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -131,18 +131,22 @@ class PlayerBtns extends StatelessWidget {
               showSliderDialog(
                 context: context,
                 title: "定时关闭",
-                divisions: 10,
+                divisions: 6,
                 min: 0.0,
-                max: 1.0,
-                value: audioHandler.volume.value,
+                max: 30.0,
+                value: 0,
                 stream: audioHandler.volume,
-                onChanged: audioHandler.setVolume,
+                onChanged: sleepTimer,
               );
             },
           ),
         ],
       ),
     );
+  }
+
+  void sleepTimer(double time) {
+    audioHandler.customAction('sleepTimer', {'time': time as int});
   }
 
   addItemToFavorate(BuildContext ctx) {

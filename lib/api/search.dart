@@ -17,7 +17,6 @@ class SearchAPI {
       );
       return SearchRsp.fromJson(response.toString());
     } catch (e) {
-      print(e);
       return null;
     }
   }

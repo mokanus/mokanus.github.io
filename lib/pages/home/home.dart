@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tingfm/pages/home/classify.dart';
 import 'package:tingfm/pages/home/recommend.dart';
-import 'package:tingfm/pages/search/search.dart';
-import 'package:tingfm/utils/router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -49,8 +47,8 @@ class _HomePageState extends State<HomePage>
                   padding:
                       EdgeInsets.fromLTRB(10, 5, ScreenUtil().setWidth(16), 5),
                   child: Icon(
-                    Icons.search,
-                    color: const Color.fromARGB(255, 187, 187, 187),
+                    Icons.multitrack_audio,
+                    color: const Color.fromARGB(255, 234, 78, 94),
                     size: ScreenUtil().setSp(60),
                   ),
                 ),
@@ -67,8 +65,8 @@ class _HomePageState extends State<HomePage>
               ],
             ),
           ),
-          onTap: () => AppRouter.pushPageWithOutAnim(
-              context as BuildContext, const SearchPage()),
+          // onTap: () => AppRouter.pushPageWithOutAnim(
+          //     context as BuildContext, const SearchPage()),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -92,12 +90,12 @@ class _HomePageState extends State<HomePage>
           tabs: const [
             Tab(
               child: Text(
-                "推荐",
+                "分类",
               ),
             ),
             Tab(
               child: Text(
-                "分类",
+                "推荐",
               ),
             ),
           ],
@@ -105,7 +103,7 @@ class _HomePageState extends State<HomePage>
       ),
       body: TabBarView(
           controller: _tabController,
-          children: const [RecommendView(), ClassifyView()]),
+          children: const [ClassifyView(), RecommendView()]),
     );
   }
 

@@ -91,7 +91,7 @@ class _AppState extends State<App> {
                                         SalomonBottomBarItem(
                                             icon: const Icon(
                                                 Icons.multitrack_audio),
-                                            title: const Text("探索"),
+                                            title: const Text("书场"),
                                             selectedColor: const Color.fromARGB(
                                                 255, 234, 78, 94)),
                                         SalomonBottomBarItem(

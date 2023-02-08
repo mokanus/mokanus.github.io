@@ -19,9 +19,21 @@ class HishoryProvider extends ChangeNotifier {
   Future<void> addItemFromAlbum(AlbumItem album) async {
     Box<AlbumItemDB> box = await Hive.openBox<AlbumItemDB>(HiveBoxes.hisotyDB);
     var item = album.convertToAlbumItemDB();
-    await box.add(item);
     historyItems = box.values.toList();
-    historyItems = historyItems.reversed.toList();
+    bool contain = false;
+
+    for (var element in historyItems) {
+      if (element.album == item.album) {
+        contain = true;
+        break;
+      }
+    }
+
+    if (!contain) {
+      await box.add(item);
+    }
+
+    historyItems = box.values.toList().reversed.toList();
     notifyListeners();
   }
 
