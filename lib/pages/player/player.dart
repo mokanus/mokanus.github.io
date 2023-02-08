@@ -8,7 +8,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/pages/player/widgets/player_btns.dart';
-import 'dart:ui' as ui;
 import 'package:tingfm/pages/player/widgets/seek_bar.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/services/audio_service.dart';

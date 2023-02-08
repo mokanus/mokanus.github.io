@@ -1,4 +1,4 @@
-package com.red.feather.puzi.ting
+package com.mokanu.tingfm
 
 import io.flutter.embedding.android.FlutterActivity
 
