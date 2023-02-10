@@ -10,8 +10,7 @@ class Global {
     Timers.startTimers();
   }
 
-  static const String ossPre =
-      'http://www.chiyustudio.com/';
+  static const String ossPre = 'http://www.chiyustudio.com/tingfm/';
 
   static bool isLightTheme = true;
   static bool isTurnOnVibration = true;

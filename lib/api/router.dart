@@ -16,6 +16,6 @@ class APIRouter {
     if (Global.isRelease) {
       return baseAPI + api;
     }
-    return debugBaseAPI + api;
+    return baseAPI + api;
   }
 }

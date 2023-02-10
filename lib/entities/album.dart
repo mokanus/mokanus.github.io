@@ -77,7 +77,9 @@ class AlbumItem {
       };
 
   String imageUrl() {
-    return "${Global.ossPre}$artist/$album/${artUri}";
+    var url = "${Global.ossPre}$artist/$album/${artUri}";
+    print(url);
+    return url;
   }
 
   String listenTime() {

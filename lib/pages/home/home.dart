@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tingfm/pages/home/classify.dart';
 import 'package:tingfm/pages/home/recommend.dart';
+import 'package:tingfm/pages/search/search.dart';
+import 'package:tingfm/utils/router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -65,8 +67,8 @@ class _HomePageState extends State<HomePage>
               ],
             ),
           ),
-          // onTap: () => AppRouter.pushPageWithOutAnim(
-          //     context as BuildContext, const SearchPage()),
+          onTap: () => AppRouter.pushPageWithOutAnim(
+              context as BuildContext, const SearchPage()),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -90,12 +92,12 @@ class _HomePageState extends State<HomePage>
           tabs: const [
             Tab(
               child: Text(
-                "分类",
+                "推荐",
               ),
             ),
             Tab(
               child: Text(
-                "推荐",
+                "分类",
               ),
             ),
           ],
@@ -103,7 +105,7 @@ class _HomePageState extends State<HomePage>
       ),
       body: TabBarView(
           controller: _tabController,
-          children: const [ClassifyView(), RecommendView()]),
+          children: const [RecommendView(), ClassifyView()]),
     );
   }
 

@@ -200,9 +200,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
     );
   }
 
-  void sleepTimer(int time) {
-    audioHandler.customAction('sleepTimer', {'time': time});
-  }
+ 
 
   Widget buildSliderPanel(BoxConstraints constraints) {
     return Positioned(
