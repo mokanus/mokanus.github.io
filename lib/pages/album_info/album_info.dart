@@ -225,16 +225,16 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
   Future<void> addItemToFavorate() async {
     var item = Provider.of<AlbumInfoProvider>(context, listen: false).item;
     if (item != null) {
-      await Provider.of<FavoriteProvider>(context, listen: false)
+      var deleted = await Provider.of<FavoriteProvider>(context, listen: false)
           .addItemFromAlbum(item);
       // ignore: use_build_context_synchronously
       ShowSnackBar().showSnackBar(
         context,
-        "${item.album} 已经加入喜欢列表啦",
+        !deleted ? "${item.album} 已经加入喜欢列表啦" : "${item.album} 已经从喜欢列表移除啦",
       );
+      // ignore: use_build_context_synchronously
+      await Provider.of<AlbumInfoProvider>(context, listen: false)
+          .flushFavorateState();
     }
-
-    await Provider.of<AlbumInfoProvider>(context, listen: false)
-        .flushFavorateState();
   }
 }

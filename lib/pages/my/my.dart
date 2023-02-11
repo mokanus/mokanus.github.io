@@ -75,7 +75,7 @@ class _MyPageState extends State<MyPage> {
               backgroundColor: Colors.white,
               child: CircleAvatar(
                 radius: 32,
-                backgroundImage: AssetImage("assets/images/milk.png"),
+                backgroundImage: AssetImage("assets/images/icon.png"),
               ),
             ),
           ),

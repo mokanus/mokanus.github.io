@@ -15,30 +15,34 @@ class FavoriteProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addItemFromAlbum(AlbumItem album) async {
+  Future<bool> addItemFromAlbum(AlbumItem album) async {
     var box = await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
     var item = album.convertToAlbumItemDB();
 
-    var allFavorites = box.values.toList();
-    var contain = allFavorites.any((element) => element.album == album.album);
-
-    if (!contain) {
-      await box.add(item);
-    } else {
-      await box.clear();
+    var allFavorites = box.keys;
+    if (allFavorites.length >= 10) {
+      await box.deleteAt(0);
     }
 
-    favoriteItems = box.values.toList();
-    favoriteItems = favoriteItems.reversed.toList();
+    var contain = allFavorites.any((element) => element == album.album);
+
+    if (!contain) {
+      await box.put(album.album, item);
+    } else {
+      await box.delete(album.album);
+    }
+
+    favoriteItems = box.values.toList().reversed.toList();
     notifyListeners();
+
+    return contain;
   }
 
-  Future<List<AlbumItemDB>> getFavoriteItems() async {
+  Future<void> getFavoriteItems() async {
     Box<AlbumItemDB> box =
         await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
     favoriteItems = box.values.toList().reversed.toList();
     notifyListeners();
-    return favoriteItems;
   }
 
   Future flushFavoriteItems() async {
@@ -60,14 +64,5 @@ class FavoriteProvider extends ChangeNotifier {
     var box = await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
     var items = box.values.toList();
     return items.firstWhere((element) => element.album == name);
-  }
-
-  Future<void> triggerAddFavorate(AlbumItem album) async {
-    var dbItem = await getFavorateItembyName(album.album);
-    if (dbItem == null) {
-      await addItemFromAlbum(album);
-    } else {
-      await removeItem(dbItem);
-    }
   }
 }

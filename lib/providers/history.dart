@@ -20,14 +20,7 @@ class HishoryProvider extends ChangeNotifier {
     Box<AlbumItemDB> box = await Hive.openBox<AlbumItemDB>(HiveBoxes.hisotyDB);
     var item = album.convertToAlbumItemDB();
     historyItems = box.values.toList();
-    bool contain = false;
-
-    for (var element in historyItems) {
-      if (element.album == item.album) {
-        contain = true;
-        break;
-      }
-    }
+    bool contain = historyItems.any((element) => element.album == item.album);
 
     if (!contain) {
       await box.add(item);

@@ -53,8 +53,8 @@ class AlbumInfoProvider with ChangeNotifier {
 
   Future<void> flushFavorateState() async {
     var favorateBox = await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
-    var allFavorites = favorateBox.values.toList();
-    readyFavorate = allFavorites.any((element) => element.album == item!.album);
+    var allFavorites = favorateBox.keys;
+    readyFavorate = allFavorites.any((element) => element == item!.album);
   }
 
   String getAlbumMetaInfo() {
