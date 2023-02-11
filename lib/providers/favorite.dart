@@ -19,19 +19,13 @@ class FavoriteProvider extends ChangeNotifier {
     var box = await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
     var item = album.convertToAlbumItemDB();
 
-    AlbumItemDB? srcItem;
-
     var allFavorites = box.values.toList();
-    var contain = allFavorites.any((element) {
-      var contain = element.album == album.album;
-      srcItem = element;
-      return contain;
-    });
+    var contain = allFavorites.any((element) => element.album == album.album);
 
     if (!contain) {
       await box.add(item);
     } else {
-      await box.delete(srcItem);
+      await box.clear();
     }
 
     favoriteItems = box.values.toList();
