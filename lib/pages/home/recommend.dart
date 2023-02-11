@@ -21,12 +21,13 @@ class RecommendViewState extends State<RecommendView>
     controlFinishLoad: true,
   );
 
-  int currentIndex = 10;
-  int freshOffset = 10;
+  int currentIndex = 20;
+  int freshOffset = 20;
   @override
   void initState() {
     super.initState();
 
+// 只会在build完成之后被调用一次
     SchedulerBinding.instance.addPostFrameCallback(
       (_) => Provider.of<RecommendProvider>(context, listen: false)
           .refreshRecommendData(context, 0, freshOffset),
@@ -47,7 +48,7 @@ class RecommendViewState extends State<RecommendView>
           await provider.refreshRecommendData(context, 0, freshOffset);
           easyController.finishRefresh();
           easyController.resetFooter();
-          currentIndex = 10;
+          currentIndex = 20;
         },
         //底部加载
         onLoad: () async {

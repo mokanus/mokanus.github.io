@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:tingfm/pages/home/classify_album_list.dart';
+import 'package:tingfm/pages/home/albums.dart';
 import 'package:tingfm/providers/classify.dart';
 import 'package:tingfm/widgets/image.dart';
 
@@ -110,12 +110,12 @@ class ClassifyViewState extends State<ClassifyView>
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                Text(
-                                  "共300个专辑",
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(30),
-                                  ),
-                                )
+                                // Text(
+                                //   "共300个专辑",
+                                //   style: TextStyle(
+                                //     fontSize: ScreenUtil().setSp(30),
+                                //   ),
+                                // )
                               ],
                             ),
                           ],
@@ -125,7 +125,7 @@ class ClassifyViewState extends State<ClassifyView>
                         Navigator.of(context).push(
                           PageRouteBuilder(
                             opaque: false,
-                            pageBuilder: (_, __, ___) => AlbumListPage(
+                            pageBuilder: (_, __, ___) => AlbumsPage(
                               classify: provider.classifies[index].classify,
                               classifyId: provider.classifies[index].id,
                             ),

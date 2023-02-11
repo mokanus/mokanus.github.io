@@ -7,12 +7,14 @@ import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/entities/album_meta.dart';
 import 'package:tingfm/utils/functions.dart';
 import 'package:tingfm/values/hive_box.dart';
+import 'package:tingfm/values/hive_boxes/album_db.dart';
 
 class AlbumInfoProvider with ChangeNotifier {
   // 加载状态码
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
   AlbumItem? item;
-  AlbumMeta? meta;
+  AlbumMeta? historyMeta;
+  bool readyFavorate = false;
 
   getAlbumInfo(BuildContext context, int id) async {
     setApiRequestStatus(APIRequestStatus.loading);
@@ -33,35 +35,46 @@ class AlbumInfoProvider with ChangeNotifier {
       checkError(e);
     }
 
-    if (item != null) {
-      var metaBox = await Hive.openBox(HiveBoxes.albumMetaDB);
-      var metaData = metaBox.get('album_${item?.album}');
-      if (metaData != null) {
-        meta = AlbumMeta.fromJson(metaData.toString());
-      }
-    }
+    await flushHistoryMeta();
+    await flushFavorateState();
 
     setApiRequestStatus(APIRequestStatus.loaded);
   }
 
+  Future<void> flushHistoryMeta() async {
+    if (item != null) {
+      var metaBox = await Hive.openBox(HiveBoxes.albumMetaDB);
+      var metaData = metaBox.get('album_${item?.album}');
+      if (metaData != null) {
+        historyMeta = AlbumMeta.fromJson(metaData.toString());
+      }
+    }
+  }
+
+  Future<void> flushFavorateState() async {
+    var favorateBox = await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
+    var allFavorites = favorateBox.values.toList();
+    readyFavorate = allFavorites.any((element) => element.album == item!.album);
+  }
+
   String getAlbumMetaInfo() {
-    if (meta == null) {
+    if (historyMeta == null) {
       return "";
     } else {
-      return "播放到 : ${meta?.title}";
+      return "播放到 : ${historyMeta?.title}";
     }
   }
 
   String getDuration() {
-    if (meta == null) {
+    if (historyMeta == null) {
       return "";
     } else {
-      return "播放到 : ${meta?.hour}:${meta?.minu}:${meta?.second}";
+      return "播放到 : ${historyMeta?.hour}:${historyMeta?.minu}:${historyMeta?.second}";
     }
   }
 
   bool isPlayed() {
-    return meta != null;
+    return historyMeta != null;
   }
 
   void checkError(e) {

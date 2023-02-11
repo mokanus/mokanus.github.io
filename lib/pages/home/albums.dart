@@ -10,18 +10,18 @@ import 'package:tingfm/widgets/image.dart';
 // 列表页面-可用来展示分类后的专辑列表信息
 // 比如说相声、小说、评书等等
 
-class AlbumListPage extends StatefulWidget {
+class AlbumsPage extends StatefulWidget {
   final String classify;
   final int classifyId;
 
-  const AlbumListPage(
+  const AlbumsPage(
       {super.key, required this.classify, required this.classifyId});
 
   @override
-  State<AlbumListPage> createState() => AlbumListPageState();
+  State<AlbumsPage> createState() => AlbumsPageState();
 }
 
-class AlbumListPageState extends State<AlbumListPage> {
+class AlbumsPageState extends State<AlbumsPage> {
   final ScrollController _scrollController = ScrollController();
   final EasyRefreshController easyController = EasyRefreshController(
     controlFinishRefresh: true,

@@ -123,14 +123,14 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(
+                              SizedBox(
                                 height: ScreenUtil().setHeight(134),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     const Icon(Icons.menu),
-                                    Text(" ${provider.item!.count}集",
+                                    Text(" ${provider.item!.count}章",
                                         style: TextStyle(
                                             fontSize: ScreenUtil().setSp(40),
                                             fontFamily: "Avenir"))
@@ -138,18 +138,21 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                                 ),
                               ),
                               GestureDetector(
-                                child: Container(
+                                child: SizedBox(
                                   height: ScreenUtil().setHeight(134),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         Icons.favorite_sharp,
-                                        color: Color.fromARGB(255, 234, 78, 94),
+                                        color: provider.readyFavorate
+                                            ? const Color.fromARGB(
+                                                255, 234, 78, 94)
+                                            : Colors.grey,
                                       ),
-                                      Text("加入喜欢",
+                                      Text("喜欢",
                                           style: TextStyle(
                                               fontSize: ScreenUtil().setSp(40),
                                               fontFamily: "Avenir"))
@@ -157,11 +160,13 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                                   ),
                                 ),
                                 onTap: () {
-                                  addItemToFavorate();
+                                  setState(() {
+                                    addItemToFavorate();
+                                  });
                                 },
                               ),
                               GestureDetector(
-                                child: Container(
+                                child: SizedBox(
                                   height: ScreenUtil().setHeight(140),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -170,12 +175,12 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                                     children: [
                                       const Icon(Icons.play_arrow_rounded),
                                       provider.isPlayed()
-                                          ? Text("继续播放",
+                                          ? Text("继续",
                                               style: TextStyle(
                                                   fontSize:
                                                       ScreenUtil().setSp(40),
                                                   fontFamily: "Avenir"))
-                                          : Text("开始播放",
+                                          : Text("播放",
                                               style: TextStyle(
                                                   fontSize:
                                                       ScreenUtil().setSp(40),
@@ -217,15 +222,19 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
     }
   }
 
-  addItemToFavorate() {
+  Future<void> addItemToFavorate() async {
     var item = Provider.of<AlbumInfoProvider>(context, listen: false).item;
     if (item != null) {
-      Provider.of<FavoriteProvider>(context, listen: false)
+      await Provider.of<FavoriteProvider>(context, listen: false)
           .addItemFromAlbum(item);
+      // ignore: use_build_context_synchronously
       ShowSnackBar().showSnackBar(
         context,
         "${item.album} 已经加入喜欢列表啦",
       );
     }
+
+    await Provider.of<AlbumInfoProvider>(context, listen: false)
+        .flushFavorateState();
   }
 }
