@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_brace_in_string_interps
 
 import 'dart:convert';
-import 'dart:math';
+import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/values/hive_boxes/album_db.dart';
@@ -85,20 +85,36 @@ class AlbumItem {
   }
 
   MediaItem mediaItem(index) {
-    return MediaItem(
-        id: index.toString(),
-        title: mediaItems[index]
-            .title
-            .substring(0, mediaItems[index].title.length - 4),
-        album: album,
-        artist: artist,
-        duration: Duration(seconds: mediaItems[index].duration),
-        artUri: Uri.parse(imageUrl()),
-        extras: {
-          'url': index == 0
-              ? '${Global.ossPre}$artist/$album/${mediaItems[index].title}'
-              : '${Global.ossPre}$artist/$album/${mediaItems[index].title}-end',
-        });
+    // ios不支持缓存 改成手动的机制
+    if (Platform.isIOS) {
+      return MediaItem(
+          id: index.toString(),
+          title: mediaItems[index]
+              .title
+              .substring(0, mediaItems[index].title.length - 4),
+          album: album,
+          artist: artist,
+          duration: Duration(seconds: mediaItems[index].duration),
+          artUri: Uri.parse(imageUrl()),
+          extras: {
+            'url': index == 0
+                ? '${Global.ossPre}$artist/$album/${mediaItems[index].title}'
+                : '${Global.ossPre}$artist/$album/${mediaItems[index].title}-end',
+          });
+    } else {
+      return MediaItem(
+          id: index.toString(),
+          title: mediaItems[index]
+              .title
+              .substring(0, mediaItems[index].title.length - 4),
+          album: album,
+          artist: artist,
+          duration: Duration(seconds: mediaItems[index].duration),
+          artUri: Uri.parse(imageUrl()),
+          extras: {
+            'url': '${Global.ossPre}$artist/$album/${mediaItems[index].title}',
+          });
+    }
   }
 
   String cachedKey() {

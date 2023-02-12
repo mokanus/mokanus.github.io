@@ -9,7 +9,6 @@ import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/providers/history.dart';
 import 'package:tingfm/widgets/image.dart';
 import 'package:tingfm/widgets/mini_player.dart';
-import 'package:tingfm/widgets/skeleton.dart';
 import 'package:tingfm/widgets/snackbar.dart';
 
 import '../../widgets/loading_widget.dart';
@@ -46,6 +45,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
+          title: const Text("专辑信息"),
         ),
         body: SafeArea(
           child: provider.apiRequestStatus != APIRequestStatus.loaded

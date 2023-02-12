@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/widgets/image.dart';
@@ -93,14 +95,17 @@ class NowPlayingStream extends StatelessWidget {
                     ),
                   ),
                   onTap: () async {
-                    var mediaItem =
-                        await audioHandler.getMediaItem(index.toString());
-                    var url = mediaItem!.extras!['url'].toString();
-                    if (url.endsWith('-end')) {
-                      mediaItem.extras!['url'] =
-                          url.substring(0, url.toString().length - 4);
+                    // ios需要手动更改缓存
+                    if (Platform.isIOS) {
+                      var mediaItem =
+                          await audioHandler.getMediaItem(index.toString());
+                      var url = mediaItem!.extras!['url'].toString();
+                      if (url.endsWith('-end')) {
+                        mediaItem.extras!['url'] =
+                            url.substring(0, url.toString().length - 4);
+                      }
+                      await audioHandler.updateMediaItem(mediaItem);
                     }
-                    await audioHandler.updateMediaItem(mediaItem);
                     await audioHandler.skipToQueueItem(index);
                   },
                 ),

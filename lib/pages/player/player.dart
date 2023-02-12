@@ -11,6 +11,7 @@ import 'package:tingfm/pages/player/extras.dart';
 import 'package:tingfm/pages/player/seekbar.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/services/audio_service.dart';
+import 'package:tingfm/utils/timer.dart';
 import 'package:tingfm/widgets/image.dart';
 
 import 'contros.dart';
@@ -48,6 +49,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
         audioHandler.play();
       }
     } else {
+      Timers.clearReadyClockedCache();
       audioHandler.stop();
       updateNplay();
     }
