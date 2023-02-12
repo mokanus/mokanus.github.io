@@ -1,4 +1,3 @@
-import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/widgets/image.dart';
@@ -101,8 +100,6 @@ class NowPlayingStream extends StatelessWidget {
                       mediaItem.extras!['url'] =
                           url.substring(0, url.toString().length - 4);
                     }
-                    print('${mediaItem}');
-
                     await audioHandler.updateMediaItem(mediaItem);
                     await audioHandler.skipToQueueItem(index);
                   },

@@ -21,6 +21,12 @@ class Timers {
         (Timer t) => {
               storagePlayedData(),
             });
+
+    Timer.periodic(
+        const Duration(seconds: 2),
+        (Timer t) => {
+              unlockNext(),
+            });
   }
 
   ///保存当前的播放进度
@@ -30,6 +36,22 @@ class Timers {
       var box = await Hive.openBox(HiveBoxes.albumMetaDB);
       var meta = audioHandler.albumMeta;
       box.put('album_${meta.album}', meta.toJson());
+    }
+  }
+
+  static void unlockNext() async {
+    var audioHandler = GetIt.I<AudioPlayerHandler>();
+    if (audioHandler.playbackState.value.playing) {
+      var index = audioHandler.albumMeta.index + 1;
+      var mediaItem = await audioHandler.getMediaItem(index.toString());
+      if (mediaItem != null) {
+        var url = mediaItem.extras!['url'].toString();
+        if (url.endsWith('-end')) {
+          mediaItem.extras!['url'] =
+              url.substring(0, url.toString().length - 4);
+        }
+        await audioHandler.updateMediaItem(mediaItem);
+      }
     }
   }
 }
