@@ -45,7 +45,7 @@ class ShowSnackBar {
               : action ??
                   SnackBarAction(
                     textColor: Theme.of(context).colorScheme.secondary,
-                    label: '知道啦',
+                    label: '退下吧',
                     onPressed: () {},
                   ),
         ),

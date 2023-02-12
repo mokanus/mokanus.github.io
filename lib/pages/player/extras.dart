@@ -114,9 +114,9 @@ class ExtraBtns extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.favorite,
-              color: Colors.red.shade400,
+              color: Color.fromARGB(255, 234, 78, 94),
             ),
             onPressed: () {
               addItemToFavorate(context);
@@ -135,7 +135,7 @@ class ExtraBtns extends StatelessWidget {
                 min: 0.0,
                 max: 30.0,
                 value: 0,
-                stream: audioHandler.volume,
+                stream: audioHandler.customState.value,
                 onChanged: sleepTimer,
               );
             },

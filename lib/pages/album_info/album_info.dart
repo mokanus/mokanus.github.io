@@ -12,6 +12,8 @@ import 'package:tingfm/widgets/mini_player.dart';
 import 'package:tingfm/widgets/skeleton.dart';
 import 'package:tingfm/widgets/snackbar.dart';
 
+import '../../widgets/loading_widget.dart';
+
 class AlbumInfoPage extends StatefulWidget {
   final String album;
   final int albumId;
@@ -47,7 +49,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
         ),
         body: SafeArea(
           child: provider.apiRequestStatus != APIRequestStatus.loaded
-              ? cardListSkeleton()
+              ? const LoadingWidget()
               : Column(
                   children: [
                     Expanded(
