@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:tingfm/api/api_status.dart';
 import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/providers/history.dart';
 import 'package:tingfm/widgets/image.dart';
 import 'package:tingfm/widgets/mini_player.dart';
+import 'package:tingfm/widgets/skeleton.dart';
 import 'package:tingfm/widgets/snackbar.dart';
 
 class AlbumInfoPage extends StatefulWidget {
@@ -44,8 +46,8 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
           backgroundColor: Colors.transparent,
         ),
         body: SafeArea(
-          child: provider.item == null
-              ? const SizedBox()
+          child: provider.apiRequestStatus != APIRequestStatus.loaded
+              ? cardListSkeleton()
               : Column(
                   children: [
                     Expanded(

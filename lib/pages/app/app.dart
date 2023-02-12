@@ -36,11 +36,11 @@ class _AppState extends State<App> {
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
                 scaffoldBackgroundColor:
-                    const Color.fromARGB(255, 245, 245, 245),
+                    const Color.fromARGB(255, 246, 246, 246),
                 shadowColor: const Color.fromARGB(255, 245, 245, 245),
                 cardColor: const Color.fromARGB(255, 254, 254, 254),
                 appBarTheme: const AppBarTheme(
-                  backgroundColor: Color.fromARGB(255, 245, 245, 245),
+                  backgroundColor: Color.fromARGB(255, 246, 246, 246),
                   systemOverlayStyle: SystemUiOverlayStyle.light,
                   foregroundColor: Colors.black,
                 ),

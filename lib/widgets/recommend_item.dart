@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/pages/album_info/album_info.dart';
-import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/widgets/image.dart';
 
 class RecommendItem extends StatefulWidget {

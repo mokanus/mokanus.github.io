@@ -100,7 +100,7 @@ class AlbumItem {
   }
 
   String cachedKey() {
-    return artUri;
+    return imageUrl();
   }
 
   AlbumItemDB convertToAlbumItemDB() {

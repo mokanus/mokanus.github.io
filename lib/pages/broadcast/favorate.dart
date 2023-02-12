@@ -37,7 +37,7 @@ class FavorateViewState extends State<FavorateView>
           ? Center(
               child: Text(
               "空空如也，快去收听吧",
-              style: TextStyle(fontSize: ScreenUtil().setSp(36)),
+              style: TextStyle(fontSize: ScreenUtil().setSp(44)),
             ))
           : ListView.builder(
               scrollDirection: Axis.vertical,
@@ -46,76 +46,85 @@ class FavorateViewState extends State<FavorateView>
               itemCount: provider.favoriteItems.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  margin: EdgeInsets.fromLTRB(
-                      ScreenUtil().setWidth(55),
-                      ScreenUtil().setHeight(8),
-                      ScreenUtil().setWidth(55),
-                      ScreenUtil().setHeight(8)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: GestureDetector(
-                          child: Card(
-                            elevation: 0.2,
-                            child: Row(
-                              children: [
-                                Container(
-                                  //设置边距
-                                  margin: EdgeInsets.fromLTRB(
-                                      ScreenUtil().setWidth(30),
-                                      ScreenUtil().setHeight(30),
-                                      ScreenUtil().setWidth(30),
-                                      ScreenUtil().setHeight(30)),
-                                  height: ScreenUtil().setHeight(270),
-                                  width: ScreenUtil().setWidth(270),
-                                  child: imageCached(
-                                      provider.favoriteItems[index].imageUrl(),
-                                      provider.favoriteItems[index]
-                                          .cachedKey()),
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                      child: Text(
-                                        provider.favoriteItems[index].album,
+                return Dismissible(
+                  key: ValueKey(provider.favoriteItems[index].album),
+                  direction: DismissDirection.horizontal,
+                  onDismissed: (dir) {
+                    provider.remove(index);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(
+                        ScreenUtil().setWidth(55),
+                        ScreenUtil().setHeight(8),
+                        ScreenUtil().setWidth(55),
+                        ScreenUtil().setHeight(8)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            child: Card(
+                              elevation: 0.2,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    //设置边距
+                                    margin: EdgeInsets.fromLTRB(
+                                        ScreenUtil().setWidth(30),
+                                        ScreenUtil().setHeight(30),
+                                        ScreenUtil().setWidth(30),
+                                        ScreenUtil().setHeight(30)),
+                                    height: ScreenUtil().setHeight(270),
+                                    width: ScreenUtil().setWidth(270),
+                                    child: imageCached(
+                                        provider.favoriteItems[index]
+                                            .imageUrl(),
+                                        provider.favoriteItems[index]
+                                            .cachedKey()),
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 0, 5),
+                                        child: Text(
+                                          provider.favoriteItems[index].album,
+                                          style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(40),
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Text(
+                                        provider.favoriteItems[index].artist,
                                         style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(40),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Text(
-                                      provider.favoriteItems[index].artist,
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(30),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          onTap: () => {
-                            Navigator.of(context).push(
-                              PageRouteBuilder(
-                                opaque: true,
-                                pageBuilder: (_, __, ___) => AlbumInfoPage(
-                                  albumId: provider.favoriteItems[index].id,
-                                  album: provider.favoriteItems[index].album,
-                                ),
+                                          fontSize: ScreenUtil().setSp(30),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
                               ),
-                            )
-                          },
+                            ),
+                            onTap: () => {
+                              Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  opaque: true,
+                                  pageBuilder: (_, __, ___) => AlbumInfoPage(
+                                    albumId: provider.favoriteItems[index].id,
+                                    album: provider.favoriteItems[index].album,
+                                  ),
+                                ),
+                              )
+                            },
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },

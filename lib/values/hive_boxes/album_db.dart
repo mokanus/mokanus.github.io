@@ -41,10 +41,10 @@ class AlbumItemDB {
       };
 
   String imageUrl() {
-    return "${Global.ossPre}$album/$artist/$artUri";
+    return "${Global.ossPre}/$artist/$album/$artUri";
   }
 
   String cachedKey() {
-    return artUri;
+    return imageUrl();
   }
 }

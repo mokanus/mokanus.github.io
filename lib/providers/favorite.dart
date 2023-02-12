@@ -52,10 +52,10 @@ class FavoriteProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> removeItem(AlbumItemDB item) async {
-    Box<AlbumItemDB> box =
-        await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
-    await box.delete(item);
+  Future<void> remove(int index) async {
+    var box = await Hive.openBox<AlbumItemDB>(HiveBoxes.favorateDB);
+    var item = favoriteItems.elementAt(index);
+    await box.delete(item.album);
     favoriteItems = box.values.toList().reversed.toList();
     notifyListeners();
   }
