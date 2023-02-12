@@ -86,7 +86,7 @@ class AlbumItem {
 
   MediaItem mediaItem(index) {
     return MediaItem(
-        id: Random().nextInt(100000000).toString(),
+        id: index.toString(),
         title: mediaItems[index]
             .title
             .substring(0, mediaItems[index].title.length - 4),
@@ -95,7 +95,9 @@ class AlbumItem {
         duration: Duration(seconds: mediaItems[index].duration),
         artUri: Uri.parse(imageUrl()),
         extras: {
-          'url': '${Global.ossPre}$artist/$album/${mediaItems[index].title}',
+          'url': index == 0
+              ? '${Global.ossPre}$artist/$album/${mediaItems[index].title}'
+              : '${Global.ossPre}$artist/$album/${mediaItems[index].title}-end',
         });
   }
 

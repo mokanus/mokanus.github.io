@@ -57,14 +57,14 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
 
   Future<void> updateNplay() async {
     if (!widget.fromMiniplayer) {
-      var globalQueue = mockItems(widget.albumItem);
+      var globalQueue = fillAudioItems(widget.albumItem);
       await audioHandler.updateQueue(globalQueue);
       await audioHandler.skipToQueueItem(0);
       await audioHandler.play();
     }
   }
 
-  List<MediaItem> mockItems(AlbumItem? album) {
+  List<MediaItem> fillAudioItems(AlbumItem? album) {
     List<MediaItem> globalQueue = <MediaItem>[];
     if (album != null) {
       for (var i = 0; i < album.mediaItems.length; i++) {
@@ -199,8 +199,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
           }),
     );
   }
-
- 
 
   Widget buildSliderPanel(BoxConstraints constraints) {
     return Positioned(

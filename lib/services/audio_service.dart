@@ -235,6 +235,12 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   }
 
   @override
+  Future<MediaItem?> getMediaItem(String mediaId) async {
+    final index = queue.value.indexWhere((item) => item.id == mediaId);
+    return _mediaItemExpando[_player!.sequence![index]];
+  }
+
+  @override
   Future<void> addQueueItems(List<MediaItem> mediaItems) async {
     await _playlist.addAll(_itemsToSources(mediaItems));
   }
@@ -254,7 +260,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   @override
   Future<void> updateMediaItem(MediaItem mediaItem) async {
     final index = queue.value.indexWhere((item) => item.id == mediaItem.id);
-    _mediaItemExpando[_player!.sequence![index]] = mediaItem;
+    queue.value[index] = mediaItem;
+    await _playlist.removeAt(index);
+    await _playlist.insert(index, _itemToSource(mediaItem));
   }
 
   @override

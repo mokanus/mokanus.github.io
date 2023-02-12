@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tingfm/services/audio_service.dart';
 
 class SeekBar extends StatefulWidget {
   final Duration duration;
@@ -73,6 +75,7 @@ void showSliderDialog({
 class SeekBarState extends State<SeekBar> {
   double? _dragValue;
   late SliderThemeData _sliderThemeData;
+  final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
 
   @override
   void didChangeDependencies() {
@@ -150,7 +153,7 @@ class SeekBarState extends State<SeekBar> {
                         ?.group(1) ??
                     '$_remaining',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: Colors.black87,
                 ))),
       ],
     );
