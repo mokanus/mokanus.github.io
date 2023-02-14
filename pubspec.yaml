@@ -48,6 +48,8 @@ dependencies:
   palette_generator: ^0.3.3+2
   path_provider: ^2.0.11
   hive_flutter: ^1.1.0
+  ionicons: ^0.2.2
+  # fl_umeng: ^3.2.0
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +75,7 @@ flutter:
   assets:
     - assets/images/album.png
     - assets/images/cover.jpg
+    - assets/images/icon.png
 
   fonts:
     - family: Avenir

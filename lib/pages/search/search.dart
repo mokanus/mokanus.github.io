@@ -4,7 +4,6 @@ import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/pages/album_info/album_info.dart';
-import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/search.dart';
 import 'package:tingfm/utils/router.dart';
 import 'package:tingfm/utils/vibration.dart';

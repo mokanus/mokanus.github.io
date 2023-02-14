@@ -1,33 +1,139 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:provider/provider.dart';
+import 'package:tingfm/providers/app.dart';
+import 'package:tingfm/theme/theme_config.dart';
+import 'package:tingfm/utils/global.dart';
+import 'package:vibration/vibration.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
 
   @override
-  State<MyPage> createState() => _MyPageState();
+  MyPageState createState() => MyPageState();
 }
 
-class _MyPageState extends State<MyPage> {
+class MyPageState extends State<MyPage> {
+  late List items;
+
+  @override
+  void initState() {
+    super.initState();
+    items = [
+      {
+        'icon': null,
+        'title': '应用信息',
+      },
+      // {
+      //   'icon': null,
+      //   'title': '统计数据',
+      // },
+      // {
+      //   'icon': Ionicons.gift,
+      //   'title': '我的VIP',
+      //   // 'function': () => _pushPage(Downloads()),
+      // },
+      {
+        'icon': Ionicons.star,
+        'title': '打分鼓励一下',
+        // 'function': () => _pushPage(Favorites()),
+      },
+      {
+        'icon': Icons.vibration,
+        'title': '开启震动',
+        // 'function': () => _pushPage(Downloads()),
+      },
+      {
+        'icon': Ionicons.file_tray,
+        'title': '隐私政策声明',
+        'function': () => showLicensePage(
+              context: context,
+              applicationIcon: const Image(
+                image: AssetImage('assets/images/icon.png'),
+                height: 200,
+                width: 200,
+              ),
+              applicationName: "听书铺子",
+              applicationVersion: "1.0",
+              applicationLegalese: "",
+            ),
+      },
+      {
+        'icon': Ionicons.information,
+        'title': '联系我们',
+        'function': () => showAbout(),
+      }
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(
-            ScreenUtil().setWidth(47),
-            ScreenUtil().setWidth(47),
-            ScreenUtil().setWidth(47),
-            ScreenUtil().setWidth(47)),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 30,
-            ),
-            personDataWidgt(),
-            listenDataWidgt()
-          ],
-        ),
+        body: Padding(
+            padding: EdgeInsets.fromLTRB(
+                ScreenUtil().setWidth(47),
+                ScreenUtil().setHeight(70),
+                ScreenUtil().setWidth(47),
+                ScreenUtil().setHeight(47)),
+            child: ListView.separated(
+              padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
+              shrinkWrap: true,
+              itemCount: items.length,
+              itemBuilder: (BuildContext context, int index) {
+                if (items[index]['title'] == '应用信息') {
+                  return personDataWidgt();
+                }
+
+                if (items[index]['title'] == '统计数据') {
+                  return listenDataWidgt();
+                }
+
+                if (items[index]['title'] == '开启震动') {
+                  return _buildVibrationSwitch(items[index]);
+                }
+
+                return ListTile(
+                  onTap: items[index]['function'],
+                  leading: Icon(
+                    items[index]['icon'],
+                    color: Colors.red,
+                  ),
+                  title: Text(
+                    items[index]['title'],
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const Divider();
+              },
+            )));
+  }
+
+  Widget _buildVibrationSwitch(Map item) {
+    return SwitchListTile(
+      secondary: Icon(
+        item['icon'],
+        color: Colors.red,
       ),
+      activeColor: const Color.fromARGB(255, 234, 78, 94),
+      title: Text(
+        item['title'],
+      ),
+      value: Global.isTurnOnVibration ? true : false,
+      onChanged: (v) async {
+        if (v) {
+          Global.isTurnOnVibration = true;
+          await Vibration.vibrate(
+            pattern: [0, 100],
+          );
+        } else {
+          Global.isTurnOnVibration = false;
+        }
+        setState(() {
+          // StorageUtil().setBool("turnOnVibration", Global.isTurnOnVibration);
+        });
+      },
     );
   }
 
@@ -40,6 +146,7 @@ class _MyPageState extends State<MyPage> {
         clipBehavior: Clip.none,
         children: [
           Card(
+            elevation: 0.5,
             child: Column(
               children: [
                 Padding(
@@ -59,8 +166,8 @@ class _MyPageState extends State<MyPage> {
                       child: Text(
                         "听书铺子",
                         style: TextStyle(
-                          fontSize: ScreenUtil().setSp(44),
-                        ),
+                            fontSize: ScreenUtil().setSp(54),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -72,7 +179,7 @@ class _MyPageState extends State<MyPage> {
             top: -30,
             child: CircleAvatar(
               radius: 40,
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.white38,
               child: CircleAvatar(
                 radius: 32,
                 backgroundImage: AssetImage("assets/images/icon.png"),
@@ -227,6 +334,31 @@ class _MyPageState extends State<MyPage> {
           ],
         ),
       ),
+    );
+  }
+
+  showAbout() {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return const AlertDialog(
+          title: Text(
+            'About',
+          ),
+          content: Text(
+            'Simple eBook app by JideGuru',
+          ),
+          actions: <Widget>[
+            // FlatButton(
+            //   textColor: Theme.of(context).accentColor,
+            //   onPressed: () => Navigator.pop(context),
+            //   child: const Text(
+            //     'Close',
+            //   ),
+            // ),
+          ],
+        );
+      },
     );
   }
 }
