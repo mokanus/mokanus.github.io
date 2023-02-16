@@ -18,19 +18,13 @@ class Global {
         preInit: true,
         androidAppKey: '63eb01e8ba6a5259c40200e3',
         iosAppKey: '63eadba9ba6a5259c401db43',
-        channel: 'Umeng');
-
-    await FlUMeng().init(
-        preInit: true,
-        androidAppKey: '63eb01e8ba6a5259c40200e3',
-        iosAppKey: '63eadba9ba6a5259c401db43',
-        channel: 'Umeng');
+        channel: 'Google Play');
 
     /// 注册友盟 统计 性能检测
     await FlUMeng().init(
         androidAppKey: '63eb01e8ba6a5259c40200e3',
         iosAppKey: '63eadba9ba6a5259c401db43',
-        channel: 'Umeng');
+        channel: 'Google Play');
   }
 
   static const String ossPre = 'http://www.chiyustudio.com/tingfm/';
