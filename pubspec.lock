@@ -305,6 +305,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  fl_umeng:
+    dependency: "direct main"
+    description:
+      name: fl_umeng
+      sha256: c7d7c512326384b556f18a243e3182151a88f6f382b0815010784e43bbfff46a
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.0"
   flip_card:
     dependency: "direct main"
     description:

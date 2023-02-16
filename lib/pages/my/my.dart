@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
-import 'package:tingfm/providers/app.dart';
-import 'package:tingfm/theme/theme_config.dart';
+import 'package:tingfm/pages/privacy/privacy.dart';
 import 'package:tingfm/utils/global.dart';
+import 'package:tingfm/utils/router.dart';
+import 'package:tingfm/utils/storage.dart';
 import 'package:vibration/vibration.dart';
 
 class MyPage extends StatefulWidget {
@@ -25,42 +25,28 @@ class MyPageState extends State<MyPage> {
         'icon': null,
         'title': '应用信息',
       },
-      // {
-      //   'icon': null,
-      //   'title': '统计数据',
-      // },
-      // {
-      //   'icon': Ionicons.gift,
-      //   'title': '我的VIP',
-      //   // 'function': () => _pushPage(Downloads()),
-      // },
       {
-        'icon': Ionicons.star,
+        'icon': Ionicons.link_outline,
         'title': '打分鼓励一下',
         // 'function': () => _pushPage(Favorites()),
       },
       {
-        'icon': Icons.vibration,
-        'title': '开启震动',
+        'icon': Icons.lightbulb,
+        'title': '没有我想听?',
         // 'function': () => _pushPage(Downloads()),
       },
+      // {
+      //   'icon': Icons.vibration,
+      //   'title': '开启震动',
+      //   // 'function': () => _pushPage(Downloads()),
+      // },
       {
         'icon': Ionicons.file_tray,
         'title': '隐私政策声明',
-        'function': () => showLicensePage(
-              context: context,
-              applicationIcon: const Image(
-                image: AssetImage('assets/images/icon.png'),
-                height: 200,
-                width: 200,
-              ),
-              applicationName: "听书铺子",
-              applicationVersion: "1.0",
-              applicationLegalese: "",
-            ),
+        'function': () => AppRouter.pushPage(context, const PrivacyPage()),
       },
       {
-        'icon': Ionicons.information,
+        'icon': Ionicons.mail,
         'title': '联系我们',
         'function': () => showAbout(),
       }
@@ -73,9 +59,9 @@ class MyPageState extends State<MyPage> {
         body: Padding(
             padding: EdgeInsets.fromLTRB(
                 ScreenUtil().setWidth(47),
-                ScreenUtil().setHeight(70),
+                ScreenUtil().setHeight(20),
                 ScreenUtil().setWidth(47),
-                ScreenUtil().setHeight(47)),
+                ScreenUtil().setHeight(20)),
             child: ListView.separated(
               padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
               shrinkWrap: true,
@@ -97,7 +83,7 @@ class MyPageState extends State<MyPage> {
                   onTap: items[index]['function'],
                   leading: Icon(
                     items[index]['icon'],
-                    color: Colors.red,
+                    color: const Color.fromARGB(255, 234, 78, 94),
                   ),
                   title: Text(
                     items[index]['title'],
@@ -124,14 +110,12 @@ class MyPageState extends State<MyPage> {
       onChanged: (v) async {
         if (v) {
           Global.isTurnOnVibration = true;
-          await Vibration.vibrate(
-            pattern: [0, 100],
-          );
+          Vibration.vibrate();
         } else {
           Global.isTurnOnVibration = false;
         }
         setState(() {
-          // StorageUtil().setBool("turnOnVibration", Global.isTurnOnVibration);
+          StorageUtil().setBool("turnOnVibration", Global.isTurnOnVibration);
         });
       },
     );
@@ -343,10 +327,10 @@ class MyPageState extends State<MyPage> {
       builder: (_) {
         return const AlertDialog(
           title: Text(
-            'About',
+            '听书铺子',
           ),
           content: Text(
-            'Simple eBook app by JideGuru',
+            '一个简洁好用的听书APP',
           ),
           actions: <Widget>[
             // FlatButton(

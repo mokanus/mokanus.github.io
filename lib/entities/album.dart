@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:audio_service/audio_service.dart';
+import 'package:tingfm/utils/functions.dart';
 import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/values/hive_boxes/album_db.dart';
 
@@ -81,7 +82,7 @@ class AlbumItem {
   }
 
   String listenTime() {
-    return "${artist} · ${listenTimes}次收听";
+    return "${artist} · ${Functions.numToUnit(listenTimes)}次收听";
   }
 
   MediaItem mediaItem(index) {
