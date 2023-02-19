@@ -50,6 +50,7 @@ dependencies:
   hive_flutter: ^1.1.0
   ionicons: ^0.2.2
   fl_umeng: ^3.2.0
+  google_mobile_ads: ^2.3.0
 
 dev_dependencies:
   flutter_test:
