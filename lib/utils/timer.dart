@@ -49,26 +49,30 @@ class Timers {
   }
 
   static void unlockNext() async {
-    var audioHandler = GetIt.I<AudioPlayerHandler>();
-    if (audioHandler.playbackState.value.playing) {
-      var index = audioHandler.albumMeta.index + 1;
+    try {
+      var audioHandler = GetIt.I<AudioPlayerHandler>();
+      if (audioHandler.playbackState.value.playing) {
+        var index = audioHandler.albumMeta.index + 1;
 
-      var key = '${audioHandler.albumMeta.album}$index';
-      var unlocked = readyUnlocked[key];
-      if (unlocked != null) {
-        return;
-      }
-
-      var mediaItem = await audioHandler.getMediaItem(index.toString());
-      if (mediaItem != null) {
-        var url = mediaItem.extras!['url'].toString();
-        if (url.endsWith('-end')) {
-          mediaItem.extras!['url'] =
-              url.substring(0, url.toString().length - 4);
+        var key = '${audioHandler.albumMeta.album}$index';
+        var unlocked = readyUnlocked[key];
+        if (unlocked != null) {
+          return;
         }
-        await audioHandler.updateMediaItem(mediaItem);
-        readyUnlocked[key] = true;
+
+        var mediaItem = await audioHandler.getMediaItem(index.toString());
+        if (mediaItem != null) {
+          var url = mediaItem.extras!['url'].toString();
+          if (url.endsWith('-end')) {
+            mediaItem.extras!['url'] =
+                url.substring(0, url.toString().length - 4);
+          }
+          await audioHandler.updateMediaItem(mediaItem);
+          readyUnlocked[key] = true;
+        }
       }
+    } on Exception {
+      print("error");
     }
   }
 }
