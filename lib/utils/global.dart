@@ -1,4 +1,5 @@
 import 'package:fl_umeng/fl_umeng.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:tingfm/utils/timer.dart';
 
 /// 全局配置
@@ -28,6 +29,10 @@ class Global {
           iosAppKey: '63eadba9ba6a5259c401db43',
           channel: 'Google Play');
     }
+  }
+
+  static Future<void> initAds() async {
+    MobileAds.instance.initialize();
   }
 
   static const String ossPre = 'http://www.chiyustudio.com/tingfm/';
