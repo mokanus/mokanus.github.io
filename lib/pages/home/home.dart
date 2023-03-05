@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tingfm/pages/home/classify.dart';
 import 'package:tingfm/pages/home/recommend.dart';
 import 'package:tingfm/pages/search/search.dart';
+import 'package:tingfm/utils/admob.dart';
+import 'package:tingfm/utils/admob_reactor.dart';
 import 'package:tingfm/utils/router.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,6 +22,11 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+
+    AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
+    WidgetsBinding.instance!
+        .addObserver(AppLifecycleReactor(appOpenAdManager: appOpenAdManager));
+
     super.initState();
   }
 

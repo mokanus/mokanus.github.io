@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tingfm/pages/app/app.dart';
 import 'package:tingfm/providers/classify.dart';
@@ -21,6 +22,7 @@ import 'providers/list_by_classify.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   Paint.enableDithering = true;
 
   await setupLocator();
