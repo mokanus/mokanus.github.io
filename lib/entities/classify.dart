@@ -1,6 +1,6 @@
 // To parse this JSON data, do
 //
-//     final welcome = welcomeFromMap(jsonString);
+//     final classifyRsp = classifyRspFromMap(jsonString);
 
 import 'dart:convert';
 
@@ -8,16 +8,14 @@ import 'package:tingfm/utils/global.dart';
 
 class ClassifyRsp {
   ClassifyRsp({
-    required this.status,
+    required this.code,
+    required this.message,
     required this.data,
-    required this.msg,
-    required this.error,
   });
 
-  int status;
-  List<ClassifyItem> data;
-  String msg;
-  String error;
+  int code;
+  String message;
+  Data data;
 
   factory ClassifyRsp.fromJson(String str) =>
       ClassifyRsp.fromMap(json.decode(str));
@@ -25,23 +23,41 @@ class ClassifyRsp {
   String toJson() => json.encode(toMap());
 
   factory ClassifyRsp.fromMap(Map<String, dynamic> json) => ClassifyRsp(
-        status: json["status"],
-        data: List<ClassifyItem>.from(
-            json["data"].map((x) => ClassifyItem.fromMap(x))),
-        msg: json["msg"],
-        error: json["error"],
+        code: json["code"],
+        message: json["message"],
+        data: Data.fromMap(json["data"]),
       );
 
   Map<String, dynamic> toMap() => {
-        "status": status,
-        "data": List<dynamic>.from(data.map((x) => x.toMap())),
-        "msg": msg,
-        "error": error,
+        "code": code,
+        "message": message,
+        "data": data.toMap(),
       };
 }
 
-class ClassifyItem {
-  ClassifyItem({
+class Data {
+  Data({
+    required this.classifies,
+  });
+
+  List<Classify> classifies;
+
+  factory Data.fromJson(String str) => Data.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory Data.fromMap(Map<String, dynamic> json) => Data(
+        classifies: List<Classify>.from(
+            json["classifies"].map((x) => Classify.fromMap(x))),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "classifies": List<dynamic>.from(classifies.map((x) => x.toMap())),
+      };
+}
+
+class Classify {
+  Classify({
     required this.id,
     required this.classify,
     required this.imgUrl,
@@ -51,12 +67,11 @@ class ClassifyItem {
   String classify;
   String imgUrl;
 
-  factory ClassifyItem.fromJson(String str) =>
-      ClassifyItem.fromMap(json.decode(str));
+  factory Classify.fromJson(String str) => Classify.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory ClassifyItem.fromMap(Map<String, dynamic> json) => ClassifyItem(
+  factory Classify.fromMap(Map<String, dynamic> json) => Classify(
         id: json["id"],
         classify: json["classify"],
         imgUrl: json["img_url"],

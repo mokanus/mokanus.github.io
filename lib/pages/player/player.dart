@@ -191,7 +191,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                 );
 
             return SeekBar(
-              duration: positionData.bufferedPosition,
+              duration: positionData.duration,
               position: positionData.position,
               bufferedPosition: positionData.bufferedPosition,
               onChangeEnd: (newPosition) {

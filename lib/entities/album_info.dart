@@ -1,18 +1,21 @@
+// To parse this JSON data, do
+//
+//     final albumInfoRsp = albumInfoRspFromMap(jsonString);
+
 import 'dart:convert';
+
 import 'package:tingfm/entities/album.dart';
 
 class AlbumInfoRsp {
   AlbumInfoRsp({
-    required this.status,
+    required this.code,
+    required this.message,
     required this.data,
-    required this.msg,
-    required this.error,
   });
 
-  int status;
-  AlbumItem data;
-  String msg;
-  String error;
+  int code;
+  String message;
+  Data data;
 
   factory AlbumInfoRsp.fromJson(String str) =>
       AlbumInfoRsp.fromMap(json.decode(str));
@@ -20,16 +23,34 @@ class AlbumInfoRsp {
   String toJson() => json.encode(toMap());
 
   factory AlbumInfoRsp.fromMap(Map<String, dynamic> json) => AlbumInfoRsp(
-        status: json["status"],
-        data: AlbumItem.fromMap(json["data"]),
-        msg: json["msg"],
-        error: json["error"],
+        code: json["code"],
+        message: json["message"],
+        data: Data.fromMap(json["data"]),
       );
 
   Map<String, dynamic> toMap() => {
-        "status": status,
+        "code": code,
+        "message": message,
         "data": data.toMap(),
-        "msg": msg,
-        "error": error,
+      };
+}
+
+class Data {
+  Data({
+    required this.album,
+  });
+
+  AlbumItem album;
+
+  factory Data.fromJson(String str) => Data.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory Data.fromMap(Map<String, dynamic> json) => Data(
+        album: AlbumItem.fromMap(json["album"]),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "album": album.toMap(),
       };
 }

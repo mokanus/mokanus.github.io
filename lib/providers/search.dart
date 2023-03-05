@@ -30,8 +30,8 @@ class SearchProvider with ChangeNotifier {
         context: context,
       );
 
-      if (searchRsp != null && searchRsp.data.isNotEmpty) {
-        searchedAlbumnList.addAll(searchRsp.data);
+      if (searchRsp != null && searchRsp.data.albums.isNotEmpty) {
+        searchedAlbumnList.addAll(searchRsp.data.albums);
       }
     } catch (e) {
       checkError(e);

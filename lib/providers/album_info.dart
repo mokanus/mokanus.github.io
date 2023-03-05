@@ -29,7 +29,7 @@ class AlbumInfoProvider with ChangeNotifier {
       );
 
       if (albumInfoRsp != null) {
-        item = albumInfoRsp.data;
+        item = albumInfoRsp.data.album;
       }
     } catch (e) {
       checkError(e);

@@ -2,20 +2,20 @@ import 'package:tingfm/utils/global.dart';
 
 class APIRouter {
   static const String baseAPI =
-      'https://ting-fm-9991-5-1314189171.sh.run.tcloudbase.com';
+      'https://tingfm-server-9991-5-1314189171.sh.run.tcloudbase.com';
 
-  static const String debugBaseAPI = 'http://127.0.0.1:80';
+  static const String debugBaseAPI = 'http://192.168.1.14:80';
 
-  static const String searchAPI = '/api/v1/album/search';
-  static const String recommendAPI = '/api/v1/album/recommend';
-  static const String albumInfoAPI = '/api/v1/album/album_info';
-  static const String classifiesAPI = '/api/v1/album/classify';
-  static const String lisByClassifyAPI = '/api/v1/album/list_by_classify';
+  static const String searchAPI = '/search_albums';
+  static const String recommendAPI = '/recommend_albums';
+  static const String albumInfoAPI = '/album_info';
+  static const String classifiesAPI = '/album_classify';
+  static const String lisByClassifyAPI = '/classified_albums';
 
   static String router(String api) {
     if (Global.isRelease) {
       return baseAPI + api;
     }
-    return baseAPI + api;
+    return debugBaseAPI + api;
   }
 }

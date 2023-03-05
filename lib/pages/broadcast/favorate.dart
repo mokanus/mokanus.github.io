@@ -84,28 +84,34 @@ class FavorateViewState extends State<FavorateView>
                                         provider.favoriteItems[index]
                                             .cachedKey()),
                                   ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 0, 0, 5),
-                                        child: Text(
-                                          provider.favoriteItems[index].album,
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 0, 0, 5),
+                                          child: Text(
+                                            provider.favoriteItems[index].album,
+                                            style: TextStyle(
+                                                fontSize:
+                                                    ScreenUtil().setSp(40),
+                                                fontWeight: FontWeight.bold),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        Text(
+                                          provider.favoriteItems[index].artist,
                                           style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(40),
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      Text(
-                                        provider.favoriteItems[index].artist,
-                                        style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(30),
-                                        ),
-                                      )
-                                    ],
+                                            fontSize: ScreenUtil().setSp(30),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),

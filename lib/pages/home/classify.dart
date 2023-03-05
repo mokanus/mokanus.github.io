@@ -151,5 +151,5 @@ class ClassifyViewState extends State<ClassifyView>
   }
 
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => false;
 }

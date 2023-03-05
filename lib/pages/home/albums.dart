@@ -107,17 +107,11 @@ class AlbumsPageState extends State<AlbumsPage> {
                               ),
                             ),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.fromLTRB(
-                                    ScreenUtil().setWidth(60),
-                                    ScreenUtil().setHeight(50),
-                                    ScreenUtil().setWidth(55),
-                                    ScreenUtil().setHeight(10)),
-                                alignment: Alignment.centerLeft,
-                                child: Text(
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
                                   provider.albumList[index].album,
                                   style: TextStyle(
                                     color:
@@ -125,27 +119,30 @@ class AlbumsPageState extends State<AlbumsPage> {
                                     fontSize: ScreenUtil().setSp(43),
                                   ),
                                   textAlign: TextAlign.start,
+                                  overflow: TextOverflow.clip,
                                 ),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.fromLTRB(
-                                    ScreenUtil().setWidth(60),
-                                    ScreenUtil().setHeight(10),
-                                    ScreenUtil().setWidth(55),
-                                    ScreenUtil().setHeight(70)),
-                                child: Text(
-                                  provider.albumList[index].listenTime(),
-                                  style: TextStyle(
-                                    color: const Color.fromARGB(
-                                        255, 136, 136, 136),
-                                    fontSize: ScreenUtil().setSp(33),
+                                const SizedBox(height: 10),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  padding: EdgeInsets.fromLTRB(
+                                      ScreenUtil().setWidth(10),
+                                      ScreenUtil().setHeight(10),
+                                      ScreenUtil().setWidth(55),
+                                      ScreenUtil().setHeight(70)),
+                                  child: Text(
+                                    provider.albumList[index].listenTime(),
+                                    style: TextStyle(
+                                      color: const Color.fromARGB(
+                                          255, 136, 136, 136),
+                                      fontSize: ScreenUtil().setSp(33),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    textAlign: TextAlign.start,
                                   ),
-                                  textAlign: TextAlign.start,
                                 ),
-                              ),
-                            ],
-                          )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),

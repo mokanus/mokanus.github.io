@@ -8,7 +8,7 @@ import 'package:tingfm/utils/functions.dart';
 class ClassifyProvider with ChangeNotifier {
   // 加载状态码
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
-  List<ClassifyItem> classifies = <ClassifyItem>[];
+  List<Classify> classifies = <Classify>[];
   //获取当前专辑的数据
   getClassifies(BuildContext context) async {
     setApiRequestStatus(APIRequestStatus.loading);
@@ -22,7 +22,7 @@ class ClassifyProvider with ChangeNotifier {
       );
       if (classifyRsp != null) {
         classifies.clear();
-        classifies.addAll(classifyRsp.data);
+        classifies.addAll(classifyRsp.data.classifies);
       }
     } catch (e) {
       checkError(e);

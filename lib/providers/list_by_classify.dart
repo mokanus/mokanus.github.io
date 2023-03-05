@@ -19,7 +19,7 @@ class ListByClassifyProvider with ChangeNotifier {
       Map<String, dynamic> params = {
         "classify": classify,
         "start": start,
-        "len": len,
+        "length": len,
       };
 
       var listByClassifyRsp = await ListByClassifyAPI.getAlbumsByClassify(
@@ -27,9 +27,10 @@ class ListByClassifyProvider with ChangeNotifier {
         params: params,
         context: context,
       );
-      if (listByClassifyRsp != null && listByClassifyRsp.data.isNotEmpty) {
+      if (listByClassifyRsp != null &&
+          listByClassifyRsp.data.albums.isNotEmpty) {
         albumList.clear();
-        albumList.addAll(listByClassifyRsp.data);
+        albumList.addAll(listByClassifyRsp.data.albums);
       }
     } catch (e) {
       checkError(e);
@@ -47,7 +48,7 @@ class ListByClassifyProvider with ChangeNotifier {
       Map<String, dynamic> params = {
         "classify": classify,
         "start": start,
-        "len": len,
+        "length": len,
       };
 
       var listByClassifyRsp = await ListByClassifyAPI.getAlbumsByClassify(
@@ -55,8 +56,9 @@ class ListByClassifyProvider with ChangeNotifier {
         params: params,
         context: context,
       );
-      if (listByClassifyRsp != null && listByClassifyRsp.data.isNotEmpty) {
-        albumList.addAll(listByClassifyRsp.data);
+      if (listByClassifyRsp != null &&
+          listByClassifyRsp.data.albums.isNotEmpty) {
+        albumList.addAll(listByClassifyRsp.data.albums);
       }
     } catch (e) {
       checkError(e);

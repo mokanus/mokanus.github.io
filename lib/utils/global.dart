@@ -32,7 +32,7 @@ class Global {
   }
 
   static Future<void> initAds() async {
-    // MobileAds.instance.initialize();
+    MobileAds.instance.initialize();
   }
 
   static const String ossPre = 'http://www.chiyustudio.com/tingfm/';

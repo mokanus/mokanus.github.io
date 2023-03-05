@@ -24,54 +24,6 @@ class SeekBar extends StatefulWidget {
   SeekBarState createState() => SeekBarState();
 }
 
-void showSliderDialog({
-  required BuildContext context,
-  required String title,
-  required int divisions,
-  required double min,
-  required double max,
-  String valueSuffix = '',
-  required double value,
-  required Stream<double> stream,
-  required ValueChanged<double> onChanged,
-}) {
-  showDialog<void>(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.black,
-        ),
-      ),
-      content: StreamBuilder<double>(
-        stream: stream,
-        builder: (context, snapshot) => SizedBox(
-          height: 100.0,
-          child: Column(
-            children: [
-              Text('${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
-                  style: const TextStyle(
-                      fontFamily: 'Avenir',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 24.0)),
-              Slider(
-                divisions: divisions,
-                min: min,
-                max: max,
-                value: snapshot.data ?? value,
-                onChanged: onChanged,
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
 class SeekBarState extends State<SeekBar> {
   double? _dragValue;
   late SliderThemeData _sliderThemeData;
@@ -160,6 +112,54 @@ class SeekBarState extends State<SeekBar> {
   }
 
   Duration get _remaining => widget.duration - widget.position;
+}
+
+void showSliderDialog({
+  required BuildContext context,
+  required String title,
+  required int divisions,
+  required double min,
+  required double max,
+  String valueSuffix = '',
+  required double value,
+  required Stream<double> stream,
+  required ValueChanged<double> onChanged,
+}) {
+  showDialog<void>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: Colors.black,
+        ),
+      ),
+      content: StreamBuilder<double>(
+        stream: stream,
+        builder: (context, snapshot) => SizedBox(
+          height: 100.0,
+          child: Column(
+            children: [
+              Text('${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
+                  style: const TextStyle(
+                      fontFamily: 'Avenir',
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 24.0)),
+              Slider(
+                divisions: divisions,
+                min: min,
+                max: max,
+                value: snapshot.data ?? value,
+                onChanged: onChanged,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 class HiddenThumbComponentShape extends SliderComponentShape {

@@ -74,27 +74,32 @@ class HistoryViewState extends State<HistoryView> with WidgetsBindingObserver {
                                       provider.historyItems[index].imageUrl(),
                                       provider.historyItems[index].cachedKey()),
                                 ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                                      child: Text(
-                                        "${provider.historyItems[index].album} · ${provider.historyItems[index].artist}",
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 0, 8),
+                                        child: Text(
+                                          "${provider.historyItems[index].album} · ${provider.historyItems[index].artist}",
+                                          style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(44),
+                                              fontWeight: FontWeight.bold),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      Text(
+                                        provider.getAlbumMetaInfo(index),
                                         style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(44),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Text(
-                                      provider.getAlbumMetaInfo(index),
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(35),
-                                      ),
-                                    )
-                                  ],
+                                          fontSize: ScreenUtil().setSp(35),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

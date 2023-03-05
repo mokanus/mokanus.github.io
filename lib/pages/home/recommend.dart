@@ -89,7 +89,7 @@ class RecommendViewState extends State<RecommendView>
   }
 
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => false;
 
   @override
   void dispose() {

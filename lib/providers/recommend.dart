@@ -19,7 +19,7 @@ class RecommendProvider with ChangeNotifier {
     try {
       Map<String, dynamic> params = {
         "start": start,
-        "len": len,
+        "length": len,
       };
 
       var recommendRsp = await RecommendAPI.recommendAlbums(
@@ -27,9 +27,9 @@ class RecommendProvider with ChangeNotifier {
         params: params,
         context: context,
       );
-      if (recommendRsp != null && recommendRsp.data.isNotEmpty) {
+      if (recommendRsp != null && recommendRsp.data.albums.isNotEmpty) {
         recommendAlbumnList.clear();
-        recommendAlbumnList.addAll(recommendRsp.data);
+        recommendAlbumnList.addAll(recommendRsp.data.albums);
       }
     } catch (e) {
       checkError(e);
@@ -48,7 +48,7 @@ class RecommendProvider with ChangeNotifier {
     try {
       Map<String, dynamic> params = {
         "start": start,
-        "len": len,
+        "length": len,
       };
 
       var recommendRsp = await RecommendAPI.recommendAlbums(
@@ -56,8 +56,9 @@ class RecommendProvider with ChangeNotifier {
         params: params,
         context: context,
       );
-      if (recommendRsp != null && recommendRsp.data.isNotEmpty) {
-        recommendAlbumnList.addAll(recommendRsp.data);
+      print(recommendRsp.toString());
+      if (recommendRsp != null && recommendRsp.data.albums.isNotEmpty) {
+        recommendAlbumnList.addAll(recommendRsp.data.albums);
       }
     } catch (e) {
       checkError(e);
