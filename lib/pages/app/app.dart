@@ -5,8 +5,6 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tingfm/pages/broadcast/broadcast.dart';
 import 'package:tingfm/pages/home/home.dart';
 import 'package:tingfm/pages/my/my.dart';
-import 'package:tingfm/utils/admob.dart';
-import 'package:tingfm/utils/admob_reactor.dart';
 import 'package:tingfm/widgets/custom_physics.dart';
 import 'package:tingfm/widgets/mini_player.dart';
 
