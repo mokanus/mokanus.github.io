@@ -88,6 +88,7 @@ class PrivacyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.1,
         title: const Padding(
           padding: EdgeInsets.fromLTRB(10, 30, 10, 30),
           child: Text("隐私政策"),

@@ -134,9 +134,9 @@ class _HomePageState extends State<HomePage>
               showAd();
               PanaraInfoDialog.show(
                 this.context,
-                title: "Hello",
-                message: "This is the PanaraInfoDialog",
-                buttonText: "Okay",
+                title: "标题弹窗",
+                message: "看广告可以获得30分钟的免费听书时长哦",
+                buttonText: "好的",
                 onTapDismiss: () {
                   Navigator.pop(this.context);
                 },

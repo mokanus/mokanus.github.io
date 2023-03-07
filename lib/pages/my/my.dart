@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:tingfm/pages/feedback/feedback.dart';
 import 'package:tingfm/pages/privacy/privacy.dart';
 import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/utils/router.dart';
@@ -33,7 +34,7 @@ class MyPageState extends State<MyPage> {
       {
         'icon': Icons.lightbulb,
         'title': '没有我想听?',
-        // 'function': () => _pushPage(Downloads()),
+        'function': () => AppRouter.pushPage(context, const FeedbackPage()),
       },
       // {
       //   'icon': Icons.vibration,
@@ -44,12 +45,12 @@ class MyPageState extends State<MyPage> {
         'icon': Ionicons.file_tray,
         'title': '隐私政策声明',
         'function': () => AppRouter.pushPage(context, const PrivacyPage()),
-      },
-      {
-        'icon': Ionicons.mail,
-        'title': '联系我们',
-        'function': () => showAbout(),
       }
+      // {
+      //   'icon': Ionicons.mail,
+      //   'title': '联系我们',
+      //   'function': () => showAbout(),
+      // }
     ];
   }
 
