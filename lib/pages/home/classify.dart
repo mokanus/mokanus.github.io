@@ -1,4 +1,5 @@
 import 'package:easy_refresh/easy_refresh.dart';
+import 'package:fl_umeng/fl_umeng.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -122,6 +123,9 @@ class ClassifyViewState extends State<ClassifyView>
                         ),
                       ),
                       onTap: () => {
+                        FlUMeng().onEvent('open_classify', <String, String>{
+                          'classify': provider.classifies[index].classify
+                        }),
                         Navigator.of(context).push(
                           PageRouteBuilder(
                             opaque: false,

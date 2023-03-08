@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:tingfm/pages/feedback/feedback.dart';
 import 'package:tingfm/pages/privacy/privacy.dart';
+import 'package:tingfm/utils/admob.dart';
 import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/utils/router.dart';
 import 'package:tingfm/utils/storage.dart';
@@ -17,9 +18,11 @@ class MyPage extends StatefulWidget {
 
 class MyPageState extends State<MyPage> {
   late List items;
-
+  late AdmobAdManager admob;
   @override
   void initState() {
+    admob = AdmobAdManager();
+    admob.loadAd(RewardAdType.my);
     super.initState();
     items = [
       {
@@ -28,8 +31,8 @@ class MyPageState extends State<MyPage> {
       },
       {
         'icon': Ionicons.link_outline,
-        'title': '打分鼓励一下',
-        // 'function': () => _pushPage(Favorites()),
+        'title': '看个广告鼓励一下',
+        'function': () => watchAd(),
       },
       {
         'icon': Icons.lightbulb,
@@ -320,6 +323,16 @@ class MyPageState extends State<MyPage> {
         ),
       ),
     );
+  }
+
+  watchAd() {
+    admob.showAd(RewardAdType.my);
+  }
+
+  @override
+  void dispose() {
+    admob.dispose();
+    super.dispose();
   }
 
   showAbout() {

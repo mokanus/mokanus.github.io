@@ -11,6 +11,7 @@ class APIRouter {
   static const String albumInfoAPI = '/album_info';
   static const String classifiesAPI = '/album_classify';
   static const String lisByClassifyAPI = '/classified_albums';
+  static const String feedbackAPI = '/feed_back';
 
   static String router(String api) {
     if (Global.isRelease) {

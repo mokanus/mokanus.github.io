@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:panara_dialogs/panara_dialogs.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:tingfm/pages/home/classify.dart';
 import 'package:tingfm/pages/home/recommend.dart';
 import 'package:tingfm/pages/search/search.dart';
+import 'package:tingfm/utils/admob.dart';
 import 'package:tingfm/utils/router.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,57 +19,13 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   final PageController _pageController = PageController();
   late TabController _tabController;
-
-  RewardedAd? _rewardedAd;
-  bool adLoaded = false;
-
-  final String _adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-3940256099942544/5224354917'
-      : 'ca-app-pub-3940256099942544/1712485313';
-
+  late AdmobAdManager admob;
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+    admob = AdmobAdManager();
+    admob.loadAd(RewardAdType.home);
     super.initState();
-  }
-
-  void _loadAd() {
-    RewardedAd.load(
-        adUnitId: _adUnitId,
-        request: const AdRequest(),
-        rewardedAdLoadCallback: RewardedAdLoadCallback(onAdLoaded: (ad) {
-          ad.fullScreenContentCallback = FullScreenContentCallback(
-              // Called when the ad showed the full screen content.
-              onAdShowedFullScreenContent: (ad) {},
-              // Called when an impression occurs on the ad.
-              onAdImpression: (ad) {},
-              // Called when the ad failed to show full screen content.
-              onAdFailedToShowFullScreenContent: (ad, err) {
-                ad.dispose();
-              },
-              // Called when the ad dismissed full screen content.
-              onAdDismissedFullScreenContent: (ad) {
-                ad.dispose();
-              },
-              onAdClicked: (ad) {});
-          _rewardedAd = ad;
-          adLoaded = true;
-        }, onAdFailedToLoad: (LoadAdError error) {
-          // ignore: avoid_print
-          print('RewardedAd failed to load: $error');
-        }));
-  }
-
-  void showAd() {
-    if (adLoaded) {
-      _rewardedAd?.show(
-          onUserEarnedReward: (AdWithoutView ad, RewardItem rewardItem) {
-        // ignore: avoid_print
-        print('Reward amount: ${rewardItem.amount}');
-      });
-    } else {
-      _loadAd();
-    }
   }
 
   @override
@@ -125,27 +79,14 @@ class _HomePageState extends State<HomePage>
             ),
           ),
           GestureDetector(
-            child: Icon(
-              Icons.wifi_tethering_error_rounded,
-              color: const Color.fromARGB(255, 234, 78, 94),
-              size: ScreenUtil().setSp(84),
-            ),
-            onTap: () {
-              showAd();
-              PanaraInfoDialog.show(
-                this.context,
-                title: "标题弹窗",
-                message: "看广告可以获得30分钟的免费听书时长哦",
-                buttonText: "好的",
-                onTapDismiss: () {
-                  Navigator.pop(this.context);
-                },
-                panaraDialogType: PanaraDialogType.normal,
-                barrierDismissible:
-                    false, // optional parameter (default is true)
-              );
-            },
-          ),
+              child: Icon(
+                Ionicons.link_outline,
+                color: const Color.fromARGB(255, 234, 78, 94),
+                size: ScreenUtil().setSp(84),
+              ),
+              onTap: () {
+                admob.showAd(RewardAdType.home);
+              }),
         ]),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -188,8 +129,8 @@ class _HomePageState extends State<HomePage>
 
   @override
   void dispose() {
-    // _rewardedAd?.dispose();
     _pageController.dispose();
+    admob.dispose();
     super.dispose();
   }
 }
