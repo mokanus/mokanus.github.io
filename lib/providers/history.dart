@@ -62,6 +62,14 @@ class HishoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> remove(int index) async {
+    var box = await Hive.openBox<AlbumItemDB>(HiveBoxes.hisotyDB);
+    var item = historyItems.elementAt(index);
+    await box.delete(item.album);
+    historyItems = box.values.toList().reversed.toList();
+    notifyListeners();
+  }
+
   AlbumMeta? getAlbumMeta(String album) {
     return metas[album];
   }

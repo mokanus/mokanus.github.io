@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage>
     _tabController = TabController(length: 2, vsync: this);
     admob = AdmobAdManager();
     admob.loadAd(RewardAdType.home);
+
     super.initState();
   }
 

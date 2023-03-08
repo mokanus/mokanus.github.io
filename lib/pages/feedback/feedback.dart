@@ -3,6 +3,7 @@ import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 import 'package:tingfm/api/feedback.dart';
 import 'package:tingfm/api/router.dart';
+import 'package:tingfm/widgets/snackbar.dart';
 
 class FeedbackPage extends StatefulWidget {
   const FeedbackPage({super.key});
@@ -31,13 +32,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
         params: params,
         context: context,
       );
-
       // ignore: use_build_context_synchronously
-      MotionToast.success(
-        title: const Text("成功"),
-        description: const Text("收到你的反馈啦，请持续关注!"),
-        position: MotionToastPosition.bottom,
-      ).show(context);
+      ShowSnackBar().showSnackBar(
+        context,
+        " 收到你的反馈[$content]啦，请持续关注!",
+      );
     } catch (e) {
       return;
     }

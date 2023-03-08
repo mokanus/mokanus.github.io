@@ -145,7 +145,7 @@ void showSliderDialog({
                   style: const TextStyle(
                       fontFamily: 'Avenir',
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 24.0)),
               Slider(
                 divisions: divisions,

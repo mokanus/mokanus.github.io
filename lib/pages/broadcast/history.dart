@@ -44,80 +44,90 @@ class HistoryViewState extends State<HistoryView> with WidgetsBindingObserver {
               itemCount: provider.historyItems.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  margin: EdgeInsets.fromLTRB(
-                      ScreenUtil().setWidth(55),
-                      ScreenUtil().setHeight(8),
-                      ScreenUtil().setWidth(55),
-                      ScreenUtil().setHeight(8)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: GestureDetector(
-                          child: Card(
-                            elevation: 0.2,
-                            child: Row(
-                              children: [
-                                Container(
-                                  //设置边距
-                                  margin: EdgeInsets.fromLTRB(
-                                      ScreenUtil().setWidth(30),
-                                      ScreenUtil().setHeight(30),
-                                      ScreenUtil().setWidth(30),
-                                      ScreenUtil().setHeight(30)),
-                                  height: ScreenUtil().setHeight(270),
-                                  width: ScreenUtil().setWidth(270),
-                                  child: imageCached(
-                                      provider.historyItems[index].imageUrl(),
-                                      provider.historyItems[index].cachedKey()),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 0, 0, 8),
-                                        child: Text(
-                                          "${provider.historyItems[index].album} · ${provider.historyItems[index].artist}",
+                return Dismissible(
+                  key: ValueKey(provider.historyItems[index].album),
+                  direction: DismissDirection.horizontal,
+                  onDismissed: (dir) {
+                    provider.remove(index);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(
+                        ScreenUtil().setWidth(55),
+                        ScreenUtil().setHeight(8),
+                        ScreenUtil().setWidth(55),
+                        ScreenUtil().setHeight(8)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            child: Card(
+                              elevation: 0.2,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    //设置边距
+                                    margin: EdgeInsets.fromLTRB(
+                                        ScreenUtil().setWidth(30),
+                                        ScreenUtil().setHeight(30),
+                                        ScreenUtil().setWidth(30),
+                                        ScreenUtil().setHeight(30)),
+                                    height: ScreenUtil().setHeight(270),
+                                    width: ScreenUtil().setWidth(270),
+                                    child: imageCached(
+                                        provider.historyItems[index].imageUrl(),
+                                        provider.historyItems[index]
+                                            .cachedKey()),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 0, 0, 8),
+                                          child: Text(
+                                            "${provider.historyItems[index].album} · ${provider.historyItems[index].artist}",
+                                            style: TextStyle(
+                                                fontSize:
+                                                    ScreenUtil().setSp(44),
+                                                fontWeight: FontWeight.bold),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        Text(
+                                          provider.getAlbumMetaInfo(index),
                                           style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(44),
-                                              fontWeight: FontWeight.bold),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      Text(
-                                        provider.getAlbumMetaInfo(index),
-                                        style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(35),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      )
-                                    ],
+                                            fontSize: ScreenUtil().setSp(35),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: () => {
+                              Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  opaque: true,
+                                  pageBuilder: (_, __, ___) => AlbumInfoPage(
+                                    albumId: provider.historyItems[index].id,
+                                    album: provider.historyItems[index].album,
                                   ),
                                 ),
-                              ],
-                            ),
+                              )
+                            },
                           ),
-                          onTap: () => {
-                            Navigator.of(context).push(
-                              PageRouteBuilder(
-                                opaque: true,
-                                pageBuilder: (_, __, ___) => AlbumInfoPage(
-                                  albumId: provider.historyItems[index].id,
-                                  album: provider.historyItems[index].album,
-                                ),
-                              ),
-                            )
-                          },
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
