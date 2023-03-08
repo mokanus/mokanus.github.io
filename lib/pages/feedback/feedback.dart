@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:motion_toast/motion_toast.dart';
-import 'package:motion_toast/resources/arrays.dart';
 import 'package:tingfm/api/feedback.dart';
 import 'package:tingfm/api/router.dart';
 import 'package:tingfm/widgets/snackbar.dart';
