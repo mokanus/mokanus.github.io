@@ -56,7 +56,6 @@ class RecommendProvider with ChangeNotifier {
         params: params,
         context: context,
       );
-      print(recommendRsp.toString());
       if (recommendRsp != null && recommendRsp.data.albums.isNotEmpty) {
         recommendAlbumnList.addAll(recommendRsp.data.albums);
       }

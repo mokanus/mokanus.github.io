@@ -40,7 +40,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    admob = AdmobAdManager();
+    admob = AdmobAdManager(rewardCallback);
     admob.loadAd(RewardAdType.player);
 
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -221,6 +221,10 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
             );
           }),
     );
+  }
+
+  void rewardCallback() {
+    print("奖励回调");
   }
 
   Widget buildSliderPanel(BoxConstraints constraints) {

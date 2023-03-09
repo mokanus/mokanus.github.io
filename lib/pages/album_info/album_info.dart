@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/shared/types.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/api/api_status.dart';
 import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/providers/history.dart';
+import 'package:tingfm/utils/admob.dart';
+import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/widgets/image.dart';
 import 'package:tingfm/widgets/mini_player.dart';
 import 'package:tingfm/widgets/snackbar.dart';
@@ -25,9 +31,12 @@ class AlbumInfoPage extends StatefulWidget {
 
 class _AlbumInfoPageState extends State<AlbumInfoPage>
     with WidgetsBindingObserver {
+  late AdmobAdManager admob;
+
   @override
   void initState() {
-    super.initState();
+    admob = AdmobAdManager(rewardCallback);
+    admob.loadAd(RewardAdType.info);
 
     SchedulerBinding.instance.addPostFrameCallback(
       (_) => Provider.of<AlbumInfoProvider>(context, listen: false)
@@ -35,6 +44,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
     );
 
     WidgetsBinding.instance.addObserver(this);
+    super.initState();
   }
 
   @override
@@ -127,18 +137,22 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              SizedBox(
-                                height: ScreenUtil().setHeight(134),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.menu),
-                                    Text(" ${provider.item!.count}章",
-                                        style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(40),
-                                            fontFamily: "Avenir"))
-                                  ],
+                              GestureDetector(
+                                onTap: showAuidoListDialog,
+                                child: SizedBox(
+                                  height: ScreenUtil().setHeight(134),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.menu),
+                                      Text(" ${provider.item!.count}章",
+                                          style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(42),
+                                              fontFamily: "Avenir"))
+                                    ],
+                                  ),
                                 ),
                               ),
                               GestureDetector(
@@ -158,7 +172,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                                       ),
                                       Text("喜欢",
                                           style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(40),
+                                              fontSize: ScreenUtil().setSp(42),
                                               fontFamily: "Avenir"))
                                     ],
                                   ),
@@ -182,27 +196,18 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                                           ? Text("继续",
                                               style: TextStyle(
                                                   fontSize:
-                                                      ScreenUtil().setSp(40),
+                                                      ScreenUtil().setSp(42),
                                                   fontFamily: "Avenir"))
                                           : Text("播放",
                                               style: TextStyle(
                                                   fontSize:
-                                                      ScreenUtil().setSp(40),
+                                                      ScreenUtil().setSp(42),
                                                   fontFamily: "Avenir"))
                                     ],
                                   ),
                                 ),
                                 onTap: () {
-                                  addItemToHistory();
-                                  Navigator.of(context).push(
-                                    PageRouteBuilder(
-                                      opaque: false,
-                                      pageBuilder: (_, __, ___) => PlayerPage(
-                                        fromMiniplayer: false,
-                                        albumItem: provider.item,
-                                      ),
-                                    ),
-                                  );
+                                  showAdDialog();
                                 },
                               ),
                             ],
@@ -240,5 +245,130 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
       await Provider.of<AlbumInfoProvider>(context, listen: false)
           .flushFavorateState();
     }
+  }
+
+  void showAdDialog() {
+    if (Global.isVip) {
+      openPlayerPage();
+    } else {
+      Dialogs.materialDialog(
+          color: Colors.white,
+          msg: '看次广告获取30分钟的收听时间',
+          title: '畅听所有专辑',
+          lottieBuilder: Lottie.asset(
+            'assets/jsons/lottie_a.json',
+            fit: BoxFit.contain,
+          ),
+          customView: Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8.0),
+                  topRight: Radius.circular(8.0)),
+              color: Color.fromARGB(255, 234, 78, 94),
+            ),
+            height: 60,
+          ),
+          customViewPosition: CustomViewPosition.BEFORE_ANIMATION,
+          context: context,
+          actions: [
+            IconsButton(
+              onPressed: () {
+                if (admob.adLoaded) {
+                  admob.showAd(RewardAdType.info);
+                }
+              },
+              text: '确定',
+              iconData: Icons.arrow_right_rounded,
+              color: const Color.fromARGB(255, 234, 78, 94),
+              textStyle: const TextStyle(color: Colors.white),
+              iconColor: Colors.white,
+            ),
+          ]);
+    }
+  }
+
+  void showAuidoListDialog() {
+    Dialogs.bottomMaterialDialog(
+      color: Colors.white,
+      customView: Padding(
+        padding: const EdgeInsets.fromLTRB(5, 15, 5, 0),
+        child: SizedBox(
+          height: 350,
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.only(bottom: 10),
+            shrinkWrap: true,
+            itemCount: Provider.of<AlbumInfoProvider>(context, listen: false)
+                .item!
+                .count,
+            itemBuilder: (context, index) {
+              return ListTileTheme(
+                child: ListTile(
+                  contentPadding:
+                      const EdgeInsets.only(left: 16.0, right: 10.0),
+                  leading: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox.square(
+                        dimension: 50,
+                        child: imageCached(
+                          Provider.of<AlbumInfoProvider>(context, listen: false)
+                              .item!
+                              .imageUrl(),
+                          Provider.of<AlbumInfoProvider>(context, listen: false)
+                              .item!
+                              .cachedKey(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  title: Text(
+                    Provider.of<AlbumInfoProvider>(context, listen: false)
+                        .item!
+                        .mediaItems[index]
+                        .title
+                        .substring(
+                            0,
+                            Provider.of<AlbumInfoProvider>(context,
+                                        listen: false)
+                                    .item!
+                                    .mediaItems[index]
+                                    .title
+                                    .length -
+                                4),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  onTap: () async {
+                    showAdDialog();
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+      customViewPosition: CustomViewPosition.BEFORE_ANIMATION,
+      context: context,
+    );
+  }
+
+  void rewardCallback() {
+    addItemToHistory();
+    Global.setVip();
+    // 刷新窗口
+  }
+
+  void openPlayerPage() {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (_, __, ___) => PlayerPage(
+          fromMiniplayer: false,
+          albumItem:
+              Provider.of<AlbumInfoProvider>(context, listen: false).item,
+        ),
+      ),
+    );
   }
 }

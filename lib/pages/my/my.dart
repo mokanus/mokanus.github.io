@@ -21,7 +21,7 @@ class MyPageState extends State<MyPage> {
   late AdmobAdManager admob;
   @override
   void initState() {
-    admob = AdmobAdManager();
+    admob = AdmobAdManager(rewardCallback);
     admob.loadAd(RewardAdType.my);
     super.initState();
     items = [
@@ -323,6 +323,10 @@ class MyPageState extends State<MyPage> {
         ),
       ),
     );
+  }
+
+  void rewardCallback() {
+    print("奖励回调");
   }
 
   watchAd() {

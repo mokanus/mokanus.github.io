@@ -6,6 +6,7 @@ import 'package:tingfm/pages/home/classify.dart';
 import 'package:tingfm/pages/home/recommend.dart';
 import 'package:tingfm/pages/search/search.dart';
 import 'package:tingfm/utils/admob.dart';
+import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/utils/router.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    admob = AdmobAdManager();
+    admob = AdmobAdManager(rewardCallback);
     admob.loadAd(RewardAdType.home);
 
     super.initState();
@@ -126,6 +127,10 @@ class _HomePageState extends State<HomePage>
           controller: _tabController,
           children: const [RecommendView(), ClassifyView()]),
     );
+  }
+
+  void rewardCallback() {
+    Global.logger.d("奖励回调");
   }
 
   @override

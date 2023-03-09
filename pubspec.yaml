@@ -53,6 +53,10 @@ dependencies:
   google_mobile_ads: ^2.3.0
   panara_dialogs: ^0.1.4
   draggable_float_widget: ^0.0.2
+  material_dialogs: ^1.1.4
+  lottie: ^2.2.0
+  logger: ^1.2.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -78,6 +82,7 @@ flutter:
     - assets/images/album.png
     - assets/images/cover.jpg
     - assets/images/icon.png
+    - assets/jsons/lottie_a.json
 
   fonts:
     - family: Avenir

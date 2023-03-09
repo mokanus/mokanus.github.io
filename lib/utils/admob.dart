@@ -7,12 +7,18 @@ enum RewardAdType {
   home,
   player,
   my,
+  info,
 }
 
 class AdmobAdManager {
   RewardedAd? _rewardedAd;
   bool adLoaded = false;
 
+  late Function rewardCallback;
+
+  AdmobAdManager(Function callback) {
+    rewardCallback = callback;
+  }
   void loadAd(RewardAdType adType) {
     RewardedAd.load(
         adUnitId: getRewardAdId(adType),
@@ -36,7 +42,7 @@ class AdmobAdManager {
           adLoaded = true;
         }, onAdFailedToLoad: (LoadAdError error) {
           // ignore: avoid_print
-          print('RewardedAd failed to load: $error');
+          Global.logger.d('RewardedAd failed to load: $error');
         }));
   }
 
@@ -44,9 +50,8 @@ class AdmobAdManager {
     if (adLoaded) {
       _rewardedAd?.show(
           onUserEarnedReward: (AdWithoutView ad, RewardItem rewardItem) {
-        // ignore: avoid_print
-        print('Reward amount: ${rewardItem.amount}');
         adLoaded = false;
+        rewardCallback();
       });
     } else {
       loadAd(adType);
@@ -72,6 +77,10 @@ class AdmobAdManager {
       case RewardAdType.my:
         {
           return 'ca-app-pub-8167720150162612/9446247589';
+        }
+      case RewardAdType.info:
+        {
+          return 'ca-app-pub-8167720150162612/2650944373';
         }
     }
   }

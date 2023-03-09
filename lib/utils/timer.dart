@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tingfm/services/audio_service.dart';
+import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/values/hive_box.dart';
 import 'dart:io' show Platform;
 
@@ -30,6 +31,18 @@ class Timers {
                 unlockNext(),
               });
     }
+
+    Timer.periodic(const Duration(seconds: 5), (Timer t) {
+      if (Global.isVip) {
+        if (DateTime.now()
+            .isAfter(Global.becameVipTime.add(const Duration(seconds: 30)))) {
+          Global.isVip = false;
+          var audioHandler = GetIt.I<AudioPlayerHandler>();
+          audioHandler.queue.value.clear();
+          audioHandler.stop();
+        }
+      }
+    });
   }
 
   ///保存当前的播放进度
@@ -72,7 +85,7 @@ class Timers {
         }
       }
     } on Exception {
-      print("error");
+      Global.logger.e('RewardedAd failed to load');
     }
   }
 }
