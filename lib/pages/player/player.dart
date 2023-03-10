@@ -13,6 +13,7 @@ import 'package:tingfm/pages/player/seekbar.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/utils/admob.dart';
+import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/utils/timer.dart';
 import 'package:tingfm/widgets/image.dart';
 
@@ -224,7 +225,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   }
 
   void rewardCallback() {
-    print("奖励回调");
+    Global.logger.d("奖励回调");
   }
 
   Widget buildSliderPanel(BoxConstraints constraints) {

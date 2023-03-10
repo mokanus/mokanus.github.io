@@ -51,7 +51,6 @@ class HishoryProvider extends ChangeNotifier {
         metas[item.album] = AlbumMeta.fromJson(metaData.toString());
       }
     }
-
     notifyListeners();
   }
 
@@ -76,7 +75,7 @@ class HishoryProvider extends ChangeNotifier {
 
   String getAlbumMetaInfo(int index) {
     var album = historyItems[index].album;
-    if (album != "") {
+    if (album != "" && metas[album] != null) {
       return "播放到 : ${metas[album]?.title}";
     }
     return "";

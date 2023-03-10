@@ -326,7 +326,7 @@ class MyPageState extends State<MyPage> {
   }
 
   void rewardCallback() {
-    print("奖励回调");
+    Global.logger.d("奖励回调");
   }
 
   watchAd() {

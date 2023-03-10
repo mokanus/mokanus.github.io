@@ -45,7 +45,7 @@ class HistoryViewState extends State<HistoryView> with WidgetsBindingObserver {
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return Dismissible(
-                  key: ValueKey(provider.historyItems[index].album),
+                  key: Key(UniqueKey().toString()),
                   direction: DismissDirection.horizontal,
                   onDismissed: (dir) {
                     provider.remove(index);

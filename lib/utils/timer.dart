@@ -35,7 +35,7 @@ class Timers {
     Timer.periodic(const Duration(seconds: 5), (Timer t) {
       if (Global.isVip) {
         if (DateTime.now()
-            .isAfter(Global.becameVipTime.add(const Duration(seconds: 30)))) {
+            .isAfter(Global.becameVipTime.add(const Duration(minutes: 30)))) {
           Global.isVip = false;
           var audioHandler = GetIt.I<AudioPlayerHandler>();
           audioHandler.queue.value.clear();

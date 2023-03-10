@@ -68,19 +68,27 @@ class AdmobAdManager {
     switch (adType) {
       case RewardAdType.home:
         {
-          return 'ca-app-pub-8167720150162612/1292409480';
+          return Platform.isAndroid
+              ? 'ca-app-pub-8167720150162612/1292409480'
+              : 'ca-app-pub-3940256099942544/1712485313';
         }
       case RewardAdType.player:
         {
-          return 'ca-app-pub-8167720150162612/8238211345';
+          return Platform.isAndroid
+              ? 'ca-app-pub-8167720150162612/8238211345'
+              : 'ca-app-pub-3940256099942544/1712485313';
         }
       case RewardAdType.my:
         {
-          return 'ca-app-pub-8167720150162612/9446247589';
+          return Platform.isAndroid
+              ? 'ca-app-pub-8167720150162612/9446247589'
+              : 'ca-app-pub-3940256099942544/1712485313';
         }
       case RewardAdType.info:
         {
-          return 'ca-app-pub-8167720150162612/2650944373';
+          return Platform.isAndroid
+              ? 'ca-app-pub-8167720150162612/2650944373'
+              : 'ca-app-pub-3940256099942544/1712485313';
         }
     }
   }

@@ -251,6 +251,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
     if (Global.isVip) {
       openPlayerPage();
     } else {
+      admob.loadAd(RewardAdType.info);
       Dialogs.materialDialog(
           color: Colors.white,
           msg: '看次广告获取30分钟的收听时间',
@@ -274,7 +275,11 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
             IconsButton(
               onPressed: () {
                 if (admob.adLoaded) {
+                  Navigator.pop(context);
                   admob.showAd(RewardAdType.info);
+                } else {
+                  Navigator.pop(context);
+                  openPlayerPage();
                 }
               },
               text: '确定',
@@ -285,6 +290,39 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
             ),
           ]);
     }
+  }
+
+  void showCongradulationsDialog() {
+    Dialogs.materialDialog(
+        color: Colors.white,
+        msg: '恭喜你获得30分钟畅听奖励时长,点击播放畅听吧',
+        title: '30分钟奖励',
+        lottieBuilder: Lottie.asset(
+          'assets/jsons/lottie_a.json',
+          fit: BoxFit.contain,
+        ),
+        customView: Container(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0)),
+            color: Color.fromARGB(255, 234, 78, 94),
+          ),
+          height: 60,
+        ),
+        customViewPosition: CustomViewPosition.BEFORE_ANIMATION,
+        context: context,
+        actions: [
+          IconsButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            text: '收到',
+            iconData: Icons.arrow_right_rounded,
+            color: const Color.fromARGB(255, 234, 78, 94),
+            textStyle: const TextStyle(color: Colors.white),
+            iconColor: Colors.white,
+          ),
+        ]);
   }
 
   void showAuidoListDialog() {
@@ -340,6 +378,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                     overflow: TextOverflow.ellipsis,
                   ),
                   onTap: () async {
+                    Navigator.pop(context);
                     showAdDialog();
                   },
                 ),
@@ -354,12 +393,13 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
   }
 
   void rewardCallback() {
-    addItemToHistory();
     Global.setVip();
+    showCongradulationsDialog();
     // 刷新窗口
   }
 
   void openPlayerPage() {
+    addItemToHistory();
     Navigator.of(context).push(
       PageRouteBuilder(
         opaque: false,
@@ -370,5 +410,11 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    admob.dispose();
+    super.dispose();
   }
 }
