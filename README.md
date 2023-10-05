@@ -1,4 +1,4 @@
-# tingfm
+# ting
 
 A new Flutter project.
 

@@ -5,7 +5,6 @@ import 'package:ionicons/ionicons.dart';
 import 'package:tingfm/pages/home/classify.dart';
 import 'package:tingfm/pages/home/recommend.dart';
 import 'package:tingfm/pages/search/search.dart';
-import 'package:tingfm/utils/admob.dart';
 import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/utils/router.dart';
 
@@ -20,13 +19,9 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   final PageController _pageController = PageController();
   late TabController _tabController;
-  late AdmobAdManager admob;
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    admob = AdmobAdManager(rewardCallback);
-    admob.loadAd(RewardAdType.home);
-
     super.initState();
   }
 
@@ -86,9 +81,7 @@ class _HomePageState extends State<HomePage>
                 color: const Color.fromARGB(255, 234, 78, 94),
                 size: ScreenUtil().setSp(84),
               ),
-              onTap: () {
-                admob.showAd(RewardAdType.home);
-              }),
+              onTap: () {}),
         ]),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -136,7 +129,6 @@ class _HomePageState extends State<HomePage>
   @override
   void dispose() {
     _pageController.dispose();
-    admob.dispose();
     super.dispose();
   }
 }

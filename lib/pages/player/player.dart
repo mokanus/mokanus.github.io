@@ -12,7 +12,6 @@ import 'package:tingfm/pages/player/extras.dart';
 import 'package:tingfm/pages/player/seekbar.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/services/audio_service.dart';
-import 'package:tingfm/utils/admob.dart';
 import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/utils/timer.dart';
 import 'package:tingfm/widgets/image.dart';
@@ -35,14 +34,10 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
   final PanelController panelController = PanelController();
   var isPanelOpened = false;
-  late AdmobAdManager admob;
 
   @override
   void initState() {
     super.initState();
-
-    admob = AdmobAdManager(rewardCallback);
-    admob.loadAd(RewardAdType.player);
 
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.black,
@@ -86,7 +81,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   @override
   void dispose() {
     ambiguate(WidgetsBinding.instance)!.removeObserver(this);
-    admob.dispose();
     super.dispose();
   }
 
@@ -142,9 +136,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                           color: const Color.fromARGB(255, 234, 78, 94),
                           size: ScreenUtil().setSp(84),
                         ),
-                        onTap: () {
-                          admob.showAd(RewardAdType.player);
-                        }),
+                        onTap: () {}),
                     const SizedBox(
                       width: 20,
                     ),

@@ -1,4 +1,3 @@
-import 'package:fl_umeng/fl_umeng.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tingfm/entities/album.dart';
@@ -75,8 +74,6 @@ class _RecommendItemState extends State<RecommendItem> {
             ],
           ),
           onTap: () {
-            FlUMeng().onEvent('open_album',
-                <String, String>{'album': widget.albumItem.album});
             Navigator.of(context).push(
               PageRouteBuilder(
                 opaque: false,

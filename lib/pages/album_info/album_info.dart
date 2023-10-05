@@ -11,7 +11,6 @@ import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/providers/history.dart';
-import 'package:tingfm/utils/admob.dart';
 import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/widgets/image.dart';
 import 'package:tingfm/widgets/mini_player.dart';
@@ -31,13 +30,8 @@ class AlbumInfoPage extends StatefulWidget {
 
 class _AlbumInfoPageState extends State<AlbumInfoPage>
     with WidgetsBindingObserver {
-  late AdmobAdManager admob;
-
   @override
   void initState() {
-    admob = AdmobAdManager(rewardCallback);
-    admob.loadAd(RewardAdType.info);
-
     SchedulerBinding.instance.addPostFrameCallback(
       (_) => Provider.of<AlbumInfoProvider>(context, listen: false)
           .getAlbumInfo(context, widget.albumId),
@@ -251,7 +245,6 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
     if (Global.isVip) {
       openPlayerPage();
     } else {
-      admob.loadAd(RewardAdType.info);
       Dialogs.materialDialog(
           color: Colors.white,
           msg: '看次广告获取30分钟的收听时间',
@@ -274,13 +267,8 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
           actions: [
             IconsButton(
               onPressed: () {
-                if (admob.adLoaded) {
-                  Navigator.pop(context);
-                  admob.showAd(RewardAdType.info);
-                } else {
-                  Navigator.pop(context);
-                  openPlayerPage();
-                }
+                Navigator.pop(context);
+                openPlayerPage();
               },
               text: '确定',
               iconData: Icons.arrow_right_rounded,
@@ -414,7 +402,6 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
 
   @override
   void dispose() {
-    admob.dispose();
     super.dispose();
   }
 }

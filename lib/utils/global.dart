@@ -1,5 +1,3 @@
-import 'package:fl_umeng/fl_umeng.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 import 'package:tingfm/utils/timer.dart';
 
@@ -18,22 +16,23 @@ class Global {
     /// 务必先预初始化 随后调用自己的 用户授权协议 之后再进行正常初始化
     ///
     if (isRelease) {
-      await FlUMeng().init(
-          preInit: true,
-          androidAppKey: '63eb01e8ba6a5259c40200e3',
-          iosAppKey: '63eadba9ba6a5259c401db43',
-          channel: 'Google Play');
+      //   await FlUMeng().init(
+      //       preInit: true,
+      //       androidAppKey: '63eb01e8ba6a5259c40200e3',
+      //       iosAppKey: '63eadba9ba6a5259c401db43',
+      //       channel: 'Google Play');
 
-      /// 注册友盟 统计 性能检测
-      await FlUMeng().init(
-          androidAppKey: '63eb01e8ba6a5259c40200e3',
-          iosAppKey: '63eadba9ba6a5259c401db43',
-          channel: 'Google Play');
+      //   /// 注册友盟 统计 性能检测
+      //   await FlUMeng().init(
+      //       androidAppKey: '63eb01e8ba6a5259c40200e3',
+      //       iosAppKey: '63eadba9ba6a5259c401db43',
+      //       channel: 'Google Play');
+      // }
     }
   }
 
   static Future<void> initAds() async {
-    MobileAds.instance.initialize();
+    // MobileAds.instance.initialize();
   }
 
   static void setVip() {
@@ -41,7 +40,8 @@ class Global {
     becameVipTime = DateTime.now();
   }
 
-  static const String ossPre = 'http://www.chiyustudio.com/tingfm/';
+  static const String ossPre =
+      'https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/data/';
 
   static bool isLightTheme = true;
   static bool isTurnOnVibration = true;
