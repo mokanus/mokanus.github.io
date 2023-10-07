@@ -53,6 +53,7 @@ dependencies:
   lottie: ^2.2.0
   logger: ^1.2.2
   home_widget: ^0.3.0
+  google_sign_in: ^6.1.5
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +75,9 @@ flutter:
     - assets/images/icon.png
     - assets/images/app-icon.png
     - assets/jsons/lottie_a.json
+    - assets/images/apple.png
+    - assets/images/wechat.png
+    - assets/images/google.png
 
   fonts:
     - family: Avenir
