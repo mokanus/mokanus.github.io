@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -8,10 +9,49 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
-  final userNameController = TextEditingController();
+  final emailController = TextEditingController();
   final passWordController = TextEditingController();
 
-  void onSignInTap() {}
+  void onSignUserInTap() async {
+    // 显示loading
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(child: CircularProgressIndicator());
+        });
+    //登陆
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passWordController.text);
+      // 弹出loading
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      if (e.code == "user-not-found") {
+        wrongMailMessage();
+      } else if (e.code == "wrong-password") {
+        wrongPasswordMessage();
+      }
+    }
+  }
+
+  void wrongMailMessage() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(title: Text("用户不存在"));
+        });
+  }
+
+  void wrongPasswordMessage() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(title: Text("密码错误"));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -32,7 +72,7 @@ class LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: TextField(
-            controller: userNameController,
+            controller: emailController,
             decoration: InputDecoration(
                 enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white)),
@@ -75,7 +115,7 @@ class LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
         const SizedBox(height: 20),
         // 登陆按钮
         GestureDetector(
-          onTap: onSignInTap,
+          onTap: onSignUserInTap,
           child: Container(
             padding: const EdgeInsets.all(25),
             margin: const EdgeInsets.symmetric(horizontal: 25),

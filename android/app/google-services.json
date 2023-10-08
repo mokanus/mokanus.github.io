@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "762331191821",
+    "project_id": "tingfm-c5dab",
+    "storage_bucket": "tingfm-c5dab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762331191821:android:b579a60cedc7d87582d344",
+        "android_client_info": {
+          "package_name": "com.mokanu.ting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762331191821-qo81slvdt1eclv8re576f1lbjro38b1u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBszEXpePC1z55wZnH5gz_EM0Z--nTwFDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762331191821-qo81slvdt1eclv8re576f1lbjro38b1u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "762331191821-srpus5ec3gjloh7rp4ldpap92q1rm55k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mokanu.ant.tingfm"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

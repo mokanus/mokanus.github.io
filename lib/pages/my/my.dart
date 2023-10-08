@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:tingfm/pages/auth/auth.dart';
 import 'package:tingfm/pages/feedback/feedback.dart';
 import 'package:tingfm/pages/privacy/privacy.dart';
 import 'package:tingfm/utils/global.dart';
@@ -35,21 +37,21 @@ class MyPageState extends State<MyPage> {
         'title': '没有我想听?',
         'function': () => AppRouter.pushPage(context, const FeedbackPage()),
       },
-      // {
-      //   'icon': Icons.vibration,
-      //   'title': '开启震动',
-      //   // 'function': () => _pushPage(Downloads()),
-      // },
+      {
+        'icon': Icons.vibration,
+        'title': '开启震动',
+        'function': () async => {await FirebaseAuth.instance.signOut()},
+      },
       {
         'icon': Ionicons.file_tray,
         'title': '隐私政策声明',
         'function': () => AppRouter.pushPage(context, const PrivacyPage()),
+      },
+      {
+        'icon': Ionicons.mail,
+        'title': '联系我们',
+        'function': () => AppRouter.pushPage(context, const AuthPage()),
       }
-      // {
-      //   'icon': Ionicons.mail,
-      //   'title': '联系我们',
-      //   'function': () => showAbout(),
-      // }
     ];
   }
 
@@ -75,9 +77,9 @@ class MyPageState extends State<MyPage> {
                   return listenDataWidgt();
                 }
 
-                if (items[index]['title'] == '开启震动') {
-                  return _buildVibrationSwitch(items[index]);
-                }
+                // if (items[index]['title'] == '开启震动') {
+                //   return _buildVibrationSwitch(items[index]);
+                // }
 
                 return ListTile(
                   onTap: items[index]['function'],

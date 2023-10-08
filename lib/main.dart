@@ -4,6 +4,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:tingfm/firebase_options.dart';
 import 'package:tingfm/pages/app/app.dart';
 import 'package:tingfm/providers/classify.dart';
 import 'package:tingfm/providers/album_info.dart';
@@ -18,11 +19,15 @@ import 'package:provider/provider.dart';
 
 import 'providers/app.dart';
 import 'providers/list_by_classify.dart';
+// ignore: depend_on_referenced_packages
+import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Paint.enableDithering = true;
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await setupLocator();
   await startService();
   await Global.init();
