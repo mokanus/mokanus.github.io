@@ -431,7 +431,7 @@ packages:
     source: hosted
     version: "3.3.1"
   flutter_launcher_icons:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: flutter_launcher_icons
       sha256: "526faf84284b86a4cb36d20a5e45147747b7563d921373d4ee0559c54fcdbcea"
@@ -752,6 +752,14 @@ packages:
       url: "https://mirrors.cloud.tencent.com/dart-pub/"
     source: hosted
     version: "1.1.4"
+  material_floating_search_bar_2:
+    dependency: "direct main"
+    description:
+      name: material_floating_search_bar_2
+      sha256: ab0c6d209d9491f98dd4c72f2641d0ba1dd35c87effca1f23d8679bece43add0
+      url: "https://mirrors.cloud.tencent.com/dart-pub/"
+    source: hosted
+    version: "0.5.0"
   meta:
     dependency: transitive
     description:

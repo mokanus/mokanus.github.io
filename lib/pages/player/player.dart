@@ -147,11 +147,19 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      imageCached(mediaItem.artUri.toString(),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            ScreenUtil().setWidth(200),
+                            ScreenUtil().setHeight(50),
+                            ScreenUtil().setWidth(200),
+                            ScreenUtil().setHeight(50)),
+                        child: imageCached(
+                          mediaItem.artUri.toString(),
                           '${mediaItem.album}·${mediaItem.artist}',
-                          width: ScreenUtil().setWidth(628),
-                          height: ScreenUtil().setHeight(628),
-                          margin: const EdgeInsets.all(15)),
+                          width: ScreenUtil().setWidth(574),
+                          height: ScreenUtil().setWidth(574),
+                        ),
+                      ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(
                             ScreenUtil().setWidth(200),

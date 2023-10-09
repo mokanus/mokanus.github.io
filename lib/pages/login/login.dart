@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tingfm/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -27,8 +28,9 @@ class LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
       // ignore: use_build_context_synchronously
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
+      print(e.code);
       Navigator.pop(context);
-      if (e.code == "user-not-found") {
+      if (e.code == "user-not-found" || e.code == "invalid-email") {
         wrongMailMessage();
       } else if (e.code == "wrong-password") {
         wrongPasswordMessage();
@@ -171,17 +173,20 @@ class LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(16),
-                color: Colors.grey[200],
+            GestureDetector(
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.circular(16),
+                  color: Colors.grey[200],
+                ),
+                child: Image.asset(
+                  "assets/images/google.png",
+                  height: 40,
+                ),
               ),
-              child: Image.asset(
-                "assets/images/google.png",
-                height: 40,
-              ),
+              onTap: () => {AuthService().signInWithGoogle()},
             ),
             const SizedBox(
               width: 10,

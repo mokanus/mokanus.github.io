@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/pages/album_info/album_info.dart';
@@ -43,59 +44,58 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
   Widget buildFloatingSearchBar() {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-    return Container();
-    // return FloatingSearchBar(
-    //   hint: '搜索 隋唐演义',
-    //   scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
-    //   transitionDuration: const Duration(milliseconds: 500),
-    //   transitionCurve: Curves.easeInOut,
-    //   physics: const BouncingScrollPhysics(),
-    //   axisAlignment: isPortrait ? 0.0 : -1.0,
-    //   openAxisAlignment: 0.0,
-    //   openWidth: isPortrait ? 600 : 500,
-    //   debounceDelay: const Duration(milliseconds: 500),
-    //   elevation: 1.0,
-    //   onQueryChanged: (query) {
-    //     query = query.trim();
-    //     if (query.isNotEmpty) {
-    //       Provider.of<SearchProvider>(context, listen: false)
-    //           .searchData(context, query);
-    //     }
-    //   },
-    //   transition: CircularFloatingSearchBarTransition(),
-    //   actions: [
-    //     const FloatingSearchBarAction(
-    //       showIfOpened: false,
-    //       child: Icon(
-    //         Icons.multitrack_audio,
-    //         color: Colors.red,
-    //       ),
-    //     ),
-    //     FloatingSearchBarAction.searchToClear(
-    //       showIfClosed: false,
-    //     ),
-    //   ],
-    //   builder: (context, transition) {
-    //     return Consumer<SearchProvider>(
-    //       builder: (BuildContext context, SearchProvider searchProvider,
-    //           Widget? child) {
-    //         return ClipRRect(
-    //           borderRadius: BorderRadius.circular(8),
-    //           child: Material(
-    //             color: Theme.of(context).cardColor,
-    //             elevation: 2.0,
-    //             child: Column(
-    //               mainAxisSize: MainAxisSize.min,
-    //               children: searchProvider.searchedAlbumnList.map((album) {
-    //                 return albumnItemWidget(album);
-    //               }).toList(),
-    //             ),
-    //           ),
-    //         );
-    //       },
-    //     );
-    //   },
-    // );
+    return FloatingSearchBar(
+      hint: '搜索 隋唐演义',
+      scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
+      transitionDuration: const Duration(milliseconds: 500),
+      transitionCurve: Curves.easeInOut,
+      physics: const BouncingScrollPhysics(),
+      axisAlignment: isPortrait ? 0.0 : -1.0,
+      openAxisAlignment: 0.0,
+      openWidth: isPortrait ? 600 : 500,
+      debounceDelay: const Duration(milliseconds: 500),
+      elevation: 1.0,
+      onQueryChanged: (query) {
+        query = query.trim();
+        if (query.isNotEmpty) {
+          Provider.of<SearchProvider>(context, listen: false)
+              .searchData(context, query);
+        }
+      },
+      transition: CircularFloatingSearchBarTransition(),
+      actions: [
+        const FloatingSearchBarAction(
+          showIfOpened: false,
+          child: Icon(
+            Icons.multitrack_audio,
+            color: Colors.red,
+          ),
+        ),
+        FloatingSearchBarAction.searchToClear(
+          showIfClosed: false,
+        ),
+      ],
+      builder: (context, transition) {
+        return Consumer<SearchProvider>(
+          builder: (BuildContext context, SearchProvider searchProvider,
+              Widget? child) {
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Material(
+                color: Theme.of(context).cardColor,
+                elevation: 2.0,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: searchProvider.searchedAlbumnList.map((album) {
+                    return albumnItemWidget(album);
+                  }).toList(),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   Widget albumnItemWidget(AlbumItem album) {
