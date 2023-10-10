@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:tingfm/pages/auth/auth.dart';
 import 'package:tingfm/pages/feedback/feedback.dart';
+import 'package:tingfm/pages/pay/pay.dart';
 import 'package:tingfm/pages/privacy/privacy.dart';
 import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/utils/router.dart';
@@ -41,6 +42,11 @@ class MyPageState extends State<MyPage> {
         'icon': Icons.vibration,
         'title': '开启震动',
         'function': () async => {await FirebaseAuth.instance.signOut()},
+      },
+      {
+        'icon': Icons.payment,
+        'title': '调用支付',
+        'function': () => AppRouter.pushPage(context, const PayPage()),
       },
       {
         'icon': Ionicons.file_tray,
