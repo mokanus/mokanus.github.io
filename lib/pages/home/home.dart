@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage>
                       padding: EdgeInsets.fromLTRB(
                           ScreenUtil().setWidth(16), 5, 20, 5),
                       child: Text(
-                        "隋唐演义",
+                        "搜索专辑 / 平凡的世界",
                         style: TextStyle(
                             color: const Color.fromARGB(255, 187, 187, 187),
                             fontSize: ScreenUtil().setSp(45)),

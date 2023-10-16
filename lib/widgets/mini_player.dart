@@ -116,6 +116,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                               onPressed: audioHandler.pause,
                               icon: const Icon(
                                 Icons.pause_circle,
+                                color: Colors.redAccent,
                               ),
                               color: Theme.of(context).iconTheme.color,
                               splashRadius: 1,
@@ -126,6 +127,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                               onPressed: audioHandler.play,
                               icon: const Icon(
                                 Icons.play_circle_fill,
+
                               ),
                               color: Theme.of(context).iconTheme.color,
                               splashRadius: 1,

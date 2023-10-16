@@ -38,7 +38,7 @@ class AlbumItem {
   factory AlbumItem.fromJson(String str) => AlbumItem.fromMap(json.decode(str));
 
   factory AlbumItem.fromMap(Map<String, dynamic> json) => AlbumItem(
-        id: json["ID"],
+        id: json["id"],
         album: json["album"],
         artist: json["artist"],
         classify: json["classify"],
@@ -65,7 +65,7 @@ class AlbumItem {
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => {
-        "ID": id,
+        "id": id,
         "album": album,
         "artist": artist,
         "classify": classify,

@@ -12,14 +12,14 @@ class RecommendProvider with ChangeNotifier {
   List<AlbumItem> recommendAlbumnList = <AlbumItem>[];
 
   ///获取当前专辑的数据
-  refreshRecommendData(BuildContext context, int start, int len) async {
+  refreshRecommendData(BuildContext context, int offset, int limit) async {
     ///开始搜索
     setApiRequestStatus(APIRequestStatus.loading);
 
     try {
       Map<String, dynamic> params = {
-        "start": start,
-        "length": len,
+        "offset": offset,
+        "limit": limit,
       };
 
       var recommendRsp = await RecommendAPI.recommendAlbums(
@@ -47,8 +47,8 @@ class RecommendProvider with ChangeNotifier {
 
     try {
       Map<String, dynamic> params = {
-        "start": start,
-        "length": len,
+        "offset": start,
+        "limit": len,
       };
 
       var recommendRsp = await RecommendAPI.recommendAlbums(

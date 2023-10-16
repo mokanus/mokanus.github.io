@@ -5,6 +5,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tingfm/pages/auth/auth.dart';
 import 'package:tingfm/pages/broadcast/broadcast.dart';
 import 'package:tingfm/pages/home/home.dart';
+import 'package:tingfm/pages/index/index.dart';
 import 'package:tingfm/widgets/custom_physics.dart';
 import 'package:tingfm/widgets/mini_player.dart';
 
@@ -62,7 +63,7 @@ class _AppState extends State<App> {
                                   onPageChanged: onPageChanged,
                                   controller: _pageController,
                                   children: const [
-                                    HomePage(),
+                                    IndexPage(),
                                     BroadcastPage(),
                                     AuthPage()
                                   ]),

@@ -19,17 +19,15 @@ class Timers {
   ///开启自动存储的Timer
   static void startStoragePlayerDataTimer() {
     Timer.periodic(
-        const Duration(seconds: 5),
-        (Timer t) => {
-              storagePlayedData(),
-            });
+      const Duration(seconds: 5),
+      (Timer t) => storagePlayedData(),
+    );
 
     if (Platform.isIOS) {
       Timer.periodic(
-          const Duration(seconds: 1),
-          (Timer t) => {
-                unlockNext(),
-              });
+        const Duration(seconds: 1),
+        (Timer t) => unlockNext(),
+      );
     }
 
     Timer.periodic(const Duration(seconds: 5), (Timer t) {

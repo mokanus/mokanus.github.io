@@ -5,4 +5,6 @@ class HiveBoxes {
   static const favorateDB = 'favorateDB';
   // 专辑播放位置
   static const albumMetaDB = 'albumMetaDB';
+  //
+  static const userStateDB = 'userStateDB';
 }

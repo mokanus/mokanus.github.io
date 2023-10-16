@@ -12,14 +12,14 @@ class ListByClassifyProvider with ChangeNotifier {
 
   ///获取当前专辑的数据
   refreshAlbumsByClassify(
-      BuildContext context, int classify, int start, int len) async {
+      BuildContext context, int classify, int offset, int limit) async {
     setApiRequestStatus(APIRequestStatus.loading);
 
     try {
       Map<String, dynamic> params = {
         "classify": classify,
-        "start": start,
-        "length": len,
+        "offset": offset,
+        "limit": limit,
       };
 
       var listByClassifyRsp = await ListByClassifyAPI.getAlbumsByClassify(
@@ -42,13 +42,13 @@ class ListByClassifyProvider with ChangeNotifier {
 
   ///获取当前专辑的数据
   getAlbumsByClassify(
-      BuildContext context, int classify, int start, int len) async {
+      BuildContext context, int classify, int offset, int limit) async {
     setApiRequestStatus(APIRequestStatus.loading);
     try {
       Map<String, dynamic> params = {
         "classify": classify,
-        "start": start,
-        "length": len,
+        "offset": offset,
+        "limit": limit,
       };
 
       var listByClassifyRsp = await ListByClassifyAPI.getAlbumsByClassify(

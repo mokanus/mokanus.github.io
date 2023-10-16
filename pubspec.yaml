@@ -50,7 +50,6 @@ dependencies:
   firebase_auth: ^4.10.1
   material_floating_search_bar_2: ^0.5.0
   pay: ^1.1.2
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -73,6 +72,13 @@ flutter:
     - assets/images/apple.png
     - assets/images/wechat.png
     - assets/images/google.png
+    - assets/images/banners/1.webp
+    - assets/images/banners/2.webp
+    - assets/images/banners/3.webp
+    - assets/images/banners/4.webp
+    - assets/images/banners/5.webp
+    - assets/images/banners/6.webp
+    - assets/images/banners/7.webp
 
   fonts:
     - family: Avenir

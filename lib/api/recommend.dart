@@ -15,7 +15,6 @@ class RecommendAPI {
         url,
         parameters: params,
       );
-      print(response);
       return RecommendAlbumsRsp.fromJson(response.toString());
     } catch (e) {
       return null;

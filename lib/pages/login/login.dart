@@ -56,7 +56,7 @@ class LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Expanded(child:  Center(
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -222,6 +222,6 @@ class LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
         ),
         const SizedBox(height: 10),
       ],
-    ));
+    )));
   }
 }
