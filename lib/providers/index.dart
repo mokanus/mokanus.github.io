@@ -1,20 +1,21 @@
-import 'dart:io';
-
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:tingfm/api/album_banner.dart';
 import 'package:tingfm/api/api_status.dart';
 import 'package:tingfm/api/classify.dart';
 import 'package:tingfm/api/list_by_classify.dart';
 import 'package:tingfm/api/router.dart';
 import 'package:tingfm/entities/album.dart';
+import 'package:tingfm/entities/album_banner.dart';
 import 'package:tingfm/entities/classify.dart';
 import 'package:tingfm/utils/functions.dart';
 
 class IndexProvider with ChangeNotifier {
   // 加载状态码
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
-  List<Classify> classifies = <Classify>[];
-  Map<int, List<AlbumItem>> albums = <int, List<AlbumItem>>{};
+  var classifies = <Classify>[];
+  var albums = <int, List<AlbumItem>>{};
+  var albumBanners = <AlbumBannerItem>[];
 
   //获取当前专辑的数据
   flushData(BuildContext context) async {
@@ -22,6 +23,22 @@ class IndexProvider with ChangeNotifier {
 
     try {
       Map<String, dynamic> params = {};
+      var bannerRsp = await AlbumBannerAPI.albumBanners(
+        url: APIRouter.router(APIRouter.albumBannerAPI),
+        context: context,
+        params: params,
+      );
+      if (bannerRsp != null) {
+        albumBanners.clear();
+        albumBanners.addAll(bannerRsp.data.banners);
+      }
+    } catch (e) {
+      checkError(e);
+    }
+
+    try {
+      Map<String, dynamic> params = {};
+
       var classifyRsp = await ClassifyAPI.getClassifies(
         url: APIRouter.router(APIRouter.classifiesAPI),
         context: context,
@@ -43,7 +60,6 @@ class IndexProvider with ChangeNotifier {
           "limit": 10,
         };
 
-        // ignore: use_build_context_synchronously
         var listByClassifyRsp = await ListByClassifyAPI.getAlbumsByClassify(
           url: APIRouter.router(APIRouter.lisByClassifyAPI),
           params: params,

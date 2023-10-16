@@ -1,3 +1,4 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/api/api_status.dart';
 import 'package:tingfm/components/search_bar.dart';
+import 'package:tingfm/pages/album_info/album_info.dart';
 import 'package:tingfm/pages/index/menu.dart';
 import 'package:tingfm/pages/index/recommend.dart';
 import 'package:tingfm/pages/index/recommend_list.dart';
@@ -52,11 +54,29 @@ class _IndexPageState extends State<IndexPage>
                     Column(
                       children: [
                         // swiper组件
-                        imageCached(
-                            "https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/banners/1.webp",
-                            "https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/banners/1.webp",
-                            height: ScreenUtil().setHeight(480),
-                            width: ScreenUtil().screenWidth),
+                        SizedBox(
+                          height: ScreenUtil().setHeight(500),
+                          child: Swiper(
+                            autoplay: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              return imageCached(
+                                  provider.albumBanners[index].imageURL(),
+                                  provider.albumBanners[index].cacheKey(),
+                                  height: ScreenUtil().setHeight(480),
+                                  width: ScreenUtil().screenWidth);
+                            },
+                            itemCount: provider.albumBanners.length,
+                            onTap: (index) => {
+                              Navigator.of(context).push(PageRouteBuilder(
+                                opaque: false,
+                                pageBuilder: (_, __, ___) => AlbumInfoPage(
+                                  album: provider.albumBanners[index].album,
+                                  albumId: provider.albumBanners[index].albumId,
+                                ),
+                              ))
+                            },
+                          ),
+                        ),
                         SizedBox(
                           height: ScreenUtil().setHeight(64),
                         ),

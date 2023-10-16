@@ -24,6 +24,9 @@ class Global {
   static const String ossPre =
       'https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/data/';
 
+  static const String ossBannerPre =
+      'https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/banners/';
+
   static bool isLightTheme = true;
   static bool isTurnOnVibration = true;
   static bool isVip = false;

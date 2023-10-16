@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/entities/classify.dart';
+import 'package:tingfm/pages/home/albums.dart';
 import 'package:tingfm/pages/index/recommend_item.dart';
 
 class RecommendWidget extends StatelessWidget {
@@ -10,6 +11,18 @@ class RecommendWidget extends StatelessWidget {
 
   const RecommendWidget(
       {super.key, required this.classify, required this.albums});
+
+  void openClassifyPage(BuildContext context) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (_, __, ___) => AlbumsPage(
+          classify: classify.classify,
+          classifyId: classify.id,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,28 +50,31 @@ class RecommendWidget extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              height: ScreenUtil().setHeight(80),
-              width: ScreenUtil().setWidth(220),
-              decoration: BoxDecoration(
-                border: const Border.fromBorderSide(
-                  BorderSide(color: Colors.black45, width: 0.3),
+            GestureDetector(
+              onTap: () => openClassifyPage(context),
+              child: Container(
+                height: ScreenUtil().setHeight(80),
+                width: ScreenUtil().setWidth(220),
+                decoration: BoxDecoration(
+                  border: const Border.fromBorderSide(
+                    BorderSide(color: Colors.black45, width: 0.3),
+                  ),
+                  borderRadius: BorderRadius.circular(25),
                 ),
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "查看更多",
-                    style: TextStyle(fontSize: ScreenUtil().setSp(28)),
-                  ),
-                  const Icon(
-                    Icons.arrow_right,
-                    color: Colors.black,
-                  ),
-                ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "查看更多",
+                      style: TextStyle(fontSize: ScreenUtil().setSp(28)),
+                    ),
+                    const Icon(
+                      Icons.arrow_right,
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
               ),
             )
           ],

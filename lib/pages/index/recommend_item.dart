@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tingfm/entities/album.dart';
+import 'package:tingfm/pages/album_info/album_info.dart';
 import 'package:tingfm/widgets/image.dart';
 
 class RecommendItemWidget extends StatelessWidget {
   final AlbumItem album;
   const RecommendItemWidget({super.key, required this.album});
+
+  void openAlbumInfo(BuildContext context) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (_, __, ___) => AlbumInfoPage(
+          album: album.album,
+          albumId: album.id,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +27,16 @@ class RecommendItemWidget extends StatelessWidget {
         // 图片控件
         Stack(
           children: [
-            Container(
-              width: ScreenUtil().setWidth(320),
-              height: ScreenUtil().setHeight(320),
-              padding: EdgeInsets.fromLTRB(0, 0, ScreenUtil().setSp(10), 0),
-              child: imageCached(
-                album.imageUrl(),
-                album.cachedKey(),
+            GestureDetector(
+              onTap: () => openAlbumInfo(context),
+              child: Container(
+                width: ScreenUtil().setWidth(320),
+                height: ScreenUtil().setHeight(320),
+                padding: EdgeInsets.fromLTRB(0, 0, ScreenUtil().setSp(10), 0),
+                child: imageCached(
+                  album.imageUrl(),
+                  album.cachedKey(),
+                ),
               ),
             ),
             Container(
