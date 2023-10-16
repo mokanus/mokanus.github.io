@@ -7,6 +7,7 @@ import 'package:material_dialogs/shared/types.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/api/api_status.dart';
+import 'package:tingfm/pages/login/login.dart';
 import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
@@ -275,42 +276,42 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
   }
 
   void showAdDialog() {
-    if (Global.isVip) {
-      openPlayerPage();
-    } else {
-      Dialogs.materialDialog(
-          color: Colors.white,
-          msg: '看次广告获取30分钟的收听时间',
-          title: '畅听所有专辑',
-          lottieBuilder: Lottie.asset(
-            'assets/jsons/lottie_a.json',
-            fit: BoxFit.contain,
-          ),
-          customView: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8.0),
-                  topRight: Radius.circular(8.0)),
-              color: Color.fromARGB(255, 234, 78, 94),
-            ),
-            height: 60,
-          ),
-          customViewPosition: CustomViewPosition.BEFORE_ANIMATION,
-          context: context,
-          actions: [
-            IconsButton(
-              onPressed: () {
-                Navigator.pop(context);
-                openPlayerPage();
-              },
-              text: '确定',
-              iconData: Icons.arrow_right_rounded,
-              color: const Color.fromARGB(255, 234, 78, 94),
-              textStyle: const TextStyle(color: Colors.white),
-              iconColor: Colors.white,
-            ),
-          ]);
-    }
+    // if (Global.isVip) {
+    //   openPlayerPage();
+    // } else {
+    //   Dialogs.materialDialog(
+    //       color: Colors.white,
+    //       msg: '看次广告获取30分钟的收听时间',
+    //       title: '畅听所有专辑',
+    //       lottieBuilder: Lottie.asset(
+    //         'assets/jsons/lottie_a.json',
+    //         fit: BoxFit.contain,
+    //       ),
+    //       customView: Container(
+    //         decoration: const BoxDecoration(
+    //           borderRadius: BorderRadius.only(
+    //               topLeft: Radius.circular(8.0),
+    //               topRight: Radius.circular(8.0)),
+    //           color: Color.fromARGB(255, 234, 78, 94),
+    //         ),
+    //         height: 60,
+    //       ),
+    //       customViewPosition: CustomViewPosition.BEFORE_ANIMATION,
+    //       context: context,
+    //       actions: [
+    //         IconsButton(
+    //           onPressed: () {
+    //             Navigator.pop(context);
+    //             openPlayerPage();
+    //           },
+    //           text: '确定',
+    //           iconData: Icons.arrow_right_rounded,
+    //           color: const Color.fromARGB(255, 234, 78, 94),
+    //           textStyle: const TextStyle(color: Colors.white),
+    //           iconColor: Colors.white,
+    //         ),
+    //       ]);
+    // }
   }
 
   void showCongradulationsDialog() {
@@ -414,12 +415,21 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
   }
 
   void rewardCallback() {
-    Global.setVip();
     showCongradulationsDialog();
     // 刷新窗口
   }
 
   void openPlayerPage() {
+    if (!Global.logined) {
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (_, __, ___) => const LoginPage(),
+        ),
+      );
+      return;
+    }
+
     addItemToHistory();
     Navigator.of(context).push(
       PageRouteBuilder(

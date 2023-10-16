@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tingfm/pages/login/login.dart';
-import 'package:tingfm/pages/my/my.dart';
+import 'package:tingfm/pages/player/player.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -12,13 +12,11 @@ class AuthPage extends StatelessWidget {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          //
-          // if (snapshot.connectionState == ConnectionState.active) {
-          //   var user = snapshot as User;
-          // }
-          return const MyPage();
+          print(snapshot);
           if (snapshot.hasData) {
-            return const MyPage();
+            return PlayerPage(
+              fromMiniplayer: false,
+            );
           } else {
             return const LoginPage();
           }

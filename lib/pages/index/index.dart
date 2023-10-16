@@ -35,6 +35,7 @@ class _IndexPageState extends State<IndexPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Consumer<IndexProvider>(
         builder: (BuildContext context, IndexProvider provider, Widget? child) {
       return Scaffold(
@@ -88,18 +89,7 @@ class _IndexPageState extends State<IndexPage>
                         // 推荐列表控件
                         RecommendListWidget(
                             title: "猜你喜欢", albums: provider.suggestAlbums),
-                        RecommendWidget(
-                          classify: provider.classifies[0],
-                          albums: provider.albums[provider.classifies[0].id]!,
-                        ),
-                        RecommendWidget(
-                          classify: provider.classifies[1],
-                          albums: provider.albums[provider.classifies[1].id]!,
-                        ),
-                        RecommendWidget(
-                          classify: provider.classifies[2],
-                          albums: provider.albums[provider.classifies[2].id]!,
-                        ),
+                        buildRecomendWidgets(provider),
                       ],
                     ),
                   ],
@@ -107,6 +97,22 @@ class _IndexPageState extends State<IndexPage>
               ),
       );
     });
+  }
+
+  Widget buildRecomendWidgets(IndexProvider provider) {
+    List<Widget> items = [];
+
+    for (var classify in provider.classifies) {
+      items.add(RecommendWidget(
+        classify: classify,
+        albums: provider.albums[classify.id]!,
+      ));
+    }
+
+    Widget content = Column(
+      children: items,
+    );
+    return content;
   }
 
   @override

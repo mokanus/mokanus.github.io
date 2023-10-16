@@ -2,14 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:tingfm/entities/user_data.dart';
 import 'package:tingfm/pages/auth/auth.dart';
 import 'package:tingfm/pages/feedback/feedback.dart';
+import 'package:tingfm/pages/login/login.dart';
 import 'package:tingfm/pages/pay/pay.dart';
 import 'package:tingfm/pages/privacy/privacy.dart';
 import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/utils/router.dart';
-import 'package:tingfm/utils/storage.dart';
-import 'package:vibration/vibration.dart';
+import 'package:tingfm/widgets/image.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
@@ -39,11 +40,6 @@ class MyPageState extends State<MyPage> {
         'function': () => AppRouter.pushPage(context, const FeedbackPage()),
       },
       {
-        'icon': Icons.vibration,
-        'title': '开启震动',
-        'function': () async => {await FirebaseAuth.instance.signOut()},
-      },
-      {
         'icon': Icons.payment,
         'title': '调用支付',
         'function': () => AppRouter.pushPage(context, const PayPage()),
@@ -57,6 +53,11 @@ class MyPageState extends State<MyPage> {
         'icon': Ionicons.mail,
         'title': '联系我们',
         'function': () => AppRouter.pushPage(context, const AuthPage()),
+      },
+      {
+        'icon': Icons.login_outlined,
+        'title': '退出登陆',
+        'function': () async => {await FirebaseAuth.instance.signOut()},
       }
     ];
   }
@@ -64,72 +65,54 @@ class MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-            padding: EdgeInsets.fromLTRB(
-                ScreenUtil().setWidth(47),
-                ScreenUtil().setHeight(20),
-                ScreenUtil().setWidth(47),
-                ScreenUtil().setHeight(20)),
-            child: ListView.separated(
-              padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
-              shrinkWrap: true,
-              itemCount: items.length,
-              itemBuilder: (BuildContext context, int index) {
-                if (items[index]['title'] == '应用信息') {
-                  return personDataWidgt();
-                }
+        body: StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              var name = "听书铺子fm";
+              var uri = "";
+              if (snapshot.hasData) {
+                name = snapshot.data?.displayName ?? "";
 
-                if (items[index]['title'] == '统计数据') {
-                  return listenDataWidgt();
-                }
+                uri = snapshot.data?.photoURL ?? "";
+              }
+              return Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      ScreenUtil().setWidth(47),
+                      ScreenUtil().setHeight(20),
+                      ScreenUtil().setWidth(47),
+                      ScreenUtil().setHeight(20)),
+                  child: ListView.separated(
+                    padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
+                    shrinkWrap: true,
+                    itemCount: items.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (items[index]['title'] == '应用信息') {
+                        return personDataWidgt(name, uri);
+                      }
 
-                // if (items[index]['title'] == '开启震动') {
-                //   return _buildVibrationSwitch(items[index]);
-                // }
+                      if (items[index]['title'] == '统计数据') {
+                        return listenDataWidgt();
+                      }
 
-                return ListTile(
-                  onTap: items[index]['function'],
-                  leading: Icon(
-                    items[index]['icon'],
-                    color: const Color.fromARGB(255, 234, 78, 94),
-                  ),
-                  title: Text(
-                    items[index]['title'],
-                  ),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return const Divider();
-              },
-            )));
+                      return ListTile(
+                        onTap: items[index]['function'],
+                        leading: Icon(
+                          items[index]['icon'],
+                          color: const Color.fromARGB(255, 234, 78, 94),
+                        ),
+                        title: Text(
+                          items[index]['title'],
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const Divider();
+                    },
+                  ));
+            }));
   }
 
-  Widget _buildVibrationSwitch(Map item) {
-    return SwitchListTile(
-      secondary: Icon(
-        item['icon'],
-        color: Colors.red,
-      ),
-      activeColor: const Color.fromARGB(255, 234, 78, 94),
-      title: Text(
-        item['title'],
-      ),
-      value: Global.isTurnOnVibration ? true : false,
-      onChanged: (v) async {
-        if (v) {
-          Global.isTurnOnVibration = true;
-          Vibration.vibrate();
-        } else {
-          Global.isTurnOnVibration = false;
-        }
-        setState(() {
-          StorageUtil().setBool("turnOnVibration", Global.isTurnOnVibration);
-        });
-      },
-    );
-  }
-
-  Widget personDataWidgt() {
+  Widget personDataWidgt(String name, String avator) {
     return SizedBox(
       height: ScreenUtil().setHeight(300),
       width: 1000,
@@ -156,7 +139,7 @@ class MyPageState extends State<MyPage> {
                     ),
                     child: Center(
                       child: Text(
-                        "听书铺子",
+                        name,
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(54),
                             fontWeight: FontWeight.bold),
@@ -167,14 +150,29 @@ class MyPageState extends State<MyPage> {
               ],
             ),
           ),
-          const Positioned(
+          Positioned(
             top: -30,
-            child: CircleAvatar(
-              radius: 40,
-              backgroundColor: Colors.white38,
+            child: GestureDetector(
+              onTap: () => {
+                if (!Global.logined)
+                  {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => const LoginPage(),
+                      ),
+                    )
+                  }
+              },
               child: CircleAvatar(
-                radius: 32,
-                backgroundImage: AssetImage("assets/images/icon.png"),
+                radius: 40,
+                backgroundColor: Colors.white38,
+                child: avator != ""
+                    ? imageCached(avator, avator)
+                    : const CircleAvatar(
+                        radius: 32,
+                        backgroundImage: AssetImage("assets/images/icon.png"),
+                      ),
               ),
             ),
           ),
