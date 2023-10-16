@@ -51,9 +51,11 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
         audioHandler.play();
       }
     } else {
-      Timers.clearReadyClockedCache();
-      audioHandler.stop();
-      updateNplay();
+      setState(() {
+        Timers.clearReadyClockedCache();
+        audioHandler.stop();
+        updateNplay();
+      });
     }
 
     WidgetsBinding.instance.addObserver(this);

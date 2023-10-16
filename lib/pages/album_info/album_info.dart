@@ -79,6 +79,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: ScreenUtil().setSp(60),
+                                    overflow: TextOverflow.ellipsis,
                                     fontFamily: "Avenir"),
                               ),
                               SizedBox(

@@ -86,7 +86,8 @@ class _IndexPageState extends State<IndexPage>
                           height: ScreenUtil().setHeight(64),
                         ),
                         // 推荐列表控件
-                        const RecommendListWidget(title: "猜你喜欢", albums: []),
+                        RecommendListWidget(
+                            title: "猜你喜欢", albums: provider.suggestAlbums),
                         RecommendWidget(
                           classify: provider.classifies[0],
                           albums: provider.albums[provider.classifies[0].id]!,

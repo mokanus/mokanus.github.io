@@ -45,7 +45,7 @@ class RecommendPageState extends State<RecommendPage>
         foregroundColor: Colors.black,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text("推荐专辑列表"),
+        title: const Text("推荐专辑列表"),
         centerTitle: true,
       ),
       body: SafeArea(

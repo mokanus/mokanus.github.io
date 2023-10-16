@@ -38,7 +38,7 @@ class MenuWidget extends StatelessWidget {
     Navigator.of(ctx).push(
       PageRouteBuilder(
         opaque: false,
-        pageBuilder: (_, __, ___) =>  const AlbumInfoPage(album: "平凡的世界", albumId: 101),
+        pageBuilder: (_, __, ___) => const ClassifyPage(),
       ),
     );
   }

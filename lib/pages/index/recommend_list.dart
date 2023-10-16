@@ -66,13 +66,13 @@ class RecommendListWidget extends StatelessWidget {
           height: ScreenUtil().setHeight(20),
         ),
         SizedBox(
-          height: ScreenUtil().setHeight(420),
+          height: ScreenUtil().setHeight(500),
           child: ListView.builder(
             itemCount: albums.length ~/ 3,
             scrollDirection: Axis.horizontal,
-            prototypeItem: RecommendListItemWidget(),
             itemBuilder: (context, index) {
-              return RecommendListItemWidget();
+              return RecommendListItemWidget(
+                  albums: albums.sublist(index * 3, (index + 1) * 3));
             },
           ),
         ),

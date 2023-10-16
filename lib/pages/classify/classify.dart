@@ -122,12 +122,6 @@ class ClassifyPageState extends State<ClassifyPage>
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                    // Text(
-                                    //   "共300个专辑",
-                                    //   style: TextStyle(
-                                    //     fontSize: ScreenUtil().setSp(30),
-                                    //   ),
-                                    // )
                                   ],
                                 ),
                               ],
