@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tingfm/entities/album.dart';
+import 'package:tingfm/entities/classify.dart';
 import 'package:tingfm/pages/index/recommend_item.dart';
 
 class RecommendWidget extends StatelessWidget {
-  const RecommendWidget({super.key});
+  final Classify classify;
+  final List<AlbumItem> albums;
+
+  const RecommendWidget(
+      {super.key, required this.classify, required this.albums});
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +31,9 @@ class RecommendWidget extends StatelessWidget {
                 SizedBox(
                   width: ScreenUtil().setWidth(32),
                 ),
-                const Text(
-                  "小说推荐",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Text(
+                  "${classify.classify}推荐",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -58,16 +64,15 @@ class RecommendWidget extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: ScreenUtil().setHeight(20),
+          height: ScreenUtil().setHeight(10),
         ),
         SizedBox(
           height: ScreenUtil().setHeight(400),
           child: ListView.builder(
-            itemCount: 10,
+            itemCount: albums.length,
             scrollDirection: Axis.horizontal,
-            prototypeItem: RecommendItemWidget(),
             itemBuilder: (context, index) {
-              return RecommendItemWidget();
+              return RecommendItemWidget(album: albums[index]);
             },
           ),
         ),

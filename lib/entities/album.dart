@@ -82,7 +82,7 @@ class AlbumItem {
   }
 
   String listenTime() {
-    return "${artist} · ${Functions.numToUnit(listenTimes)}次收听";
+    return "${Functions.numToUnit(listenTimes)}次";
   }
 
   MediaItem mediaItem(index) {

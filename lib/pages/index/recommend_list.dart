@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tingfm/pages/index/recommend_item.dart';
+import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/pages/index/recommend_list_item.dart';
 
 class RecommendListWidget extends StatelessWidget {
-  const RecommendListWidget({super.key});
+  final String title;
+  final List<AlbumItem> albums;
+
+  const RecommendListWidget(
+      {super.key, required this.title, required this.albums});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +50,7 @@ class RecommendListWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "查看更多",
+                    title,
                     style: TextStyle(fontSize: ScreenUtil().setSp(28)),
                   ),
                   const Icon(
@@ -64,7 +68,7 @@ class RecommendListWidget extends StatelessWidget {
         SizedBox(
           height: ScreenUtil().setHeight(420),
           child: ListView.builder(
-            itemCount: 10,
+            itemCount: albums.length ~/ 3,
             scrollDirection: Axis.horizontal,
             prototypeItem: RecommendListItemWidget(),
             itemBuilder: (context, index) {

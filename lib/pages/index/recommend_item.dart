@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/widgets/image.dart';
 
 class RecommendItemWidget extends StatelessWidget {
-  const RecommendItemWidget({super.key});
+  final AlbumItem album;
+  const RecommendItemWidget({super.key, required this.album});
 
   @override
   Widget build(BuildContext context) {
@@ -13,19 +15,18 @@ class RecommendItemWidget extends StatelessWidget {
         Stack(
           children: [
             Container(
-              width: ScreenUtil().setWidth(300),
-              height: ScreenUtil().setHeight(300),
+              width: ScreenUtil().setWidth(320),
+              height: ScreenUtil().setHeight(320),
               padding: EdgeInsets.fromLTRB(0, 0, ScreenUtil().setSp(10), 0),
               child: imageCached(
-                "assets/images/banners/3.webp",
-                "cachedImage",
-                width: ScreenUtil().setWidth(300),
-                height: ScreenUtil().setHeight(300),
+                album.imageUrl(),
+                album.cachedKey(),
               ),
             ),
-            Column(
-              children: [
-                Row(
+            Container(
+                padding: EdgeInsets.all(ScreenUtil().setWidth(20)),
+                width: ScreenUtil().setWidth(320),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     const Icon(
@@ -33,7 +34,7 @@ class RecommendItemWidget extends StatelessWidget {
                       color: Colors.white,
                     ),
                     Text(
-                      "100万",
+                      album.listenTime(),
                       style: TextStyle(
                         fontSize: ScreenUtil().setSp(32),
                         color: Colors.white,
@@ -44,17 +45,15 @@ class RecommendItemWidget extends StatelessWidget {
                       width: ScreenUtil().setWidth(20),
                     ),
                   ],
-                )
-              ],
-            ),
+                )),
           ],
         ),
         SizedBox(
-          height: ScreenUtil().setHeight(20),
+          height: ScreenUtil().setHeight(5),
         ),
         //专辑名字
         Text(
-          "平凡的世界",
+          album.album,
           style: TextStyle(fontSize: ScreenUtil().setSp(40)),
         )
       ],

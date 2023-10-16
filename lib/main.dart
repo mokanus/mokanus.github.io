@@ -10,6 +10,7 @@ import 'package:tingfm/providers/classify.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/providers/history.dart';
+import 'package:tingfm/providers/index.dart';
 import 'package:tingfm/providers/recommend.dart';
 import 'package:tingfm/providers/search.dart';
 import 'package:tingfm/services/audio_service.dart';
@@ -37,6 +38,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppProvider()),
+        ChangeNotifierProvider(create: (_) => IndexProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProvider(create: (_) => RecommendProvider()),
         ChangeNotifierProvider(create: (_) => AlbumInfoProvider()),

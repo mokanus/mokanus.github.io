@@ -34,8 +34,6 @@ class _RecommendItemState extends State<RecommendItem> {
                   child: imageCached(
                     widget.albumItem.imageUrl(),
                     widget.albumItem.cachedKey(),
-                    width: ScreenUtil().setWidth(371),
-                    height: ScreenUtil().setHeight(371),
                   ),
                 ),
               ),
