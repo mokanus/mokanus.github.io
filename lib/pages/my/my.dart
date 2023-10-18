@@ -72,9 +72,9 @@ class MyPageState extends State<MyPage> {
               var uri = "";
               if (snapshot.hasData) {
                 name = snapshot.data?.displayName ?? "";
-
                 uri = snapshot.data?.photoURL ?? "";
               }
+              print("${snapshot.data}");
               return Padding(
                   padding: EdgeInsets.fromLTRB(
                       ScreenUtil().setWidth(47),

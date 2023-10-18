@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:762331191821:android:b579a60cedc7d87582d344",
+        "mobilesdk_app_id": "1:762331191821:android:cca3676a0519b7a582d344",
         "android_client_info": {
-          "package_name": "com.mokanu.ting"
+          "package_name": "com.mokanu.ant.ting"
         }
       },
       "oauth_client": [
@@ -31,10 +31,54 @@
               "client_type": 3
             },
             {
-              "client_id": "762331191821-srpus5ec3gjloh7rp4ldpap92q1rm55k.apps.googleusercontent.com",
+              "client_id": "762331191821-fi9q1v8j5blr5r28rgh3181ktbk3geoo.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.mokanu.ant.tingfm"
+                "bundle_id": "com.example.ting.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762331191821:android:b579a60cedc7d87582d344",
+        "android_client_info": {
+          "package_name": "com.mokanu.ting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762331191821-uekqd2k7iolq4sg69spblhas9pla5arr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mokanu.ting",
+            "certificate_hash": "9a2668d69c7f80296f4003849aede382a45d2eb5"
+          }
+        },
+        {
+          "client_id": "762331191821-qo81slvdt1eclv8re576f1lbjro38b1u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBszEXpePC1z55wZnH5gz_EM0Z--nTwFDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762331191821-qo81slvdt1eclv8re576f1lbjro38b1u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "762331191821-fi9q1v8j5blr5r28rgh3181ktbk3geoo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ting.RunnerTests"
               }
             }
           ]
