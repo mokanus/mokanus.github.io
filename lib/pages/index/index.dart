@@ -1,4 +1,5 @@
 import 'package:card_swiper/card_swiper.dart';
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -48,52 +49,52 @@ class _IndexPageState extends State<IndexPage>
         ),
         body: provider.apiRequestStatus != APIRequestStatus.loaded
             ? const LoadingWidget()
-            : Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView(
-                  children: [
-                    Column(
-                      children: [
-                        // swiper组件
-                        SizedBox(
-                          height: ScreenUtil().setHeight(500),
-                          child: Swiper(
-                            autoplay: true,
-                            itemBuilder: (BuildContext context, int index) {
-                              return imageCached(
-                                  provider.albumBanners[index].imageURL(),
-                                  provider.albumBanners[index].cacheKey(),
-                                  height: ScreenUtil().setHeight(480),
-                                  width: ScreenUtil().screenWidth);
-                            },
-                            itemCount: provider.albumBanners.length,
-                            onTap: (index) => {
-                              Navigator.of(context).push(PageRouteBuilder(
-                                opaque: false,
-                                pageBuilder: (_, __, ___) => AlbumInfoPage(
-                                  album: provider.albumBanners[index].album,
-                                  albumId: provider.albumBanners[index].albumId,
-                                ),
-                              ))
-                            },
-                          ),
+            : ListView(
+                padding:
+                    EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(50)),
+                children: [
+                  Column(
+                    children: [
+                      // swiper组件
+                      SizedBox(
+                        height: ScreenUtil().setHeight(500),
+                        child: Swiper(
+                          autoplay: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return imageCached(
+                              provider.albumBanners[index].imageURL(),
+                              provider.albumBanners[index].cacheKey(),
+                              height: ScreenUtil().setHeight(480),
+                              width: ScreenUtil().screenWidth,
+                            );
+                          },
+                          itemCount: provider.albumBanners.length,
+                          onTap: (index) => {
+                            Navigator.of(context).push(PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (_, __, ___) => AlbumInfoPage(
+                                album: provider.albumBanners[index].album,
+                                albumId: provider.albumBanners[index].albumId,
+                              ),
+                            ))
+                          },
                         ),
-                        SizedBox(
-                          height: ScreenUtil().setHeight(64),
-                        ),
-                        // 菜单控件
-                        const MenuWidget(),
-                        SizedBox(
-                          height: ScreenUtil().setHeight(64),
-                        ),
-                        // 推荐列表控件
-                        RecommendListWidget(
-                            title: "猜你喜欢", albums: provider.suggestAlbums),
-                        buildRecomendWidgets(provider),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      SizedBox(
+                        height: ScreenUtil().setHeight(64),
+                      ),
+                      // 菜单控件
+                      const MenuWidget(),
+                      SizedBox(
+                        height: ScreenUtil().setHeight(64),
+                      ),
+                      // 推荐列表控件
+                      RecommendListWidget(
+                          title: "猜你喜欢", albums: provider.suggestAlbums),
+                      buildRecomendWidgets(provider),
+                    ],
+                  ),
+                ],
               ),
       );
     });

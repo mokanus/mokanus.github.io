@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:tingfm/entities/user_data.dart';
 import 'package:tingfm/pages/auth/auth.dart';
 import 'package:tingfm/pages/feedback/feedback.dart';
 import 'package:tingfm/pages/login/login.dart';
@@ -30,8 +29,8 @@ class MyPageState extends State<MyPage> {
         'title': '应用信息',
       },
       {
-        'icon': Ionicons.link_outline,
-        'title': '看个广告鼓励一下',
+        'icon': Ionicons.albums,
+        'title': '我的订阅',
         'function': () => {},
       },
       {
@@ -74,7 +73,7 @@ class MyPageState extends State<MyPage> {
                 name = snapshot.data?.displayName ?? "";
                 uri = snapshot.data?.photoURL ?? "";
               }
-              print("${snapshot.data}");
+              print("${snapshot.data?.uid}");
               return Padding(
                   padding: EdgeInsets.fromLTRB(
                       ScreenUtil().setWidth(47),

@@ -64,11 +64,15 @@ class ItemWidget extends StatelessWidget {
               ),
               Text(
                 album.album,
-                style: TextStyle(fontSize: ScreenUtil().setSp(40)),
+                style: TextStyle(
+                    fontSize: ScreenUtil().setSp(40),
+                    overflow: TextOverflow.clip),
               ),
               Text(
                 "- ${album.artist}",
-                style: TextStyle(fontSize: ScreenUtil().setSp(32)),
+                style: TextStyle(
+                    fontSize: ScreenUtil().setSp(32),
+                    overflow: TextOverflow.clip),
               )
             ],
           ),

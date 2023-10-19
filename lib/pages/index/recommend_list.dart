@@ -51,7 +51,9 @@ class RecommendListWidget extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(fontSize: ScreenUtil().setSp(28)),
+                    style: TextStyle(
+                        fontSize: ScreenUtil().setSp(28),
+                        overflow: TextOverflow.ellipsis),
                   ),
                   const Icon(
                     Icons.arrow_right,

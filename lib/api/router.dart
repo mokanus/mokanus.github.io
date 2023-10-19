@@ -1,8 +1,10 @@
 import 'package:tingfm/utils/global.dart';
 
 class APIRouter {
-  static const String baseAPI =
-      'https://tingfm-server-9991-4-1314189171.sh.run.tcloudbase.com';
+  // static const String baseAPI =
+  //     'https://tingfm-server-9991-4-1314189171.sh.run.tcloudbase.com';
+
+  static const String baseAPI = 'http://43.163.199.26:80';
 
   static const String debugBaseAPI = 'http://192.168.1.14:80';
 

@@ -2,9 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tingfm/entities/user_data.dart';
 import 'package:tingfm/services/auth_service.dart';
-import 'package:tingfm/utils/global.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,10 +21,8 @@ class LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
         context: context,
         builder: (context) {
           return const Center(
-              child: Column(children: [
-            CircularProgressIndicator(),
-            Text("登陆中.."),
-          ]));
+            child: CircularProgressIndicator(),
+          );
         });
     //登陆
     try {
@@ -81,9 +77,12 @@ class LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                   const SizedBox(
                     width: 20,
                   ),
-                  IconButton(
-                      icon: const Icon(Icons.keyboard_backspace_sharp),
-                      onPressed: () => {Navigator.of(context).pop()}),
+                  GestureDetector(
+                      child: const Icon(
+                        Icons.close,
+                        size: 32,
+                      ),
+                      onTap: () => {Navigator.of(context).pop()}),
                 ]),
                 const Icon(
                   Icons.lock,

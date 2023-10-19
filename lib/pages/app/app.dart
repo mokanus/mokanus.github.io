@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:tingfm/pages/auth/auth.dart';
 import 'package:tingfm/pages/broadcast/broadcast.dart';
 import 'package:tingfm/pages/index/index.dart';
 import 'package:tingfm/pages/my/my.dart';

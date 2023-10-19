@@ -4,7 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:tingfm/pages/home/albums.dart';
+import 'package:tingfm/pages/albums/albums.dart';
 import 'package:tingfm/providers/classify.dart';
 import 'package:tingfm/widgets/image.dart';
 
