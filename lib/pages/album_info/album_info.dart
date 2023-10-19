@@ -7,12 +7,10 @@ import 'package:material_dialogs/shared/types.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/api/api_status.dart';
-import 'package:tingfm/pages/login/login.dart';
 import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/providers/history.dart';
-import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/widgets/image.dart';
 import 'package:tingfm/widgets/loading_widget.dart';
 import 'package:tingfm/widgets/mini_player.dart';
@@ -60,9 +58,6 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: ScreenUtil().setWidth(50),
-                        ),
                         imageCached(
                           provider.item!.imageUrl(),
                           provider.item!.cachedKey(),
@@ -75,13 +70,16 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                provider.item!.album,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: ScreenUtil().setSp(60),
-                                    overflow: TextOverflow.ellipsis,
-                                    fontFamily: "Avenir"),
+                              SizedBox(
+                                width: ScreenUtil().setWidth(700),
+                                child: Text(
+                                  provider.item!.album,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: ScreenUtil().setSp(60),
+                                      overflow: TextOverflow.ellipsis,
+                                      fontFamily: "Avenir"),
+                                ),
                               ),
                               SizedBox(
                                 height: ScreenUtil().setHeight(20),
@@ -128,7 +126,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                                         color: Colors.redAccent,
                                         size: 30,
                                       ),
-                                      onPressed: () => openPlayerPage(),
+                                      onPressed: () => openPlayerPage(0),
                                     ),
                                     Text(
                                       "全部播放",
@@ -233,7 +231,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
                                       ],
                                     ),
                                     onTap: () async {
-                                      openPlayerPage();
+                                      openPlayerPage(index);
                                     },
                                   ),
                                 );
@@ -419,16 +417,16 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
     // 刷新窗口
   }
 
-  void openPlayerPage() {
-    if (!Global.logined) {
-      Navigator.of(context).push(
-        PageRouteBuilder(
-          opaque: false,
-          pageBuilder: (_, __, ___) => const LoginPage(),
-        ),
-      );
-      return;
-    }
+  void openPlayerPage(int index) {
+    // if (!Global.logined) {
+    //   Navigator.of(context).push(
+    //     PageRouteBuilder(
+    //       opaque: false,
+    //       pageBuilder: (_, __, ___) => const LoginPage(),
+    //     ),
+    //   );
+    //   return;
+    // }
 
     addItemToHistory();
     Navigator.of(context).push(
@@ -438,6 +436,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
           fromMiniplayer: false,
           albumItem:
               Provider.of<AlbumInfoProvider>(context, listen: false).item,
+          skipIndex: index,
         ),
       ),
     );

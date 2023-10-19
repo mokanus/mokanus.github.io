@@ -62,18 +62,25 @@ class ItemWidget extends StatelessWidget {
               SizedBox(
                 width: ScreenUtil().setWidth(20),
               ),
-              Text(
-                album.album,
-                style: TextStyle(
-                    fontSize: ScreenUtil().setSp(40),
-                    overflow: TextOverflow.clip),
+              SizedBox(
+                width: ScreenUtil().setWidth(360),
+                child: Text(
+                  album.album,
+                  maxLines: 1,
+                  style: TextStyle(
+                      fontSize: ScreenUtil().setSp(40),
+                      overflow: TextOverflow.ellipsis),
+                ),
               ),
-              Text(
-                "- ${album.artist}",
-                style: TextStyle(
-                    fontSize: ScreenUtil().setSp(32),
-                    overflow: TextOverflow.clip),
-              )
+              SizedBox(
+                  width: ScreenUtil().setWidth(180),
+                  child: Text(
+                    "- ${album.artist}",
+                    maxLines: 1,
+                    style: TextStyle(
+                        fontSize: ScreenUtil().setSp(32),
+                        overflow: TextOverflow.clip),
+                  )),
             ],
           ),
           Row(

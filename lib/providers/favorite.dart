@@ -5,7 +5,7 @@ import 'package:tingfm/values/hive_box.dart';
 import 'package:tingfm/values/hive_boxes/album_db.dart';
 
 class FavoriteProvider extends ChangeNotifier {
-  List<AlbumItemDB> favoriteItems = <AlbumItemDB>[];
+  var favoriteItems = <AlbumItemDB>[];
 
   Future<void> addItem(AlbumItemDB album) async {
     Box<AlbumItemDB> box =

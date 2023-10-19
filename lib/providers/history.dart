@@ -17,6 +17,7 @@ class HishoryProvider extends ChangeNotifier {
   }
 
   Future<void> addItemFromAlbum(AlbumItem album) async {
+    print("准备添加 ${album.album}");
     var box = await Hive.openBox<AlbumItemDB>(HiveBoxes.hisotyDB);
     var item = album.convertToAlbumItemDB();
     historyItems = box.values.toList();

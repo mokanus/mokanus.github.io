@@ -22,11 +22,8 @@ class Global {
 
   static bool get logined => FirebaseAuth.instance.currentUser != null;
 
-  static const String ossPre =
-      'https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/data/';
-
-  static const String ossBannerPre =
-      'https://tingfm-gz-1300862581.cos.ap-guangzhou.myqcloud.com/banners/';
+  static const String ossPre = 'https://www.chiyustudio.com/data/';
+  static const String ossBannerPre = 'https://www.chiyustudio.com/banners/';
 
   static bool isLightTheme = true;
   static bool isTurnOnVibration = true;

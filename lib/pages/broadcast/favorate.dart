@@ -49,9 +49,9 @@ class FavorateViewState extends State<FavorateView>
                 return Dismissible(
                   key: ValueKey(provider.favoriteItems[index].album),
                   direction: DismissDirection.horizontal,
-                  onDismissed: (dir) {
-                    provider.remove(index);
-                  },
+                  // onDismissed: (dir) {
+                  //   provider.remove(index);
+                  // },
                   child: Container(
                     margin: EdgeInsets.fromLTRB(
                         ScreenUtil().setWidth(55),

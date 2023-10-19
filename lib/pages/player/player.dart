@@ -23,8 +23,13 @@ import 'panel.dart';
 class PlayerPage extends StatefulWidget {
   final bool fromMiniplayer;
   AlbumItem? albumItem;
+  int? skipIndex;
 
-  PlayerPage({super.key, required this.fromMiniplayer, this.albumItem});
+  PlayerPage(
+      {super.key,
+      required this.fromMiniplayer,
+      this.albumItem,
+      this.skipIndex});
 
   @override
   PlayerPageState createState() => PlayerPageState();
@@ -54,18 +59,18 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
       setState(() {
         Timers.clearReadyClockedCache();
         audioHandler.stop();
-        updateNplay();
+        updateNplay(widget.skipIndex);
       });
     }
 
     WidgetsBinding.instance.addObserver(this);
   }
 
-  Future<void> updateNplay() async {
+  Future<void> updateNplay(int? skipToIndex) async {
     if (!widget.fromMiniplayer) {
       var globalQueue = fillAudioItems(widget.albumItem);
       await audioHandler.updateQueue(globalQueue);
-      await audioHandler.skipToQueueItem(0);
+      await audioHandler.skipToQueueItem(skipToIndex!);
       await audioHandler.play();
     }
   }
