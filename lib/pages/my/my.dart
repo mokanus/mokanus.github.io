@@ -28,87 +28,86 @@ class MyPageState extends State<MyPage> {
         'icon': null,
         'title': '应用信息',
       },
-      // {
-      //   'icon': Ionicons.albums,
-      //   'title': '我的订阅',
-      //   'function': () => {},
-      // },
+      {
+        'icon': Ionicons.albums,
+        'title': '我的订阅',
+        'function': () => {},
+      },
       {
         'icon': Icons.lightbulb,
         'title': '没有我想听?',
         'function': () => AppRouter.pushPage(context, const FeedbackPage()),
       },
-      // {
-      //   'icon': Icons.payment,
-      //   'title': '调用支付',
-      //   'function': () => AppRouter.pushPage(context, const PayPage()),
-      // },
+      {
+        'icon': Icons.payment,
+        'title': '调用支付',
+        'function': () => AppRouter.pushPage(context, const PayPage()),
+      },
       {
         'icon': Ionicons.file_tray,
         'title': '隐私政策声明',
         'function': () => AppRouter.pushPage(context, const PrivacyPage()),
       },
-      // {
-      //   'icon': Ionicons.mail,
-      //   'title': '联系我们',
-      //   'function': () => AppRouter.pushPage(context, const AuthPage()),
-      // },
-      // {
-      //   'icon': Icons.login_outlined,
-      //   'title': '退出登陆',
-      //   'function': () async => {await FirebaseAuth.instance.signOut()},
-      // }
+      {
+        'icon': Ionicons.mail,
+        'title': '联系我们',
+        'function': () => AppRouter.pushPage(context, const AuthPage()),
+      },
+      {
+        'icon': Icons.login_outlined,
+        'title': '退出登陆',
+        'function': () async => {await FirebaseAuth.instance.signOut()},
+      }
     ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body:
-            // StreamBuilder<User?>(
-            //     stream: FirebaseAuth.instance.authStateChanges(),
-            //     builder: (context, snapshot) {
-            //       var name = "听书铺子fm";
-            //       var uri = "";
-            // if (snapshot.hasData) {
-            //   name = snapshot.data?.displayName ?? "";
-            //   uri = snapshot.data?.photoURL ?? "";
-            // }
-            // return
-            Padding(
-                padding: EdgeInsets.fromLTRB(
-                    ScreenUtil().setWidth(47),
-                    ScreenUtil().setHeight(20),
-                    ScreenUtil().setWidth(47),
-                    ScreenUtil().setHeight(20)),
-                child: ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
-                  shrinkWrap: true,
-                  itemCount: items.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (items[index]['title'] == '应用信息') {
-                      return personDataWidgt('听书铺子fm', "");
-                    }
+        body: StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              var name = "听书铺子fm";
+              var uri = "";
+              if (snapshot.hasData) {
+                name = snapshot.data?.displayName ?? "";
+                uri = snapshot.data?.photoURL ?? "";
+              }
+              return Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      ScreenUtil().setWidth(47),
+                      ScreenUtil().setHeight(20),
+                      ScreenUtil().setWidth(47),
+                      ScreenUtil().setHeight(20)),
+                  child: ListView.separated(
+                    padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
+                    shrinkWrap: true,
+                    itemCount: items.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (items[index]['title'] == '应用信息') {
+                        return personDataWidgt(name, uri);
+                      }
 
-                    if (items[index]['title'] == '统计数据') {
-                      return listenDataWidgt();
-                    }
+                      if (items[index]['title'] == '统计数据') {
+                        return listenDataWidgt();
+                      }
 
-                    return ListTile(
-                      onTap: items[index]['function'],
-                      leading: Icon(
-                        items[index]['icon'],
-                        color: const Color.fromARGB(255, 234, 78, 94),
-                      ),
-                      title: Text(
-                        items[index]['title'],
-                      ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider();
-                  },
-                )));
+                      return ListTile(
+                        onTap: items[index]['function'],
+                        leading: Icon(
+                          items[index]['icon'],
+                          color: const Color.fromARGB(255, 234, 78, 94),
+                        ),
+                        title: Text(
+                          items[index]['title'],
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const Divider();
+                    },
+                  ));
+            }));
   }
 
   Widget personDataWidgt(String name, String avator) {
@@ -153,15 +152,15 @@ class MyPageState extends State<MyPage> {
             top: -30,
             child: GestureDetector(
               onTap: () => {
-                // if (!Global.logined)
-                //   {
-                //     Navigator.of(context).push(
-                //       PageRouteBuilder(
-                //         opaque: false,
-                //         pageBuilder: (_, __, ___) => const LoginPage(),
-                //       ),
-                //     )
-                //   }
+                if (!Global.logined)
+                  {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => const LoginPage(),
+                      ),
+                    )
+                  }
               },
               child: CircleAvatar(
                 radius: 40,

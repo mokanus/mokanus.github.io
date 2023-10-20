@@ -37,6 +37,7 @@ class IndexProvider with ChangeNotifier {
     } catch (e) {
       checkError(e);
     }
+    setApiRequestStatus(APIRequestStatus.loaded);
 
     try {
       Map<String, dynamic> params = {
@@ -56,6 +57,7 @@ class IndexProvider with ChangeNotifier {
     } catch (e) {
       checkError(e);
     }
+    setApiRequestStatus(APIRequestStatus.loaded);
 
     try {
       Map<String, dynamic> params = {};
