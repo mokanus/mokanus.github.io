@@ -16,15 +16,15 @@ dependencies:
   flutter_screenutil: ^5.5.4
   salomon_bottom_bar: ^3.3.1
   get_it: ^7.2.0
-  just_audio: ^0.9.30
-  audio_service: ^0.18.7
+  just_audio: ^0.9.36
+  audio_service: ^0.18.12
   rxdart: ^0.27.5
   hive: ^2.2.3
   flip_card: ^0.6.0
   sliding_up_panel: ^2.0.0+1
   marquee: ^2.2.3
   audio_session: ^0.1.10
-  just_audio_background: ^0.0.1-beta.7
+  just_audio_background: ^0.0.1-beta.11
   shared_preferences: ^2.0.15
   cached_network_image: ^3.2.2
   vibration: ^1.7.6
@@ -46,12 +46,12 @@ dependencies:
   logger: ^1.2.2
   home_widget: ^0.3.0
   google_sign_in: ^6.1.5
-  firebase_core: ^2.17.0
-  firebase_auth: ^4.10.1
+  firebase_core: ^2.23.0
+  firebase_auth: ^4.14.1
   material_floating_search_bar_2: ^0.5.0
   pay: ^1.1.2
   card_swiper: ^3.0.1
-  firebase_analytics: ^10.5.1
+  firebase_analytics: ^10.7.1
 
 dev_dependencies:
   flutter_test:

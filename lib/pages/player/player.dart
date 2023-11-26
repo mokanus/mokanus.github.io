@@ -68,10 +68,10 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
 
   Future<void> updateNplay(int? skipToIndex) async {
     if (!widget.fromMiniplayer) {
-      // var globalQueue = fillAudioItems(widget.albumItem);
-      // await audioHandler.updateQueue(globalQueue);
-      // await audioHandler.skipToQueueItem(skipToIndex!);
-      // await audioHandler.play();
+      var globalQueue = fillAudioItems(widget.albumItem);
+      await audioHandler.updateQueue(globalQueue);
+      await audioHandler.skipToQueueItem(skipToIndex!);
+      await audioHandler.play();
     }
   }
 

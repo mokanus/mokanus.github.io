@@ -4,9 +4,9 @@ class APIRouter {
   // static const String baseAPI =
   //     'https://tingfm-server-9991-4-1314189171.sh.run.tcloudbase.com';
 
-  static const String baseAPI = 'http://43.163.199.26:80';
+  static const String baseAPI = 'http://43.163.244.7:8081';
 
-  static const String debugBaseAPI = 'http://192.168.1.14:80';
+  static const String debugBaseAPI = 'http://192.168.1.2:8081';
 
   static const String searchAPI = '/search_albums';
   static const String recommendAPI = '/recommend_albums';
