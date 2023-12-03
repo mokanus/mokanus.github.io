@@ -49,6 +49,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
           title: const Text("专辑详情"),
           centerTitle: true,
         ),
@@ -429,7 +430,6 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
       );
       return;
     }
-
     addItemToHistory();
     Navigator.of(context).push(
       PageRouteBuilder(

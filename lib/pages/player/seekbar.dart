@@ -133,6 +133,7 @@ void showSliderDialog({
         textAlign: TextAlign.center,
         style: const TextStyle(
           color: Colors.black,
+          fontWeight: FontWeight.bold,
         ),
       ),
       content: StreamBuilder<double>(
@@ -141,10 +142,9 @@ void showSliderDialog({
           height: 100.0,
           child: Column(
             children: [
-              Text('${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
+              Text('${snapshot.data?.toStringAsFixed(1)} $valueSuffix',
                   style: const TextStyle(
                       fontFamily: 'Avenir',
-                      fontWeight: FontWeight.bold,
                       color: Colors.black,
                       fontSize: 24.0)),
               Slider(

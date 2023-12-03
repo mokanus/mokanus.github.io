@@ -65,6 +65,7 @@ class HistoryViewState extends State<HistoryView> with WidgetsBindingObserver {
                           child: GestureDetector(
                             child: Card(
                               elevation: 0.2,
+                              surfaceTintColor: Colors.transparent,
                               child: Row(
                                 children: [
                                   Container(

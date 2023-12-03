@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ThemeConfig {
   static Color lightPrimary = Colors.white;
@@ -16,57 +17,20 @@ class ThemeConfig {
   static Color darkTitleCategory = Colors.white54;
 
   static ThemeData lightTheme = ThemeData(
-    primaryColor: lightPrimary,
-    scaffoldBackgroundColor: lightBG,
-    cardColor: lightPrimary,
+    scaffoldBackgroundColor: const Color.fromARGB(255, 246, 246, 246),
+    shadowColor: const Color.fromARGB(255, 245, 245, 245),
+    cardTheme: const CardTheme(
+        color: Color.fromARGB(255, 254, 254, 254),
+        surfaceTintColor: Colors.transparent),
     appBarTheme: const AppBarTheme(
-      elevation: 0.0,
+      backgroundColor: Color.fromARGB(255, 246, 246, 246),
+      systemOverlayStyle: SystemUiOverlayStyle.light,
+      foregroundColor: Colors.black,
     ),
-    switchTheme: SwitchThemeData(
-      thumbColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return lightAccent;
-        }
-        return null;
-      }),
-      trackColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return lightAccent;
-        }
-        return null;
-      }),
-    ),
-    radioTheme: RadioThemeData(
-      fillColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return lightAccent;
-        }
-        return null;
-      }),
-    ),
-    checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return lightAccent;
-        }
-        return null;
-      }),
+    sliderTheme: const SliderThemeData(
+      thumbColor: Color.fromARGB(255, 234, 78, 94),
+      activeTrackColor: Color.fromARGB(120, 234, 78, 94),
+      overlayColor: Color.fromARGB(120, 234, 78, 94),
     ),
   );
 
@@ -74,9 +38,11 @@ class ThemeConfig {
     brightness: Brightness.dark,
     primaryColor: darkPrimary,
     scaffoldBackgroundColor: darkBG,
-    cardColor: darkCard,
+    cardTheme: CardTheme(surfaceTintColor: Colors.transparent, color: darkCard),
+    hintColor: Colors.transparent,
     appBarTheme: const AppBarTheme(
       elevation: 0.0,
+      surfaceTintColor: Colors.transparent,
     ),
   );
 }

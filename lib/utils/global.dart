@@ -8,7 +8,6 @@ class Global {
   static bool isFirstOpen = false;
   static bool isOfflineLogin = false;
   static bool get isRelease => const bool.fromEnvironment("dart.vm.product");
-
   static Future init() async {
     Timers.startTimers();
   }

@@ -127,7 +127,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
                               onPressed: audioHandler.play,
                               icon: const Icon(
                                 Icons.play_circle_fill,
-
                               ),
                               color: Theme.of(context).iconTheme.color,
                               splashRadius: 1,

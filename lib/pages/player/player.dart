@@ -62,7 +62,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
         updateNplay(widget.skipIndex);
       });
     }
-
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -78,9 +77,11 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   List<MediaItem> fillAudioItems(AlbumItem? album) {
     List<MediaItem> globalQueue = <MediaItem>[];
     if (album != null) {
-      for (var i = 0; i < album.mediaItems.length; i++) {
-        globalQueue.add(album.mediaItem(i));
-      }
+      // for (var i = 0; i < album.mediaItems.length; i++) {
+      //   globalQueue.add(album.mediaItem(i));
+      // }
+      globalQueue.add(album.mediaItem(0));
+      globalQueue.add(album.mediaItem(1));
     }
     return globalQueue;
   }

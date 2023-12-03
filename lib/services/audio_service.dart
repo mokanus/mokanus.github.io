@@ -33,6 +33,8 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   final BehaviorSubject<double> volume = BehaviorSubject.seeded(1.0);
   @override
   final BehaviorSubject<double> speed = BehaviorSubject.seeded(1.0);
+  @override
+  final BehaviorSubject<double> closeTimer = BehaviorSubject.seeded(5.0);
   final _mediaItemExpando = Expando<MediaItem>();
 
   Stream<List<IndexedAudioSource>> get _effectiveSequence => Rx.combineLatest3<
@@ -508,6 +510,12 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       second: position.inSeconds,
     );
   }
+
+  @override
+  Future<void> setCloseTimerDuration(double duration) async {
+    closeTimer.add(duration);
+    customAction('sleepTimer', {'time': duration.toInt()});
+  }
 }
 
 abstract class AudioPlayerHandler implements AudioHandler {
@@ -517,6 +525,8 @@ abstract class AudioPlayerHandler implements AudioHandler {
   Future<void> setVolume(double volume);
   ValueStream<double> get speed;
   AlbumMeta get albumMeta;
+  ValueStream<double> get closeTimer;
+  Future<void> setCloseTimerDuration(double duration);
 }
 
 class QueueState {

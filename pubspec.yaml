@@ -43,7 +43,7 @@ dependencies:
   draggable_float_widget: ^0.0.2
   material_dialogs: ^1.1.4
   lottie: ^2.2.0
-  logger: ^1.2.2
+  logger: ^2.0.2+1
   home_widget: ^0.3.0
   google_sign_in: ^6.1.6
   firebase_core: ^2.24.0

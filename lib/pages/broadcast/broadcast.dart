@@ -27,6 +27,7 @@ class _BroadcastPageState extends State<BroadcastPage>
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         foregroundColor: Colors.black,
+        surfaceTintColor: Colors.transparent,
         title: Container(
           margin: EdgeInsets.fromLTRB(
               ScreenUtil().setWidth(16),

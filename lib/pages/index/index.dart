@@ -1,5 +1,4 @@
 import 'package:card_swiper/card_swiper.dart';
-import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -45,6 +44,7 @@ class _IndexPageState extends State<IndexPage>
           foregroundColor: Colors.black,
           title: const TingSearchBar(),
           backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
           elevation: 0,
         ),
         body: provider.apiRequestStatus != APIRequestStatus.loaded

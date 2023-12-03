@@ -120,6 +120,7 @@ class MyPageState extends State<MyPage> {
         children: [
           Card(
             elevation: 0.5,
+            surfaceTintColor: Colors.transparent,
             child: Column(
               children: [
                 Padding(

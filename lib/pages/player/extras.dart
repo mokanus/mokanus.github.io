@@ -10,7 +10,6 @@ import 'package:tingfm/widgets/snackbar.dart';
 
 class ExtraBtns extends StatelessWidget {
   final AudioPlayerHandler audioHandler;
-
   const ExtraBtns({Key? key, required this.audioHandler}) : super(key: key);
 
   @override
@@ -103,12 +102,13 @@ class ExtraBtns extends StatelessWidget {
                 showSliderDialog(
                   context: context,
                   title: "播放速度",
-                  divisions: 15,
+                  divisions: 3,
                   min: 0.5,
                   max: 2.0,
                   value: audioHandler.speed.value,
                   stream: audioHandler.speed,
                   onChanged: audioHandler.setSpeed,
+                  valueSuffix: '倍速',
                 );
               },
             ),
@@ -131,22 +131,19 @@ class ExtraBtns extends StatelessWidget {
               showSliderDialog(
                 context: context,
                 title: "定时关闭",
-                divisions: 6,
-                min: 0.0,
-                max: 30.0,
-                value: 0,
-                stream: audioHandler.customState.value,
-                onChanged: sleepTimer,
+                divisions: 5,
+                min: 15,
+                max: 40,
+                value: audioHandler.closeTimer.value,
+                stream: audioHandler.closeTimer,
+                onChanged: audioHandler.setCloseTimerDuration,
+                valueSuffix: '分钟',
               );
             },
           ),
         ],
       ),
     );
-  }
-
-  void sleepTimer(double time) {
-    audioHandler.customAction('sleepTimer', {'time': time as int});
   }
 
   addItemToFavorate(BuildContext ctx) {
