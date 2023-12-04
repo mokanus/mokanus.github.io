@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tingfm/pages/album_info/album_info.dart';
 import 'package:tingfm/pages/classify/classify.dart';
 import 'package:tingfm/pages/recommend/recommend.dart';
 

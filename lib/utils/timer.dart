@@ -23,13 +23,6 @@ class Timers {
       (Timer t) => storagePlayedData(),
     );
 
-    if (Platform.isIOS) {
-      Timer.periodic(
-        const Duration(seconds: 1),
-        (Timer t) => unlockNext(),
-      );
-    }
-
     // Timer.periodic(const Duration(seconds: 5), (Timer t) {
     //   if (Global.isVip) {
     //     if (DateTime.now()
@@ -57,33 +50,5 @@ class Timers {
 
   static void clearReadyClockedCache() {
     readyUnlocked.clear();
-  }
-
-  static void unlockNext() async {
-    try {
-      var audioHandler = GetIt.I<AudioPlayerHandler>();
-      if (audioHandler.playbackState.value.playing) {
-        var index = audioHandler.albumMeta.index + 1;
-
-        var key = '${audioHandler.albumMeta.album}$index';
-        var unlocked = readyUnlocked[key];
-        if (unlocked != null) {
-          return;
-        }
-
-        var mediaItem = await audioHandler.getMediaItem(index.toString());
-        if (mediaItem != null) {
-          var url = mediaItem.extras!['url'].toString();
-          if (url.endsWith('-end')) {
-            mediaItem.extras!['url'] =
-                url.substring(0, url.toString().length - 4);
-          }
-          await audioHandler.updateMediaItem(mediaItem);
-          readyUnlocked[key] = true;
-        }
-      }
-    } on Exception {
-      Global.logger.e('RewardedAd failed to load');
-    }
   }
 }

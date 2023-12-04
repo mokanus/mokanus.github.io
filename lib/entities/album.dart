@@ -87,35 +87,35 @@ class AlbumItem {
 
   MediaItem mediaItem(index) {
     // ios不支持缓存 改成手动的机制
-    if (Platform.isIOS) {
-      return MediaItem(
-          id: index.toString(),
-          title: mediaItems[index]
-              .title
-              .substring(0, mediaItems[index].title.length - 4),
-          album: album,
-          artist: artist,
-          duration: Duration(seconds: mediaItems[index].duration),
-          artUri: Uri.parse(imageUrl()),
-          extras: {
-            'url': index == 0
-                ? '${Global.ossPre}$artist/$album/${mediaItems[index].title}'
-                : '${Global.ossPre}$artist/$album/${mediaItems[index].title}-end',
-          });
-    } else {
-      return MediaItem(
-          id: index.toString(),
-          title: mediaItems[index]
-              .title
-              .substring(0, mediaItems[index].title.length - 4),
-          album: album,
-          artist: artist,
-          duration: Duration(seconds: mediaItems[index].duration),
-          artUri: Uri.parse(imageUrl()),
-          extras: {
-            'url': '${Global.ossPre}$artist/$album/${mediaItems[index].title}',
-          });
-    }
+    // if (Platform.isIOS) {
+    //   return MediaItem(
+    //       id: index.toString(),
+    //       title: mediaItems[index]
+    //           .title
+    //           .substring(0, mediaItems[index].title.length - 4),
+    //       album: album,
+    //       artist: artist,
+    //       duration: Duration(seconds: mediaItems[index].duration),
+    //       artUri: Uri.parse(imageUrl()),
+    //       extras: {
+    //         'url': index == 0
+    //             ? '${Global.ossPre}$artist/$album/${mediaItems[index].title}'
+    //             : '${Global.ossPre}$artist/$album/${mediaItems[index].title}-end',
+    //       });
+    // } else {
+    return MediaItem(
+        id: index.toString(),
+        title: mediaItems[index]
+            .title
+            .substring(0, mediaItems[index].title.length - 4),
+        album: album,
+        artist: artist,
+        duration: Duration(seconds: mediaItems[index].duration),
+        artUri: Uri.parse(imageUrl()),
+        extras: {
+          'url': '${Global.ossPre}$artist/$album/${mediaItems[index].title}',
+        });
+    // }
   }
 
   String cachedKey() {

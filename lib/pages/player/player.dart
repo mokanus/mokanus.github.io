@@ -57,7 +57,6 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
       }
     } else {
       setState(() {
-        Timers.clearReadyClockedCache();
         audioHandler.stop();
         updateNplay(widget.skipIndex);
       });
@@ -77,11 +76,9 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
   List<MediaItem> fillAudioItems(AlbumItem? album) {
     List<MediaItem> globalQueue = <MediaItem>[];
     if (album != null) {
-      // for (var i = 0; i < album.mediaItems.length; i++) {
-      //   globalQueue.add(album.mediaItem(i));
-      // }
-      globalQueue.add(album.mediaItem(0));
-      globalQueue.add(album.mediaItem(1));
+      for (var i = 0; i < album.mediaItems.length; i++) {
+        globalQueue.add(album.mediaItem(i));
+      }
     }
     return globalQueue;
   }

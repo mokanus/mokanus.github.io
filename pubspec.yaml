@@ -16,7 +16,6 @@ dependencies:
   flutter_screenutil: ^5.5.4
   salomon_bottom_bar: ^3.3.1
   get_it: ^7.2.0
-  just_audio: ^0.9.36
   audio_service: ^0.18.12
   rxdart: ^0.27.5
   hive: ^2.2.3
@@ -52,6 +51,12 @@ dependencies:
   pay: ^1.1.2
   card_swiper: ^3.0.1
   firebase_analytics: ^10.7.2
+
+  just_audio:
+    git:
+      url: https://github.com/ryanheise/just_audio.git
+      ref: feature/treadmill
+      path: just_audio
 
 dev_dependencies:
   flutter_test:
