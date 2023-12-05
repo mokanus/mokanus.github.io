@@ -13,7 +13,6 @@ import 'package:tingfm/pages/player/seekbar.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/utils/global.dart';
-import 'package:tingfm/utils/timer.dart';
 import 'package:tingfm/widgets/image.dart';
 
 import 'contros.dart';
@@ -118,6 +117,7 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
                 appBar: AppBar(
                   elevation: 0,
                   centerTitle: true,
+                  surfaceTintColor: Colors.transparent,
                   leading: IconButton(
                     icon: const Icon(Icons.expand_more_rounded),
                     tooltip: "返回",

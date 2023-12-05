@@ -41,7 +41,10 @@ class _AppState extends State<App> {
                 scaffoldBackgroundColor:
                     const Color.fromARGB(255, 246, 246, 246),
                 shadowColor: const Color.fromARGB(255, 245, 245, 245),
-                cardColor: const Color.fromARGB(255, 254, 254, 254),
+                cardTheme: const CardTheme(
+                  color: Color.fromARGB(255, 254, 254, 254),
+                  surfaceTintColor: Colors.transparent,
+                ),
                 appBarTheme: const AppBarTheme(
                   backgroundColor: Color.fromARGB(255, 246, 246, 246),
                   systemOverlayStyle: SystemUiOverlayStyle.light,

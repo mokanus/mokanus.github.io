@@ -34,7 +34,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   @override
   final BehaviorSubject<double> speed = BehaviorSubject.seeded(1.0);
   @override
-  final BehaviorSubject<double> closeTimer = BehaviorSubject.seeded(5.0);
+  final BehaviorSubject<double> closeTimer = BehaviorSubject.seeded(15.0);
   final _mediaItemExpando = Expando<MediaItem>();
 
   Stream<List<IndexedAudioSource>> get _effectiveSequence => Rx.combineLatest3<

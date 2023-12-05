@@ -28,7 +28,7 @@ class MenuWidget extends StatelessWidget {
     Navigator.of(ctx).push(
       PageRouteBuilder(
         opaque: false,
-        pageBuilder: (_, __, ___) => const ClassifyPage(),
+        pageBuilder: (_, __, ___) => const RecommendPage(),
       ),
     );
   }
@@ -37,7 +37,7 @@ class MenuWidget extends StatelessWidget {
     Navigator.of(ctx).push(
       PageRouteBuilder(
         opaque: false,
-        pageBuilder: (_, __, ___) => const ClassifyPage(),
+        pageBuilder: (_, __, ___) => const RecommendPage(),
       ),
     );
   }

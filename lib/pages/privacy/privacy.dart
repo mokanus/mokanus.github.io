@@ -5,7 +5,7 @@ class PrivacyPage extends StatelessWidget {
 
   final val = '''
 
-				听书铺子（以下称为本应用）隐私权保护声明系本应用对于保护用户个人隐私之承诺。鉴于互联网的特性，本应用在运营过程中，将无可避免地与用户发生直接或间接的互动关系，故特此说明本应用对用户个人信息所采取的收集、使用和保护政策，请您务必仔细阅读。
+				听书铺子fm（以下称为本应用）隐私权保护声明系本应用对于保护用户个人隐私之承诺。鉴于互联网的特性，本应用在运营过程中，将无可避免地与用户发生直接或间接的互动关系，故特此说明本应用对用户个人信息所采取的收集、使用和保护政策，请您务必仔细阅读。
 
 				1. 适用范围
 
@@ -89,6 +89,7 @@ class PrivacyPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.1,
+        surfaceTintColor: Colors.transparent,
         title: const Padding(
           padding: EdgeInsets.fromLTRB(10, 30, 10, 30),
           child: Text("隐私政策"),
