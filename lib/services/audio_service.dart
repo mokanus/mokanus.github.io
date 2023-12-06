@@ -23,6 +23,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   late String preferredQuality;
   late bool resetOnSkip;
 
+  Timer? _closeTimer;
+  late int _closeSeconds;
+
   final _equalizer = AndroidEqualizer();
 
   final BehaviorSubject<List<MediaItem>> _recentSubject =
@@ -35,6 +38,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   final BehaviorSubject<double> speed = BehaviorSubject.seeded(1.0);
   @override
   final BehaviorSubject<double> closeTimer = BehaviorSubject.seeded(15.0);
+  @override
+  final BehaviorSubject<int> closeTimerStream = BehaviorSubject.seeded(0);
+
   final _mediaItemExpando = Expando<MediaItem>();
 
   Stream<List<IndexedAudioSource>> get _effectiveSequence => Rx.combineLatest3<
@@ -330,7 +336,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
           extras!['time'].runtimeType == int &&
           extras['time'] > 0 as bool) {
         _sleepTimer = Timer(Duration(minutes: extras['time'] as int), () {
-          stop();
+          pause();
         });
       }
     }
@@ -514,7 +520,20 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   @override
   Future<void> setCloseTimerDuration(double duration) async {
     closeTimer.add(duration);
-    customAction('sleepTimer', {'time': duration.toInt()});
+
+    int minus = duration.toInt();
+    _closeSeconds = minus * 60;
+    _closeTimer?.cancel();
+    _closeTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_closeSeconds == 0) {
+        timer.cancel();
+      } else {
+        _closeSeconds--;
+        closeTimerStream.add(_closeSeconds);
+      }
+    });
+
+    customAction('sleepTimer', {'time': minus});
   }
 }
 
@@ -526,6 +545,7 @@ abstract class AudioPlayerHandler implements AudioHandler {
   ValueStream<double> get speed;
   AlbumMeta get albumMeta;
   ValueStream<double> get closeTimer;
+  ValueStream<int> get closeTimerStream;
   Future<void> setCloseTimerDuration(double duration);
 }
 

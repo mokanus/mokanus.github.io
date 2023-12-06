@@ -7,12 +7,10 @@ import 'package:material_dialogs/shared/types.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/api/api_status.dart';
-import 'package:tingfm/pages/login/login.dart';
 import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/providers/history.dart';
-import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/widgets/image.dart';
 import 'package:tingfm/widgets/loading_widget.dart';
 import 'package:tingfm/widgets/mini_player.dart';
@@ -421,15 +419,15 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
   }
 
   void openPlayerPage(int index) {
-    if (!Global.logined) {
-      Navigator.of(context).push(
-        PageRouteBuilder(
-          opaque: false,
-          pageBuilder: (_, __, ___) => const LoginPage(),
-        ),
-      );
-      return;
-    }
+    // if (!Global.logined) {
+    //   Navigator.of(context).push(
+    //     PageRouteBuilder(
+    //       opaque: false,
+    //       pageBuilder: (_, __, ___) => const LoginPage(),
+    //     ),
+    //   );
+    //   return;
+    // }
     addItemToHistory();
     Navigator.of(context).push(
       PageRouteBuilder(

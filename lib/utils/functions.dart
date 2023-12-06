@@ -28,4 +28,15 @@ class Functions {
     }
     return num.toString();
   }
+
+  static String formatSeconds(int seconds) {
+    int minutes = (seconds / 60).floor();
+    int remainingSeconds = seconds % 60;
+
+    String minutesStr = minutes < 10 ? '0$minutes' : '$minutes';
+    String secondsStr =
+        remainingSeconds < 10 ? '0$remainingSeconds' : '$remainingSeconds';
+
+    return '$minutesStr:$secondsStr';
+  }
 }

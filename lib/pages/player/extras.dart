@@ -6,6 +6,7 @@ import 'package:tingfm/pages/player/seekbar.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/services/audio_service.dart';
+import 'package:tingfm/utils/functions.dart';
 import 'package:tingfm/widgets/snackbar.dart';
 
 class ExtraBtns extends StatelessWidget {
@@ -51,30 +52,6 @@ class ExtraBtns extends StatelessWidget {
               );
             },
           ),
-          // StreamBuilder<bool>(
-          //   stream: audioHandler.playbackState
-          //       .map(
-          //         (state) => state.shuffleMode == AudioServiceShuffleMode.all,
-          //       )
-          //       .distinct(),
-          //   builder: (context, snapshot) {
-          //     final shuffleModeEnabled = snapshot.data ?? false;
-          //     return IconButton(
-          //       icon: shuffleModeEnabled
-          //           ? const Icon(Icons.shuffle, color: Colors.orange)
-          //           : const Icon(Icons.shuffle, color: Colors.white),
-          //       onPressed: () async {
-          //         final enable = !shuffleModeEnabled;
-          //         await audioHandler.setShuffleMode(
-          //           enable
-          //               ? AudioServiceShuffleMode.all
-          //               : AudioServiceShuffleMode.none,
-          //         );
-          //       },
-          //     );
-          //   },
-          // ),
-
           StreamBuilder<double>(
             stream: audioHandler.speed,
             builder: (context, snapshot) => IconButton(
@@ -122,24 +99,47 @@ class ExtraBtns extends StatelessWidget {
               addItemToFavorate(context);
             },
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.timer,
-              color: Colors.black,
+          StreamBuilder<int>(
+            stream: audioHandler.closeTimerStream,
+            builder: (context, snapshot) => IconButton(
+              icon: Stack(clipBehavior: Clip.none, children: [
+                snapshot.data != null && snapshot.data != 0
+                    ? Positioned(
+                        top: -12.0,
+                        right: -12.0,
+                        child: Text(
+                          Functions.formatSeconds(snapshot.data as int),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 8,
+                            color: Color.fromARGB(255, 234, 78, 94),
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+                Positioned(
+                  child: Icon(
+                    Icons.timer,
+                    color: snapshot.data != null && snapshot.data != 0
+                        ? const Color.fromARGB(255, 234, 78, 94)
+                        : Colors.black,
+                  ),
+                ),
+              ]),
+              onPressed: () {
+                showSliderDialog(
+                  context: context,
+                  title: "定时关闭",
+                  divisions: 5,
+                  min: 5,
+                  max: 30,
+                  value: audioHandler.closeTimer.value,
+                  stream: audioHandler.closeTimer,
+                  onChanged: audioHandler.setCloseTimerDuration,
+                  valueSuffix: '分钟',
+                );
+              },
             ),
-            onPressed: () {
-              showSliderDialog(
-                context: context,
-                title: "定时关闭",
-                divisions: 5,
-                min: 15,
-                max: 40,
-                value: audioHandler.closeTimer.value,
-                stream: audioHandler.closeTimer,
-                onChanged: audioHandler.setCloseTimerDuration,
-                valueSuffix: '分钟',
-              );
-            },
           ),
         ],
       ),

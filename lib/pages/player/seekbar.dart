@@ -128,6 +128,7 @@ void showSliderDialog({
   showDialog<void>(
     context: context,
     builder: (context) => AlertDialog(
+      surfaceTintColor: Colors.transparent,
       title: Text(
         title,
         textAlign: TextAlign.center,
