@@ -214,33 +214,38 @@ class LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                     const SizedBox(
                       width: 10,
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(16),
-                        color: Colors.grey[200],
+                    GestureDetector(
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.grey[200],
+                        ),
+                        child: Image.asset(
+                          "assets/images/apple.png",
+                          height: 40,
+                        ),
                       ),
-                      child: Image.asset(
-                        "assets/images/apple.png",
-                        height: 40,
-                      ),
+                      onTap: () {
+                        AuthService().signInWithApple();
+                      },
                     ),
                     const SizedBox(
                       width: 10,
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(16),
-                        color: Colors.grey[200],
-                      ),
-                      child: Image.asset(
-                        "assets/images/wechat.png",
-                        height: 40,
-                      ),
-                    )
+                    // Container(
+                    //   padding: const EdgeInsets.all(20),
+                    //   decoration: BoxDecoration(
+                    //     border: Border.all(color: Colors.white),
+                    //     borderRadius: BorderRadius.circular(16),
+                    //     color: Colors.grey[200],
+                    //   ),
+                    //   child: Image.asset(
+                    //     "assets/images/wechat.png",
+                    //     height: 40,
+                    //   ),
+                    // )
                   ],
                 ),
                 const SizedBox(height: 10),

@@ -51,6 +51,9 @@ dependencies:
   pay: ^1.1.2
   card_swiper: ^3.0.1
   firebase_analytics: ^10.7.2
+  purchases_flutter: ^6.5.0
+  modal_progress_hud_nsn: ^0.4.0
+  sign_in_with_apple: ^5.0.0
 
   just_audio:
     git:
