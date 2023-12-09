@@ -45,7 +45,7 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return FloatingSearchBar(
-      hint: '搜索 隋唐演义',
+      hint: '搜索 平凡的世界',
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
       transitionDuration: const Duration(milliseconds: 500),
       transitionCurve: Curves.easeInOut,
