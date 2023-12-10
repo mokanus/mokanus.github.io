@@ -1,12 +1,13 @@
 import 'dart:io';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:tingfm/purchase/constant.dart';
 import 'package:tingfm/purchase/store_config.dart';
 import 'package:tingfm/utils/timer.dart';
+import 'package:uuid/uuid.dart';
+import 'storage.dart';
 
 /// 全局配置
 class Global {
@@ -15,6 +16,8 @@ class Global {
   static bool get isRelease => const bool.fromEnvironment("dart.vm.product");
 
   static Future init() async {
+    checkOrInitUser();
+
     if (Platform.isIOS || Platform.isMacOS) {
       StoreConfig(
         store: Store.appStore,
@@ -30,23 +33,24 @@ class Global {
     Timers.startTimers();
   }
 
+  static checkOrInitUser() {
+    if (appUserID == null || appUserID == "") {
+      appUserID = const Uuid().v4();
+    }
+  }
+
   static Future<void> _configureSDK() async {
     // Enable debug logs before calling `configure`.
     await Purchases.setLogLevel(LogLevel.debug);
 
-    /*
-    - appUserID is nil, so an anonymous ID will be generated automatically by the Purchases SDK. Read more about Identifying Users here: https://docs.revenuecat.com/docs/user-ids
-
-    - observerMode is false, so Purchases will automatically handle finishing transactions. Read more about Observer Mode here: https://docs.revenuecat.com/docs/observer-mode
-    */
     PurchasesConfiguration configuration;
     if (StoreConfig.isForAmazonAppstore()) {
       configuration = AmazonConfiguration(StoreConfig.instance.apiKey)
-        ..appUserID = null
+        ..appUserID = appUserID
         ..observerMode = false;
     } else {
       configuration = PurchasesConfiguration(StoreConfig.instance.apiKey)
-        ..appUserID = null
+        ..appUserID = appUserID
         ..observerMode = false;
     }
     await Purchases.configure(configuration);
@@ -60,9 +64,21 @@ class Global {
   }
 
   static bool entitlementIsActive = false;
-  static String appUserID = '';
 
-  static bool get logined => FirebaseAuth.instance.currentUser != null;
+  static stomerInfo() async {
+    var isSubscribed = await Purchases.getCustomerInfo();
+    print("---> customerInfo :${isSubscribed}");
+    print("---> latestExpirationDate :${isSubscribed.latestExpirationDate}");
+  }
+
+  static String? get appUserID {
+    var str = StorageUtil().getString('UserId');
+    return str;
+  }
+
+  static set appUserID(String? value) {
+    StorageUtil().setString('UserId', value!);
+  }
 
   static const String ossPre = 'https://www.chiyustudio.com/data/';
   static const String ossBannerPre = 'https://www.chiyustudio.com/banners/';

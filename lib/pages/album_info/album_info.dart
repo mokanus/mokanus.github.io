@@ -7,13 +7,10 @@ import 'package:material_dialogs/shared/types.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/api/api_status.dart';
-import 'package:tingfm/pages/login/loginsheet.dart';
 import 'package:tingfm/pages/player/player.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/providers/history.dart';
-import 'package:tingfm/purchase/model/styles.dart';
-import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/widgets/image.dart';
 import 'package:tingfm/widgets/loading_widget.dart';
 import 'package:tingfm/widgets/mini_player.dart';
@@ -377,25 +374,6 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
   }
 
   void openPlayerPage(int index) async {
-    if (!Global.logined) {
-      await showModalBottomSheet(
-        useRootNavigator: true,
-        isDismissible: true,
-        isScrollControlled: true,
-        backgroundColor: kLightBackground,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(5.0)),
-        ),
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setModalState) {
-            return const LoginSheet();
-          });
-        },
-      );
-      return;
-    }
     addItemToHistory();
     Navigator.of(context).push(
       PageRouteBuilder(

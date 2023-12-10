@@ -141,7 +141,7 @@ class _UserScreenState extends State<UserScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      Global.appUserID,
+                      Global.appUserID!,
                       textAlign: TextAlign.center,
                       style: kDescriptionTextStyle,
                     ),
@@ -169,7 +169,7 @@ class _UserScreenState extends State<UserScreen> {
                     ),
                   ),
                   Visibility(
-                    visible: Global.appUserID.contains("RCAnonymousID:"),
+                    visible: Global.appUserID!.contains("RCAnonymousID:"),
                     child: const Padding(
                       padding: EdgeInsets.only(
                           top: 24.0, bottom: 8.0, left: 8.0, right: 8.0),
@@ -181,7 +181,7 @@ class _UserScreenState extends State<UserScreen> {
                     ),
                   ),
                   Visibility(
-                    visible: Global.appUserID.contains("RCAnonymousID:"),
+                    visible: Global.appUserID!.contains("RCAnonymousID:"),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
@@ -199,7 +199,8 @@ class _UserScreenState extends State<UserScreen> {
                     child: Column(
                       children: [
                         Visibility(
-                          visible: !Global.appUserID.contains("RCAnonymousID:"),
+                          visible:
+                              !Global.appUserID!.contains("RCAnonymousID:"),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextButton(

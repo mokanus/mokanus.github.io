@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,8 +10,8 @@ import 'package:tingfm/purchase/components/native_dialog.dart';
 import 'package:tingfm/purchase/constant.dart';
 import 'package:tingfm/purchase/model/styles.dart';
 import 'package:tingfm/purchase/views/paywall.dart';
+import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/utils/router.dart';
-import 'package:tingfm/widgets/image.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
@@ -84,7 +83,7 @@ class MyPageState extends State<MyPage> {
             )));
   }
 
-  void perfomMagic() async {
+  void showSubcription() async {
     // 需要检查一下是不是已经订阅
     CustomerInfo customerInfo = await Purchases.getCustomerInfo();
 
@@ -138,22 +137,15 @@ class MyPageState extends State<MyPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          avator != ""
-              ? imageCached(
-                  avator,
-                  avator,
-                  width: ScreenUtil().setWidth(200.0),
-                  height: ScreenUtil().setHeight(200.0),
-                )
-              : ClipRRect(
-                  borderRadius: BorderRadius.circular(16.0), // 设置圆角半径
-                  child: Image.asset(
-                    "assets/images/icon.png",
-                    width: ScreenUtil().setWidth(200.0),
-                    height: ScreenUtil().setHeight(200.0),
-                    fit: BoxFit.cover, // 图片填充方式，可根据需要调整
-                  ),
-                ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16.0), // 设置圆角半径
+            child: Image.asset(
+              "assets/images/icon.png",
+              width: ScreenUtil().setWidth(200.0),
+              height: ScreenUtil().setHeight(200.0),
+              fit: BoxFit.cover, // 图片填充方式，可根据需要调整
+            ),
+          ),
           Expanded(
             child: Container(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -174,7 +166,11 @@ class MyPageState extends State<MyPage> {
             ),
           ),
           IconButton(
-              onPressed: () => {AppRouter.pushPage(context, SettingPage())},
+              onPressed: () => {
+                    print("--->${Global.appUserID}"),
+                    Global.stomerInfo(),
+                    AppRouter.pushPage(context, SettingPage())
+                  },
               icon: const Icon(Icons.settings))
         ],
       ),
@@ -211,7 +207,7 @@ class MyPageState extends State<MyPage> {
             ),
             child: InkWell(
               onTap: () {
-                perfomMagic();
+                showSubcription();
               },
               child: const Center(
                 child: Text(

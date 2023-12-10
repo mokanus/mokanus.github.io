@@ -7,7 +7,6 @@ import 'package:tingfm/pages/broadcast/broadcast.dart';
 import 'package:tingfm/pages/index/index.dart';
 import 'package:tingfm/pages/my/my.dart';
 import 'package:tingfm/providers/app.dart';
-import 'package:tingfm/purchase/views/home.dart';
 import 'package:tingfm/widgets/custom_physics.dart';
 import 'package:tingfm/widgets/mini_player.dart';
 

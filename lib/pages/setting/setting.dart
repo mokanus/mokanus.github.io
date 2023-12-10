@@ -7,13 +7,13 @@ class SettingPage extends StatelessWidget {
 
   final List items = [
     {
-      'icon': Icons.cleaning_services,
-      'title': '账号清理',
-      'function': () async => {await FirebaseAuth.instance.signOut()},
+      'icon': Icons.supervised_user_circle_outlined,
+      'title': 'UID',
+      'function': () async {},
     },
     {
-      'icon': Icons.login_outlined,
-      'title': '退出登陆',
+      'icon': Icons.cleaning_services,
+      'title': '账号清理',
       'function': () async => {await FirebaseAuth.instance.signOut()},
     },
   ];
@@ -53,4 +53,8 @@ class SettingPage extends StatelessWidget {
               },
             )));
   }
+
+  showUID() {}
+
+  cleanUID() {}
 }

@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tingfm/services/audio_service.dart';
-import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/values/hive_box.dart';
-import 'dart:io' show Platform;
 
 ///本类是自定义的定时器工具类
 ///

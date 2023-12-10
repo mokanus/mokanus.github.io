@@ -15,6 +15,7 @@ import 'package:tingfm/providers/recommend.dart';
 import 'package:tingfm/providers/search.dart';
 import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/utils/global.dart';
+import 'package:tingfm/utils/storage.dart';
 import 'package:tingfm/values/hive_boxes/album_db.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +33,7 @@ Future<void> main() async {
 
   await setupLocator();
   await startService();
+  await StorageUtil.init();
   await Global.init();
 
   runApp(
