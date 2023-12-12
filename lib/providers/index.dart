@@ -4,7 +4,7 @@ import 'package:tingfm/api/album_banner.dart';
 import 'package:tingfm/api/api_status.dart';
 import 'package:tingfm/api/classify.dart';
 import 'package:tingfm/api/list_by_classify.dart';
-import 'package:tingfm/api/recommend.dart';
+import 'package:tingfm/api/recent.dart';
 import 'package:tingfm/api/router.dart';
 import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/entities/album_banner.dart';
@@ -17,7 +17,7 @@ class IndexProvider with ChangeNotifier {
   var classifies = <Classify>[];
   var albums = <int, List<AlbumItem>>{};
   var albumBanners = <AlbumBannerItem>[];
-  var suggestAlbums = <AlbumItem>[];
+  var recentAlbums = <AlbumItem>[];
 
   //获取当前专辑的数据
   flushData(BuildContext context) async {
@@ -45,14 +45,14 @@ class IndexProvider with ChangeNotifier {
         "limit": 12,
       };
 
-      var recommendRsp = await RecommendAPI.recommendAlbums(
-        url: APIRouter.router(APIRouter.recommendAPI),
+      var recentlyRsp = await RecentlyAlbumsAPI.recentlyAlbums(
+        url: APIRouter.router(APIRouter.recentAPI),
         params: params,
         context: context,
       );
-      if (recommendRsp != null && recommendRsp.data.albums.isNotEmpty) {
-        suggestAlbums.clear();
-        suggestAlbums.addAll(recommendRsp.data.albums);
+      if (recentlyRsp != null && recentlyRsp.data.albums.isNotEmpty) {
+        recentAlbums.clear();
+        recentAlbums.addAll(recentlyRsp.data.albums);
       }
     } catch (e) {
       checkError(e);

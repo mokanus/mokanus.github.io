@@ -6,6 +6,7 @@ class APIRouter {
 
   static const String searchAPI = '/search_albums';
   static const String recommendAPI = '/recommend_albums';
+  static const String recentAPI = '/recent_albums';
   static const String albumInfoAPI = '/album_info';
   static const String classifiesAPI = '/album_classify';
   static const String lisByClassifyAPI = '/classified_albums';

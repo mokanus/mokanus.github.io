@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tingfm/entities/album.dart';
-import 'package:tingfm/pages/album_info/album_info.dart';
+import 'package:tingfm/pages/albuminfo/albuminfo.dart';
 import 'package:tingfm/widgets/image.dart';
 
 class RecommendItemWidget extends StatelessWidget {

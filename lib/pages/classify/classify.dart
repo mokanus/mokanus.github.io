@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/pages/albums/albums.dart';
+import 'package:tingfm/pages/index/dialog_quest.dart';
 import 'package:tingfm/providers/classify.dart';
+import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/widgets/image.dart';
 
 class ClassifyPage extends StatefulWidget {
@@ -45,7 +47,7 @@ class ClassifyPageState extends State<ClassifyPage>
         foregroundColor: Colors.black,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text("专辑分类"),
+        title: const Text("专辑分类"),
         centerTitle: true,
       ),
       body: SafeArea(

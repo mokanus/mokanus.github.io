@@ -53,6 +53,8 @@ dependencies:
   purchases_flutter: ^6.5.0
   modal_progress_hud_nsn: ^0.4.0
   uuid: ^4.2.1
+  store_redirect: ^2.0.1
+  rating_dialog: ^2.0.4
 
   just_audio:
     git:
@@ -81,6 +83,7 @@ flutter:
     - assets/images/apple.png
     - assets/images/wechat.png
     - assets/images/google.png
+    - assets/images/vip.webp
     - assets/images/banners/1.webp
     - assets/images/banners/2.webp
     - assets/images/banners/3.webp

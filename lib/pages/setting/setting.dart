@@ -1,25 +1,47 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:tingfm/pages/privacy/privacy.dart';
+import 'package:tingfm/pages/privacy/user_privacy.dart';
+import 'package:tingfm/utils/purchase.dart';
+import 'package:tingfm/utils/router.dart';
+import 'package:tingfm/widgets/snackbar.dart';
 
-class SettingPage extends StatelessWidget {
-  SettingPage({super.key});
-
-  final List items = [
-    {
-      'icon': Icons.supervised_user_circle_outlined,
-      'title': 'UID',
-      'function': () async {},
-    },
-    {
-      'icon': Icons.cleaning_services,
-      'title': '账号清理',
-      'function': () async => {await FirebaseAuth.instance.signOut()},
-    },
-  ];
+class SettingPage extends StatefulWidget {
+  const SettingPage({super.key});
 
   @override
-  Widget build(Object context) {
+  SettingPageState createState() => SettingPageState();
+}
+
+class SettingPageState extends State<SettingPage> {
+  late List items;
+
+  @override
+  void initState() {
+    super.initState();
+    items = [
+      {
+        'icon': Icons.supervised_user_circle_outlined,
+        'title': 'UID',
+        'function': () async {
+          ShowSnackBar().showSnackBar(
+            context,
+            "UID是:${PurchaseUtil.appUserID}",
+          );
+        },
+      },
+      {
+        'icon': Icons.cleaning_services,
+        'title': '账号清理',
+        'function': () async => {await FirebaseAuth.instance.signOut()},
+      },
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,

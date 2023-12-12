@@ -31,7 +31,7 @@ class RecommendListWidget extends StatelessWidget {
                   width: ScreenUtil().setWidth(32),
                 ),
                 const Text(
-                  "猜你喜欢",
+                  "最新更新",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
@@ -56,7 +56,7 @@ class RecommendListWidget extends StatelessWidget {
                         overflow: TextOverflow.ellipsis),
                   ),
                   const Icon(
-                    Icons.arrow_right,
+                    Icons.arrow_drop_down,
                     color: Colors.black,
                   ),
                 ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:tingfm/pages/album_info/album_info.dart';
+import 'package:tingfm/pages/albuminfo/albuminfo.dart';
 import 'package:tingfm/providers/history.dart';
 import 'package:tingfm/widgets/image.dart';
 

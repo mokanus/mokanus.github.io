@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/entities/album.dart';
-import 'package:tingfm/pages/album_info/album_info.dart';
+import 'package:tingfm/pages/albuminfo/albuminfo.dart';
 import 'package:tingfm/providers/search.dart';
 import 'package:tingfm/utils/router.dart';
 import 'package:tingfm/utils/vibration.dart';

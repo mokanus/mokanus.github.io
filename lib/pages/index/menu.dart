@@ -115,7 +115,7 @@ class MenuWidget extends StatelessWidget {
               ),
               SizedBox(height: ScreenUtil().setHeight(28)),
               Text(
-                '排行榜单',
+                '持续更新',
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(36),
                     fontWeight: FontWeight.bold),

@@ -45,7 +45,7 @@ class RecommendWidget extends StatelessWidget {
                   width: ScreenUtil().setWidth(32),
                 ),
                 Text(
-                  "${classify.classify}推荐",
+                  classify.classify,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],

@@ -6,7 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/api/api_status.dart';
 import 'package:tingfm/components/search_bar.dart';
-import 'package:tingfm/pages/album_info/album_info.dart';
+import 'package:tingfm/entities/classify.dart';
+import 'package:tingfm/pages/albuminfo/albuminfo.dart';
+import 'package:tingfm/pages/index/dialog_quest.dart';
 import 'package:tingfm/pages/index/menu.dart';
 import 'package:tingfm/pages/index/recommend.dart';
 import 'package:tingfm/pages/index/recommend_list.dart';
@@ -23,6 +25,7 @@ class IndexPage extends StatefulWidget {
 
 class _IndexPageState extends State<IndexPage>
     with WidgetsBindingObserver, AutomaticKeepAliveClientMixin {
+  late List<Classify> classifies;
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback(
@@ -31,6 +34,7 @@ class _IndexPageState extends State<IndexPage>
     );
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
   }
 
   @override
@@ -88,9 +92,9 @@ class _IndexPageState extends State<IndexPage>
                       SizedBox(
                         height: ScreenUtil().setHeight(64),
                       ),
-                      // 推荐列表控件
+                      // 最新上架
                       RecommendListWidget(
-                          title: "猜你喜欢", albums: provider.suggestAlbums),
+                          title: "持续更新", albums: provider.recentAlbums),
                       buildRecomendWidgets(provider),
                     ],
                   ),
@@ -98,6 +102,27 @@ class _IndexPageState extends State<IndexPage>
               ),
       );
     });
+  }
+
+  void showQuestDialog() async {
+    await showModalBottomSheet(
+      useRootNavigator: true,
+      isDismissible: false,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setModalState) {
+          return DialogQuest(
+            classifies: classifies,
+          );
+        });
+      },
+    );
   }
 
   Widget buildRecomendWidgets(IndexProvider provider) {

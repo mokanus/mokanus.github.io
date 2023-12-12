@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,9 +10,12 @@ import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/api/api_status.dart';
 import 'package:tingfm/pages/player/player.dart';
+import 'package:tingfm/paywall/paywall.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/providers/history.dart';
+import 'package:tingfm/theme/theme_config.dart';
+import 'package:tingfm/utils/purchase.dart';
 import 'package:tingfm/widgets/image.dart';
 import 'package:tingfm/widgets/loading_widget.dart';
 import 'package:tingfm/widgets/mini_player.dart';
@@ -263,12 +268,10 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
     if (item != null) {
       var deleted = await Provider.of<FavoriteProvider>(context, listen: false)
           .addItemFromAlbum(item);
-      // ignore: use_build_context_synchronously
       ShowSnackBar().showSnackBar(
         context,
         !deleted ? "${item.album} 已经加入喜欢列表啦" : "${item.album} 已经从喜欢列表移除啦",
       );
-      // ignore: use_build_context_synchronously
       await Provider.of<AlbumInfoProvider>(context, listen: false)
           .flushFavorateState();
     }
@@ -374,6 +377,10 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
   }
 
   void openPlayerPage(int index) async {
+    if (!PurchaseUtil.entitlementIsActive) {
+      PurchaseUtil.showSubcription(context);
+      return;
+    }
     addItemToHistory();
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -385,6 +392,29 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
           skipIndex: index,
         ),
       ),
+    );
+  }
+
+  void showHistoryDialog() async {
+    await showModalBottomSheet(
+      useRootNavigator: true,
+      isDismissible: true,
+      isScrollControlled: true,
+      backgroundColor: ThemeConfig.kColorBackground,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setModalState) {
+          return Container(
+            height: 500,
+            width: 500,
+            color: Colors.red,
+          );
+        });
+      },
     );
   }
 
