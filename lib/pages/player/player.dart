@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:tingfm/entities/album.dart';
+import 'package:tingfm/entities/album_meta.dart';
 import 'package:tingfm/pages/player/extras.dart';
 import 'package:tingfm/pages/player/seekbar.dart';
 import 'package:tingfm/providers/album_info.dart';
@@ -22,13 +23,13 @@ import 'panel.dart';
 class PlayerPage extends StatefulWidget {
   final bool fromMiniplayer;
   AlbumItem? albumItem;
-  int? skipIndex;
+  AlbumMeta? albumMeta;
 
   PlayerPage(
       {super.key,
       required this.fromMiniplayer,
       this.albumItem,
-      this.skipIndex});
+      this.albumMeta});
 
   @override
   PlayerPageState createState() => PlayerPageState();
@@ -57,17 +58,19 @@ class PlayerPageState extends State<PlayerPage> with WidgetsBindingObserver {
     } else {
       setState(() {
         audioHandler.stop();
-        updateNplay(widget.skipIndex);
+        updateNplay(widget.albumMeta);
       });
     }
     WidgetsBinding.instance.addObserver(this);
   }
 
-  Future<void> updateNplay(int? skipToIndex) async {
+  Future<void> updateNplay(AlbumMeta? albumMeta) async {
     if (!widget.fromMiniplayer) {
       var globalQueue = fillAudioItems(widget.albumItem);
       await audioHandler.updateQueue(globalQueue);
-      await audioHandler.skipToQueueItem(skipToIndex!);
+      if (albumMeta != null) {
+        await audioHandler.skipToQueueItem(albumMeta.index);
+      }
       await audioHandler.play();
     }
   }

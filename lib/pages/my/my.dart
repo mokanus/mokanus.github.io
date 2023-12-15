@@ -6,6 +6,7 @@ import 'package:store_redirect/store_redirect.dart';
 import 'package:tingfm/pages/privacy/privacy.dart';
 import 'package:tingfm/pages/privacy/user_privacy.dart';
 import 'package:tingfm/pages/setting/setting.dart';
+import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/utils/purchase.dart';
 import 'package:tingfm/utils/router.dart';
 
@@ -69,7 +70,7 @@ class MyPageState extends State<MyPage> {
     ),
     // encourage your user to leave a high rating?
     message: const Text(
-      '友友们留下你的评分',
+      '听友们留下你的评分',
       textAlign: TextAlign.center,
       style: TextStyle(fontSize: 15),
     ),
@@ -86,7 +87,7 @@ class MyPageState extends State<MyPage> {
     ),
     starSize: 32,
     submitButtonText: '提交',
-    commentHint: '高低整两句',
+    commentHint: '我想说两句..',
     onCancelled: () => {},
     onSubmitted: (response) {
       if (response.rating < 3.0) {
@@ -116,7 +117,7 @@ class MyPageState extends State<MyPage> {
                   return personDataWidgt("听书铺子fm", "");
                 }
                 if (items[index]['title'] == '订阅控件') {
-                  return PurchaseUtil.entitlementIsActive
+                  return PurchaseUtil.isVip
                       ? const SizedBox()
                       : subscriptionWidgt();
                 }
@@ -171,8 +172,9 @@ class MyPageState extends State<MyPage> {
             ),
           ),
           IconButton(
-              onPressed: () =>
-                  {AppRouter.pushPage(context, const SettingPage())},
+              onPressed: () => {
+                    AppRouter.pushPage(context, const SettingPage()),
+                  },
               icon: const Icon(Icons.settings))
         ],
       ),

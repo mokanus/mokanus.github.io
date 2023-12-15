@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -13,6 +15,7 @@ import 'package:tingfm/pages/index/menu.dart';
 import 'package:tingfm/pages/index/recommend.dart';
 import 'package:tingfm/pages/index/recommend_list.dart';
 import 'package:tingfm/providers/index.dart';
+import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/widgets/image.dart';
 import 'package:tingfm/widgets/loading_widget.dart';
 
@@ -25,7 +28,6 @@ class IndexPage extends StatefulWidget {
 
 class _IndexPageState extends State<IndexPage>
     with WidgetsBindingObserver, AutomaticKeepAliveClientMixin {
-  late List<Classify> classifies;
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback(
@@ -34,7 +36,11 @@ class _IndexPageState extends State<IndexPage>
     );
     WidgetsBinding.instance.addObserver(this);
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Timer(const Duration(seconds: 1), () {
+        showQuestDialog(Provider.of<IndexProvider>(context, listen: false));
+      });
+    });
   }
 
   @override
@@ -104,25 +110,32 @@ class _IndexPageState extends State<IndexPage>
     });
   }
 
-  void showQuestDialog() async {
-    await showModalBottomSheet(
-      useRootNavigator: true,
-      isDismissible: false,
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-      ),
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setModalState) {
-          return DialogQuest(
-            classifies: classifies,
-          );
-        });
-      },
-    );
+  void showQuestDialog(IndexProvider provider) async {
+    // 三分钟之后再弹窗
+    var ok = Global.firstOpenTime
+        .add(const Duration(minutes: 3))
+        .isBefore(DateTime.now());
+    if (Global.firstQuestSuccessed == false && ok) {
+      await showModalBottomSheet(
+        useRootNavigator: true,
+        isDismissible: false,
+        isScrollControlled: true,
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setModalState) {
+            return DialogQuest(
+              classifies: provider.classifies,
+            );
+          });
+        },
+      );
+    }
+    Global.firstQuestSuccessed = true;
   }
 
   Widget buildRecomendWidgets(IndexProvider provider) {

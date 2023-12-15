@@ -4,17 +4,17 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:tingfm/providers/recommend.dart';
+import 'package:tingfm/providers/recent.dart';
 import 'package:tingfm/widgets/recommend_item.dart';
 
-class RecommendPage extends StatefulWidget {
-  const RecommendPage({super.key});
+class RecentPage extends StatefulWidget {
+  const RecentPage({super.key});
 
   @override
-  State<RecommendPage> createState() => RecommendPageState();
+  State<RecentPage> createState() => RecentPageState();
 }
 
-class RecommendPageState extends State<RecommendPage>
+class RecentPageState extends State<RecentPage>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
   final EasyRefreshController easyController = EasyRefreshController(
@@ -31,8 +31,8 @@ class RecommendPageState extends State<RecommendPage>
 
 // 只会在build完成之后被调用一次
     SchedulerBinding.instance.addPostFrameCallback(
-      (_) => Provider.of<RecommendProvider>(context, listen: false)
-          .refreshRecommendData(context, 0, freshOffset),
+      (_) => Provider.of<RecentProvider>(context, listen: false)
+          .refreshRecentAlbumsData(context, 0, freshOffset),
     );
   }
 
@@ -45,12 +45,12 @@ class RecommendPageState extends State<RecommendPage>
         foregroundColor: Colors.black,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text("推荐专辑列表"),
+        title: const Text("最近更新"),
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Consumer<RecommendProvider>(builder:
-            (BuildContext context, RecommendProvider provider, Widget? child) {
+        child: Consumer<RecentProvider>(builder:
+            (BuildContext context, RecentProvider provider, Widget? child) {
           return EasyRefresh(
             controller: easyController,
             header: const DeliveryHeader(),
@@ -58,14 +58,14 @@ class RecommendPageState extends State<RecommendPage>
                 backgroundColor: Theme.of(context).cardColor,
                 triggerOffset: 50),
             onRefresh: () async {
-              await provider.refreshRecommendData(context, 0, freshOffset);
+              await provider.refreshRecentAlbumsData(context, 0, freshOffset);
               easyController.finishRefresh();
               easyController.resetFooter();
               currentIndex = 20;
             },
             //底部加载
             onLoad: () async {
-              await provider.getRecommendData(
+              await provider.getRecentlyData(
                   context, currentIndex, freshOffset);
               currentIndex += freshOffset;
               easyController.finishLoad(IndicatorResult.success);
@@ -74,7 +74,7 @@ class RecommendPageState extends State<RecommendPage>
               scrollDirection: Axis.vertical,
               controller: _scrollController,
               padding: const EdgeInsets.symmetric(vertical: 10.0),
-              itemCount: provider.recommendAlbumnList.length ~/ 2,
+              itemCount: provider.recentAlbumnList.length ~/ 2,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
@@ -88,10 +88,10 @@ class RecommendPageState extends State<RecommendPage>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       RecommendItem(
-                        albumItem: provider.recommendAlbumnList[index * 2],
+                        albumItem: provider.recentAlbumnList[index * 2],
                       ),
                       RecommendItem(
-                        albumItem: provider.recommendAlbumnList[index * 2 + 1],
+                        albumItem: provider.recentAlbumnList[index * 2 + 1],
                       ),
                     ],
                   ),

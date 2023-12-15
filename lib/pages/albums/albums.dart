@@ -110,18 +110,34 @@ class AlbumsPageState extends State<AlbumsPage> {
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
                                 Text(
                                   provider.albumList[index].album,
                                   style: TextStyle(
+                                      color:
+                                          const Color.fromARGB(255, 51, 51, 51),
+                                      fontSize: ScreenUtil().setSp(45),
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.start,
+                                  overflow: TextOverflow.clip,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  provider.albumList[index].artist,
+                                  style: TextStyle(
                                     color:
                                         const Color.fromARGB(255, 51, 51, 51),
-                                    fontSize: ScreenUtil().setSp(43),
+                                    fontSize: ScreenUtil().setSp(40),
                                   ),
                                   textAlign: TextAlign.start,
                                   overflow: TextOverflow.clip,
                                 ),
-                                const SizedBox(height: 10),
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   padding: EdgeInsets.fromLTRB(
@@ -130,7 +146,7 @@ class AlbumsPageState extends State<AlbumsPage> {
                                       ScreenUtil().setWidth(55),
                                       ScreenUtil().setHeight(70)),
                                   child: Text(
-                                    provider.albumList[index].listenTime(),
+                                    '${provider.albumList[index].listenTime()}播放',
                                     style: TextStyle(
                                       color: const Color.fromARGB(
                                           255, 136, 136, 136),

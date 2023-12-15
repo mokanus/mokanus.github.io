@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:tingfm/pages/privacy/privacy.dart';
 import 'package:tingfm/pages/privacy/user_privacy.dart';
@@ -26,13 +28,22 @@ class PaywallState extends State<Paywall> {
       child: Wrap(
         children: <Widget>[
           Container(
-            height: 70.0,
-            width: double.infinity,
+            alignment: Alignment.center,
             decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 246, 246, 246),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(5.0))),
-            child: Center(
-                child: Text('听书铺子fm 会员订阅', style: ThemeConfig.kHeadTextStyle)),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8.0),
+                  topRight: Radius.circular(8.0)),
+              color: Color.fromARGB(255, 234, 78, 94),
+            ),
+            height: 60,
+            width: ScreenUtil().screenWidth,
+            child: const Text(
+              "听书铺子fm 会员订阅",
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
           ),
           const Divider(
             height: 1,
@@ -65,6 +76,7 @@ class PaywallState extends State<Paywall> {
                     onTap: () async {
                       setState(() {});
                       try {
+                        showLoadingDialog();
                         CustomerInfo customerInfo =
                             await Purchases.purchasePackage(
                                 myProductList[index]);
@@ -75,6 +87,7 @@ class PaywallState extends State<Paywall> {
                       } catch (e) {
                         print(e);
                       }
+                      Navigator.pop(context);
                       Navigator.pop(context);
                     },
                   ),
@@ -150,6 +163,33 @@ class PaywallState extends State<Paywall> {
           ),
         ],
       ),
+    );
+  }
+
+// 显示加载中弹窗
+  void showLoadingDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 防止用户点击弹窗外部关闭
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset(
+                'assets/jsons/lottie_a.json',
+                fit: BoxFit.contain,
+                width: 100,
+                height: 100,
+              ),
+              const Text(
+                "处理中...",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

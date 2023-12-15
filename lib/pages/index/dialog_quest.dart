@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:tingfm/entities/classify.dart';
+import 'package:tingfm/utils/global.dart';
 
 class DialogQuest extends StatefulWidget {
   final List<Classify> classifies;
@@ -51,6 +52,7 @@ class DialogQuestState extends State<DialogQuest> {
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 50),
           child: IconsButton(
             onPressed: () {
+              Global.logEvent("classify_quest", selectedItems.toString());
               Navigator.pop(context);
             },
             text: '收到',

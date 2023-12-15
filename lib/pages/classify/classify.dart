@@ -120,7 +120,7 @@ class ClassifyPageState extends State<ClassifyPage>
                                       child: Text(
                                         provider.classifies[index].classify,
                                         style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(40),
+                                            fontSize: ScreenUtil().setSp(50),
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),

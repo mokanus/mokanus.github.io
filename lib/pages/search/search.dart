@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tingfm/entities/album.dart';
 import 'package:tingfm/pages/albuminfo/albuminfo.dart';
 import 'package:tingfm/providers/search.dart';
+import 'package:tingfm/utils/global.dart';
 import 'package:tingfm/utils/router.dart';
 import 'package:tingfm/utils/vibration.dart';
 import 'package:tingfm/widgets/image.dart';
@@ -61,6 +62,7 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
           Provider.of<SearchProvider>(context, listen: false)
               .searchData(context, query);
         }
+        Global.logEvent("search_album", query);
       },
       transition: CircularFloatingSearchBarTransition(),
       actions: [

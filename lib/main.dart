@@ -11,10 +11,12 @@ import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/providers/history.dart';
 import 'package:tingfm/providers/index.dart';
+import 'package:tingfm/providers/recent.dart';
 import 'package:tingfm/providers/recommend.dart';
 import 'package:tingfm/providers/search.dart';
 import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/utils/global.dart';
+import 'package:tingfm/utils/purchase.dart';
 import 'package:tingfm/utils/storage.dart';
 import 'package:tingfm/values/hive_boxes/album_db.dart';
 import 'package:provider/provider.dart';
@@ -35,12 +37,14 @@ Future<void> main() async {
   await startService();
   await StorageUtil.init();
   await Global.init();
+  await PurchaseUtil.configureSDK();
 
   runApp(
     //做灰度处理
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppProvider()),
+        ChangeNotifierProvider(create: (_) => RecentProvider()),
         ChangeNotifierProvider(create: (_) => IndexProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProvider(create: (_) => RecommendProvider()),

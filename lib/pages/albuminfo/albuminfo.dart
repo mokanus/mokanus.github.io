@@ -1,21 +1,30 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/shared/types.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:provider/provider.dart';
 import 'package:tingfm/api/api_status.dart';
+import 'package:tingfm/entities/album.dart';
+import 'package:tingfm/entities/album_meta.dart';
+import 'package:tingfm/pages/albuminfo/dialogcontinue.dart';
 import 'package:tingfm/pages/player/player.dart';
-import 'package:tingfm/paywall/paywall.dart';
 import 'package:tingfm/providers/album_info.dart';
 import 'package:tingfm/providers/favorite.dart';
 import 'package:tingfm/providers/history.dart';
+import 'package:tingfm/services/audio_service.dart';
 import 'package:tingfm/theme/theme_config.dart';
 import 'package:tingfm/utils/purchase.dart';
+import 'package:tingfm/values/hive_box.dart';
+import 'package:tingfm/values/hive_boxes/album_db.dart';
 import 'package:tingfm/widgets/image.dart';
 import 'package:tingfm/widgets/loading_widget.dart';
 import 'package:tingfm/widgets/mini_player.dart';
@@ -42,6 +51,11 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
 
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Timer(const Duration(milliseconds: 500), () async {
+        await showContinueDialog(context);
+      });
+    });
   }
 
   @override
@@ -377,7 +391,7 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
   }
 
   void openPlayerPage(int index) async {
-    if (!PurchaseUtil.entitlementIsActive) {
+    if (!PurchaseUtil.isVip) {
       PurchaseUtil.showSubcription(context);
       return;
     }
@@ -389,33 +403,58 @@ class _AlbumInfoPageState extends State<AlbumInfoPage>
           fromMiniplayer: false,
           albumItem:
               Provider.of<AlbumInfoProvider>(context, listen: false).item,
-          skipIndex: index,
+          albumMeta: AlbumMeta(
+              hour: 0, minu: 0, second: 0, index: index, album: "", title: ""),
         ),
       ),
     );
   }
 
-  void showHistoryDialog() async {
-    await showModalBottomSheet(
-      useRootNavigator: true,
-      isDismissible: true,
-      isScrollControlled: true,
-      backgroundColor: ThemeConfig.kColorBackground,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-      ),
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setModalState) {
-          return Container(
-            height: 500,
-            width: 500,
-            color: Colors.red,
-          );
-        });
-      },
-    );
+  showContinueDialog(BuildContext context) async {
+    var audioHandler = GetIt.I<AudioPlayerHandler>();
+    if (audioHandler.playbackState.value.playing) {
+      var meta = audioHandler.albumMeta;
+      if (meta.album == widget.album) {
+        return;
+      }
+    }
+
+    var box = await Hive.openBox<AlbumItemDB>(HiveBoxes.hisotyDB);
+    var historyItems = box.values.toList();
+    var albumItemDB = AlbumItemDB(id: 0, album: "", artUri: "", artist: "");
+    for (int i = 0; i < historyItems.length; i++) {
+      if (historyItems[i].id == widget.albumId) {
+        albumItemDB = historyItems[i];
+        break;
+      }
+    }
+    if (albumItemDB.id != 0) {
+      var metaBox = await Hive.openBox(HiveBoxes.albumMetaDB);
+      var metaData = metaBox.get('album_${albumItemDB.album}');
+      if (metaData != null) {
+        var mateDataInfo = AlbumMeta.fromJson(metaData.toString());
+        await showModalBottomSheet(
+          useRootNavigator: true,
+          isDismissible: true,
+          isScrollControlled: true,
+          backgroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+          ),
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(
+                builder: (BuildContext context, StateSetter setModalState) {
+              return DialogContinue(
+                  albumItem:
+                      Provider.of<AlbumInfoProvider>(context, listen: false)
+                          .item!,
+                  albumMeta: mateDataInfo);
+            });
+          },
+        );
+      }
+    }
   }
 
   @override

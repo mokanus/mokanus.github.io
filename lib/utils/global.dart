@@ -1,18 +1,24 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:logger/logger.dart';
-import 'package:tingfm/utils/purchase.dart';
 import 'package:tingfm/utils/storage.dart';
 import 'package:tingfm/utils/timer.dart';
 
 /// 全局配置
 class Global {
   static Future init() async {
-    PurchaseUtil.checkOrInitUser();
-    await PurchaseUtil.configureSDK();
     Timers.startTimers();
   }
 
-  static void logEvent(name, params) async {
+  static void logEvents(name, params) async {
+    await FirebaseAnalytics.instance.logEvent(
+      name: name,
+      parameters: params,
+    );
+  }
+
+  static void logEvent(name, data) async {
+    var params = <String, dynamic>{};
+    params[name] = data;
     await FirebaseAnalytics.instance.logEvent(
       name: name,
       parameters: params,
@@ -27,12 +33,25 @@ class Global {
 
   static Logger logger = Logger();
 
-  static bool get isFirstQuest {
-    return StorageUtil().getBool('isFirstOpen');
+  static bool get firstQuestSuccessed {
+    return StorageUtil().getBool('firstQuestSuccessed');
   }
 
-  static set isFirstQuest(bool isFirst) {
-    StorageUtil().setBool('isFirstOpen', true);
+  static set firstQuestSuccessed(bool finished) {
+    StorageUtil().setBool('firstQuestSuccessed', true);
+  }
+
+  // 获取首次打开时间
+  static DateTime get firstOpenTime {
+    var jsonString = StorageUtil().getString('firstOpenTime');
+    if (jsonString != null && jsonString != "") {
+      DateTime dateTime = DateTime.parse(jsonString);
+      return dateTime;
+    } else {
+      var now = DateTime.now();
+      StorageUtil().setString('firstOpenTime', now.toIso8601String());
+      return now;
+    }
   }
 
   static bool isOfflineLogin = false;

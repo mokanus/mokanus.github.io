@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tingfm/pages/classify/classify.dart';
-import 'package:tingfm/pages/recommend/recommend.dart';
+import 'package:tingfm/pages/recent/recent.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({super.key});
@@ -10,7 +10,7 @@ class MenuWidget extends StatelessWidget {
     Navigator.of(ctx).push(
       PageRouteBuilder(
         opaque: false,
-        pageBuilder: (_, __, ___) => const RecommendPage(),
+        pageBuilder: (_, __, ___) => const RecentPage(),
       ),
     );
   }
@@ -28,16 +28,16 @@ class MenuWidget extends StatelessWidget {
     Navigator.of(ctx).push(
       PageRouteBuilder(
         opaque: false,
-        pageBuilder: (_, __, ___) => const RecommendPage(),
+        pageBuilder: (_, __, ___) => const RecentPage(),
       ),
     );
   }
 
-  void openHotPage(BuildContext ctx) {
+  void openRecentPage(BuildContext ctx) {
     Navigator.of(ctx).push(
       PageRouteBuilder(
         opaque: false,
-        pageBuilder: (_, __, ___) => const RecommendPage(),
+        pageBuilder: (_, __, ___) => const RecentPage(),
       ),
     );
   }
@@ -99,7 +99,7 @@ class MenuWidget extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () => openRankPage(context),
+          onTap: () => openRecentPage(context),
           child: Column(
             children: [
               Container(
@@ -124,7 +124,7 @@ class MenuWidget extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () => openHotPage(context),
+          onTap: () => openRankPage(context),
           child: Column(
             children: [
               Container(
